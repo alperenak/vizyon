@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50">
+    <defs>
+        <filter id="pj8jsbxp9a" width="50" height="50" x="0" y="0" filterUnits="userSpaceOnUse">
+            <feOffset dx="-1" dy="3"/>
+            <feGaussianBlur result="blur" stdDeviation="3"/>
+            <feFlood flood-color="#320390" flood-opacity=".635"/>
+            <feComposite in2="blur" operator="in"/>
+            <feComposite in="SourceGraphic"/>
+        </filter>
+        <filter id="pzkmb4mt4c" width="27" height="29" x="13.5" y="9.5" filterUnits="userSpaceOnUse">
+            <feOffset dx="1" dy="2"/>
+            <feGaussianBlur result="blur-2" stdDeviation="1.5"/>
+            <feFlood flood-color="#34bc86"/>
+            <feComposite in2="blur-2" operator="in"/>
+            <feComposite in="SourceGraphic"/>
+        </filter>
+        <linearGradient id="sfb0oj6nlb" x1=".839" x2=".137" y1=".882" y2=".054" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#5bffd3"/>
+            <stop offset="1" stop-color="#b3ff66"/>
+        </linearGradient>
+    </defs>
+    <g>
+        <g filter="url(#pj8jsbxp9a)" transform="translate(-591 -217) translate(591 217)">
+            <rect width="32" height="32" fill="url(#sfb0oj6nlb)" rx="10" transform="translate(10 6)"/>
+        </g>
+        <g>
+            <g filter="url(#pzkmb4mt4c)" transform="translate(-591 -217) translate(605 227) translate(-14 -10)">
+                <path fill="#fff" d="M13.191 20H4.81C1.753 20 0 18.236 0 15.16V4.83a4.91 4.91 0 0 1 1.265-3.559A4.863 4.863 0 0 1 4.81 0h8.382C16.247 0 18 1.761 18 4.83v10.33a4.891 4.891 0 0 1-1.246 3.583A4.819 4.819 0 0 1 13.191 20zM5 13.736a.78.78 0 0 0-.668.374.786.786 0 0 0 .653 1.206.7.7 0 0 0 .1-.006h7.835a.79.79 0 0 0 0-1.57H5.08a.8.8 0 0 0-.08-.004zm.08-4.557a.78.78 0 0 0 0 1.561h7.84a.78.78 0 0 0 0-1.561zm0-4.529v.01a.779.779 0 0 0 0 1.559h2.99a.785.785 0 0 0 0-1.57z" transform="translate(17 12)"/>
+            </g>
+        </g>
+    </g>
+</svg>

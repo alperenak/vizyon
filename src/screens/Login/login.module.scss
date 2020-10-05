@@ -1,0 +1,87 @@
+@import '../../helpers/variableBreakpoints.scss';
+@import '../../helpers/responsiveBreakpointsMixins.scss';
+
+.loginContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+
+
+    & .logoCircle {
+        position: absolute;
+        width: 220px;
+        height: 220px;
+
+    }
+
+    & .loginImages {
+        flex: 1;
+        overflow: hidden;
+
+        & img {
+            object-fit: cover;
+            height: 120vh;
+
+            @include xx-large {
+                margin-left: -100px;
+            }
+
+        }
+
+    }
+
+    & .loginForm {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        flex: 1;
+        width: 100%;
+        height: 100%;
+        background-color: #f9f6ff;
+
+        & .formTitle {
+            display: flex;
+            font-family: SofiaBold;
+            color: $darkBlue;
+            font-size: 30px;
+            width: 400px;
+            justify-content: flex-start;
+            margin-bottom: 48px;
+        }
+
+        & .icon {
+            position: absolute;
+            left: 15px;
+            width: 20px;
+            height: 20px;
+            z-index: 1
+        }
+
+        & .subFormSection {
+            display: flex;
+            justify-content: space-between;
+            width: 400px;
+
+            & .forgotPass {
+                margin-top: 20px;
+                color: $lightPurple;
+                text-decoration: none;
+
+                &:hover {
+                    text-decoration: underline;
+
+                }
+
+            }
+        }
+    }
+}
+
+.errorMessage {
+    color: red;
+    font-size: 14px;
+}

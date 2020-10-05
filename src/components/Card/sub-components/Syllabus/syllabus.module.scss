@@ -1,0 +1,260 @@
+@import '../../../../helpers/variableBreakpoints.scss';
+
+
+$greenbg:#f4fdf5;
+$green:#74db80;
+$lblgreenbg:#e9fff8;
+$redbg:#fef2f1;
+$red:#fc8f86;
+$lblredbg:#fdeae8;
+$bluebg:#effcff;
+$blue:#59ddff;
+$lblbluebg:#e1f9ff;
+$yellowbg:#fffae5;
+$yellow:#ffd215;
+$lblyellowbg:#faf2d2;
+$purplebg:#f1ebff;
+$purple:#7532fc;
+$lblpurplebg:#dcd1f8;
+
+.SyllabusCard {
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px;
+    width: 770px;
+    background-color: #fefdff;
+    position: relative;
+    margin-top: 40px;
+    box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+
+    & .topSide {
+        display: flex;
+        margin: 0 30px;
+        width: calc(100% -60px);
+        position: relative;
+        justify-content: flex-end;
+        padding-top: 30px;
+
+        & .title {
+            position: absolute;
+            font-size: 18px;
+            font-family: SofiaBold;
+            color: $darkBlue;
+            left: 0;
+        }
+
+        & .downloadSyllabus {
+            display: flex;
+            align-items: center;
+            width: 212px;
+            background-color: #e9fff8;
+            border-radius: 8px;
+            height: 30px;
+            justify-content: space-around;
+            align-items: center;
+
+
+            & .formatXLS {
+                display: flex;
+                border-radius: 8px;
+                width: 46px;
+                justify-content: center;
+                align-items: center;
+                height: 24px;
+                box-shadow: 0px 5px 27px -8px rgba(94, 191, 155, 1);
+                background-color: white;
+
+                & .formatIcon {
+                    width: 9px;
+                    height: 9px;
+                }
+
+                & .formatName {
+                    color: #5ebf9b;
+                    font-size: 11px;
+                    margin-left: 5px;
+                    font-family: SofiaBlack;
+                }
+            }
+
+            & .downloadTitle {
+                font-family: SofiaSemiBold;
+                color: #5ebf9b;
+                font-size: 14px
+            }
+        }
+
+        & .feedback {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            width: 117px;
+            height: 30px;
+            background-color: rgba(225, 238, 253, 0.51);
+            border-radius: 8px;
+            margin-left: 20px;
+
+            & .feedbackTitle {
+                font-size: 14px;
+                font-family: SofiaSemiBold;
+                color: $darkBlue
+            }
+
+        }
+    }
+
+    & .weekDaysContainer {
+        display: flex;
+        align-items: center;
+        justify-content: space-around;
+        width: 90%;
+        margin-top: 40px;
+        margin-left: 27px;
+
+        & .dayLabel {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 140px;
+
+            & .dayCircle {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 30px;
+                height: 30px;
+                border-radius: 50%;
+                font-family: SofiaBold;
+            }
+
+            & .dayName {
+                margin-left: 10px;
+                font-family: SofiaMedium;
+                color: #404040
+            }
+
+            & .green {
+                background-color: $greenbg;
+                color: $green;
+            }
+
+            & .red {
+                background-color: $redbg;
+                color: $red
+            }
+
+            & .blue {
+                background-color: $bluebg;
+                color: $blue
+            }
+
+            & .yellow {
+                background-color: $yellowbg;
+                color: $yellow
+            }
+
+            & .purple {
+                background-color: $purplebg;
+                color: $purple
+            }
+        }
+    }
+
+    & .Lessons {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: 38px;
+
+        & table {
+
+            & tr {
+                height: 60px;
+
+                & .lessonLabelWrapper {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-size: 14px;
+                    height: 60px;
+                    width: 140px;
+
+                    & .lessonLabel {
+                        width: 112px;
+                        display: flex;
+                        justify-content: center;
+                        border-radius: 5px;
+                        height: 50px;
+                        flex-direction: column;
+                        padding-left: 8px;
+                        cursor: pointer;
+                        font-family: SofiaBold;
+                        transition: 0.3s;
+
+
+                    }
+
+                    .lblgreen:hover {
+                        background-color: $lblgreenbg;
+                    }
+
+                    .lblred:hover {
+                        background-color: $lblredbg;
+                    }
+
+                    .lblblue:hover {
+                        background-color: $lblbluebg;
+                    }
+
+                    .lblyellow:hover {
+                        background-color: $lblyellowbg;
+                    }
+
+                    .lblpurple:hover {
+                        background-color: $lblpurplebg;
+                    }
+                }
+
+                & td {
+                    display: flex;
+
+                }
+
+                & .green {
+                    color: $green
+                }
+
+                & .yellow {
+                    color: $yellow
+                }
+
+                & .red {
+                    color: $red
+                }
+
+                & .blue {
+                    color: $blue
+                }
+
+                & .purple {
+                    color: $purple
+                }
+
+                & span {
+                    display: flex;
+                    font-size: 12px;
+                    font-family: SofiaRegular;
+
+                }
+            }
+        }
+
+    }
+
+    & .yellowTip {
+        position: absolute;
+        left: 20px;
+        width: 20px;
+        height: 20px;
+    }
+}

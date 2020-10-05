@@ -1,0 +1,80 @@
+@import '../../../../helpers/variableBreakpoints.scss';
+
+.announcementsCard {
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px;
+    height: 430px;
+    width: 770px;
+    background-color: #fefdff;
+    position: relative;
+    margin-top: 40px;
+    box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+
+
+    & .title {
+        display: flex;
+        width: 100%;
+        margin-left: 20px;
+        margin-top: 27px;
+        font-family: SofiaBold;
+        color: $darkBlue;
+        font-size: 18px
+    }
+
+    & .announcementsSection {
+        display: flex;
+        flex-direction: column;
+        margin-top: 20px;
+
+        & .announcements {
+            display: flex;
+            position: relative;
+            align-items: center;
+            margin: 10px 20px;
+            height: 40px;
+
+            width: calc(100% - 40px);
+
+            & .imageCircle {
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+                overflow: hidden;
+
+                & img {
+                    width: 100%;
+
+                }
+            }
+
+            & .announcementsTitle {
+                font-family: SofiaMedium;
+                color: $darkBlue;
+                font-size: 14px;
+                margin-left: 20px;
+            }
+
+            & .announcementsDate {
+                position: absolute;
+                font-size: 12px;
+                color: $lightPurple;
+                right: 0;
+
+            }
+        }
+
+    }
+
+    & .seeAll {
+        display: flex;
+        position: absolute;
+        height: 36px;
+        bottom: 0;
+        width: 100%;
+        justify-content: center;
+        align-items: center;
+        font-size: 13px;
+        color: $lightPurple
+    }
+}

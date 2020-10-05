@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="46" height="55" viewBox="0 0 46 55">
+    <defs>
+        <linearGradient id="dsf48enq0a" x1=".839" x2=".137" y1=".882" y2=".054" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#5bfff2"/>
+            <stop offset="1" stop-color="#66dcff"/>
+        </linearGradient>
+    </defs>
+    <path fill="url(#dsf48enq0a)" d="M87.806 4.628L71.707.045a1.154 1.154 0 0 0-.759.044l-27.6 11.459a1.146 1.146 0 0 0-.706 1.057V42.4a1.148 1.148 0 0 0 1.138 1.146 1.145 1.145 0 0 0-.352 2.234l27.6 9.167a1.189 1.189 0 0 0 .363.057 1.154 1.154 0 0 0 .315-.046l16.1-4.583a1.146 1.146 0 0 0 .835-1.1V5.728a1.147 1.147 0 0 0-.835-1.1zM44.31 43.42l6.9-3.438a1.145 1.145 0 0 0 .635-1.024V14.645l20.7-5.156v38.446l-28.575-4.38a1 1 0 0 0-.163-.014 1.168 1.168 0 0 0 .503-.121z" transform="translate(-42.641)"/>
+</svg>
