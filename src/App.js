@@ -9,16 +9,37 @@ import Docs from "./screens/Docs/docs";
 
 function App() {
   const [auth, setAuth] = useState(false);
+  const pathname = window.location.pathname;
   return (
     <div className="App">
       <Router>
-        {window.location.pathname === "/" ? "" : <TopBar />}
+        {pathname === "/" ||
+        pathname === "/login/teacher" ||
+        pathname == "/login/student" ? (
+          ""
+        ) : (
+          <TopBar />
+        )}
 
         <Switch>
           {/* {auth ? <TopBar /> : <></>} */}
           <Route
             exact={true}
             path="/"
+            component={() => {
+              return <Login />;
+            }}
+          />
+          <Route
+            exact={true}
+            path="/login/teacher"
+            component={() => {
+              return <Login />;
+            }}
+          />
+          <Route
+            exact={true}
+            path="/login/student"
             component={() => {
               return <Login />;
             }}

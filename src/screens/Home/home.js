@@ -17,7 +17,7 @@ export default function Home() {
   const [announcementsData, setAnnouncementsData] = useState(false);
   const [loading, setLoading] = useState(false);
   const token = GetToken();
-  console.log(userData);
+  console.log("userdata: ", userData);
   useEffect(() => {
     if (IsAuth(token)) {
       if (!userData) {
@@ -25,16 +25,15 @@ export default function Home() {
         GetUser(token)
           .then((data) => setUserData(data))
           .then(() => setLoading(false))
-          .catch((e) => window.location.reload());
+          .catch((e) => console.error(e));
       }
       if (!announcementsData) {
         GetAnnouncements(5, 1, token)
           .then((data) => setAnnouncementsData(data))
-          .catch((e) => {
-            window.location.reload();
-          });
+          .catch((e) => console.error(e));
       }
-    } else window.location.replace("/");
+    }
+    // else window.location.replace("/");
   }, []);
   return (
     <>
@@ -51,12 +50,22 @@ export default function Home() {
                 />
                 <Card
                   type={"syllabus"}
-                  syllabusData={userData.data.data.studentInfo.class.schedule}
+                  syllabusData={getSyllabusData(userData.data.data)}
                 />
                 <Card
                   type={"schedule"}
-                  scheduleData={userData.data.data.studentInfo.class.exams}
-                  teachersData={userData.data.data.studentInfo.class.courses}
+                  scheduleData={
+                    userData.data.data.studentInfo &&
+                    userData.data.data.studentInfo.class
+                      ? userData.data.data.studentInfo.class.exams
+                      : []
+                  }
+                  teachersData={
+                    userData.data.data.studentInfo &&
+                    userData.data.data.studentInfo.class
+                      ? userData.data.data.studentInfo.class.courses
+                      : []
+                  }
                 />
               </div>
             </div>
@@ -69,13 +78,21 @@ export default function Home() {
                   userData.data.data.last_name
                 }
                 classroomName={`${getClassName(
-                  userData.data.data.studentInfo.class.name
+                  userData.data.data.studentInfo &&
+                    userData.data.data.studentInfo.class
+                    ? userData.data.data.studentInfo.class.name
+                    : null
                 )}`}
                 avatar={userData.data.data.profile_photo}
               />
               <Card
                 type={"teachers"}
-                teachersData={userData.data.data.studentInfo.class.courses}
+                teachersData={
+                  userData.data.data.studentInfo &&
+                  userData.data.data.studentInfo.class
+                    ? userData.data.data.studentInfo.class.courses
+                    : []
+                }
               />
             </div>
           </div>
@@ -92,7 +109,17 @@ function getClassName(name) {
       name.length - 1,
       name.length
     )} Sınıfı`;
-  } else return "none";
+  } else return "";
+}
+
+function getSyllabusData(data) {
+  if (data.studentInfo && data.studentInfo.class) {
+    console.log("ogrenci datasi var");
+    return data.studentInfo.class.schedule;
+  } else if (data.instructorInfo && data.instructorInfo.classes) {
+    console.log("ogretmen datasi var");
+    return data.instructorInfo.schedule;
+  } else return [];
 }
 // const announcementsData = [
 //   {

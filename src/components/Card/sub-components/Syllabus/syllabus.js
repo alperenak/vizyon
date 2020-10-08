@@ -6,7 +6,7 @@ import TeacherAvatar from "../../../../assets/images/teacherAvatar.png";
 import AlertBox from "../../../Alert/alert";
 import { sumTimes } from "../../../../utils/utils";
 export default function Syllabus({ syllabusData }) {
-  console.log(syllabusData);
+  console.log("syllabu", syllabusData);
   let date = new Date();
   let weekDays = ["Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma"];
   let daysData = getDayData(weekDays);
@@ -54,7 +54,7 @@ export default function Syllabus({ syllabusData }) {
                     <tr>
                       <div className={styles.lessonLabelWrapper}>
                         <Dropdown
-                          teacher={getTeacherName(item.instructor)}
+                          teacher={getTeacherName(item)}
                           lessonName={getLessonName(item.course)}
                           startingTime={getLessonTime(item).startingTime}
                           avatar={getTeacherAvatar(item.instructor)}
@@ -68,7 +68,7 @@ export default function Syllabus({ syllabusData }) {
                             <td className={styles[getColor(item.course)]}>
                               {getLessonName(item.course)}
                             </td>
-                            <span>{getTeacherName(item.instructor)}</span>
+                            <span>{getTeacherName(item)}</span>
                           </div>
                         </Dropdown>
                       </div>
@@ -99,15 +99,22 @@ function getLessonName(course) {
     return course.name;
   } else return "ingilizce";
 }
-function getTeacherName(instructor) {
+function getTeacherName(item) {
   if (
-    instructor !== null &&
-    instructor &&
-    instructor.first_name &&
-    instructor.last_name
+    item.instructor !== null &&
+    item.instructor &&
+    item.instructor.first_name &&
+    item.instructor.last_name
   ) {
-    return `${instructor.first_name} ${instructor.last_name}`;
-  } else return "Mustafa Karahan";
+    return `${item.instructor.first_name} ${item.instructor.last_name}`;
+  } else if (
+    item.class &&
+    item.class !== null &&
+    item.class.name &&
+    item.class.name !== null
+  ) {
+    return item.class.name;
+  } else return "";
 }
 function getLessonTime(course) {
   console.log(course, course.startsAt, course.endsAt);
