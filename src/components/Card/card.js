@@ -1,5 +1,8 @@
 import React from "react";
+import ActivityDetail from "./sub-components/ActivityDetails/activityDetails";
 import styles from "./card.module.scss";
+import DropzoneField from "./DragDrop/dragDrop";
+import ActivityManagement from "./sub-components/Activity/activity";
 import Announcements from "./sub-components/Announcements/announcements";
 import Classes from "./sub-components/Classes/classes";
 import ClassManagement from "./sub-components/ClassManagement/classManagement";
@@ -31,6 +34,12 @@ function RenderByTypes(props) {
     return <Schedule {...props} />;
   } else if (type === "userManagement") {
     return <UserManagement {...props} />;
+  } else if (type === "dropzone") {
+    return <DropzoneField {...props} />;
+  } else if (type === "activity") {
+    return <ActivityManagement {...props} />;
+  } else if (type === "activityDetails") {
+    return <ActivityDetail {...props} />;
   } else {
     return <div>hata</div>;
   }

@@ -63,8 +63,8 @@ export default function Admin() {
 }
 
 function RenderCard({ pathname, announcementsData }) {
-  const [dropdownActive, setDropdownActive] = useState();
   const [tabsType, setTabsType] = useState("student");
+  const [dropdownActive, setDropdownActive] = useState();
   const [dropdownName, setDropdownName] = useState("Sınıf Seçiniz");
   const dropdownNames = document.getElementById("dropdownName");
   const dropdownIcon = document.getElementById("dropdownIcon");
@@ -146,6 +146,41 @@ function RenderCard({ pathname, announcementsData }) {
           </div>
         </div>
         <Card type={"userManagement"} tabsType={tabsType} />
+      </>
+    );
+  } else if (pathname === "/admin/syllabus") {
+    return (
+      <>
+        <Card type={"dropzone"} tabsType={tabsType} />
+      </>
+    );
+  } else if (pathname === "/admin/activity") {
+    return (
+      <>
+        <div className={styles.topSide}>
+          <Input placeholder="Ara" inputStyle={"search"}>
+            <SearchSolid className={styles.searchIcon} />
+          </Input>
+          <div className={styles.tabs}>
+            <div
+              className={`${styles.tabsButton} ${
+                tabsType === "student" ? styles.tabsButtonActive : ""
+              }`}
+              onClick={() => setTabsType("student")}
+            >
+              Öğrenci
+            </div>
+            <div
+              className={`${styles.tabsButton} ${
+                tabsType === "teacher" ? styles.tabsButtonActive : ""
+              }`}
+              onClick={() => setTabsType("teacher")}
+            >
+              Öğretmen
+            </div>
+          </div>
+        </div>
+        <Card type={"activity"} tabsType={tabsType} />
       </>
     );
   } else return <></>;

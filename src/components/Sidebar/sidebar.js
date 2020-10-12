@@ -13,7 +13,7 @@ export default function SideBar() {
     { title: "Duyurular", icon: <Clock />, path: "/admin" },
     { title: "Sınıf Yönetimi", icon: <Clock />, path: getPath("class") },
     { title: "Kullanıcı Yönetimi", icon: <Clock />, path: getPath("user") },
-    { title: "Ders Prgoramı", icon: <Clock />, path: getPath("syllabus") },
+    { title: "Ders Programı", icon: <Clock />, path: getPath("syllabus") },
     { title: "Aktivite Yönetimi", icon: <Clock />, path: getPath("activity") },
   ];
   return (

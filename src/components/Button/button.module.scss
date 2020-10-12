@@ -40,3 +40,21 @@
         opacity: 0.9;
     }
 }
+
+.outlined {
+    border-radius: 8px;
+    background-color: white;
+    border-color: $darkPurple;
+    color: $darkPurple;
+    width: max-content;
+    height: 30px;
+    border: solid 1px;
+    margin: 24px 0;
+    padding: 0 30px;
+    cursor: pointer;
+    transition: 0.3s;
+
+    &:hover {
+        opacity: 0.9;
+    }
+}

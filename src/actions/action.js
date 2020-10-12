@@ -233,3 +233,33 @@ export async function deleteUser(token, userId) {
   const response = await axios.delete(`${uri}/users/${userId}`, config);
   return response;
 }
+export async function uploadFile(token, file) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = await axios.post(
+    `${uri}/storage/files/upload`,
+    file,
+    config
+  );
+  return response;
+}
+export async function getAppsLog(
+  token,
+  start = "",
+  startAt = "",
+  endAt = "",
+  limit = 99,
+  userId = "",
+  classId = ""
+) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = await axios.get(
+    `${uri}/logs/app-logs?from=${startAt}&until=${endAt}&limit=${limit}&start=${start}&order=asc&user=${userId}&role=student&class=${classId}
+    `,
+    config
+  );
+  return response;
+}

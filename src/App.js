@@ -10,6 +10,7 @@ import Admin from "./screens/Admin/admin";
 import IsAdmin, { GetToken, GetUser } from "./actions/action";
 import { useCookies } from "react-cookie";
 import { UserContext } from "./context/userContext";
+import ActivityDetail from "./screens/Admin/ActivityDetail/activityDetail";
 function App() {
   const token = GetToken();
   const [auth, setAuth] = useState(false);
@@ -88,6 +89,11 @@ function App() {
           <Route exact={true} path="/admin/user" component={Admin} />
           <Route exact={true} path="/admin/syllabus" component={Admin} />
           <Route exact={true} path="/admin/activity" component={Admin} />
+          <Route
+            exact={true}
+            path="/admin/activity/:id"
+            component={ActivityDetail}
+          />
         </Switch>
       </Router>
     </div>
