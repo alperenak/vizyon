@@ -1,49 +1,49 @@
 @import "../../helpers/variableBreakpoints.scss";
 
 .sidebarContainer {
-    flex: 1;
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  align-items: flex-start;
+  padding-top: 100px;
+  height: 100%;
+  background-color: $darkPurple;
+
+  & .sidebarCard {
     display: flex;
-    justify-content: center;
-    width: 100%;
-    align-items: flex-start;
-    padding-top: 100px;
-    height: 100vh;
-    background-color: $darkPurple;
+    flex-direction: column;
 
-    & .sidebarCard {
+    & .sidebarButtons {
+      & .sidebarButton {
         display: flex;
-        flex-direction: column;
+        align-items: center;
+        border-radius: 12px;
+        color: white;
+        height: 30px;
+        width: max-content;
+        cursor: pointer;
+        padding: 3px 10px;
+        margin: 10px 0;
+        transition: 0.3s;
 
-        & .sidebarButtons {
-            & .sidebarButton {
-                display: flex;
-                align-items: center;
-                border-radius: 12px;
-                color: white;
-                height: 30px;
-                width: max-content;
-                cursor: pointer;
-                padding: 3px 10px;
-                margin: 10px 0;
-                transition: 0.3s;
-
-                &:hover {
-                    color: black;
-                    background-color: white;
-                }
-
-                display: flex;
-
-                & .buttonTitle {
-                    margin-left: 20px;
-                    font-family: SofiaMedium;
-                }
-            }
-
-            & .buttonActive {
-                color: black;
-                background-color: white;
-            }
+        &:hover {
+          color: black;
+          background-color: white;
         }
+
+        display: flex;
+
+        & .buttonTitle {
+          margin-left: 20px;
+          font-family: SofiaMedium;
+        }
+      }
+
+      & .buttonActive {
+        color: black;
+        background-color: white;
+      }
     }
+  }
 }
