@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./card.module.scss";
 import Announcements from "./sub-components/Announcements/announcements";
 import Classes from "./sub-components/Classes/classes";
+import ClassManagement from "./sub-components/ClassManagement/classManagement";
 import Schedule from "./sub-components/Schedule/schedule";
 import Syllabus from "./sub-components/Syllabus/syllabus";
 import Teachers from "./sub-components/Teachers/teacher";
@@ -23,6 +24,8 @@ function RenderByTypes(props) {
     return <Classes {...props} />;
   } else if (type === "teachers") {
     return <Teachers {...props} />;
+  } else if (type === "classManagement") {
+    return <ClassManagement {...props} />;
   } else if (type === "schedule") {
     return <Schedule {...props} />;
   } else {

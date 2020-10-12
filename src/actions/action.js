@@ -2,7 +2,7 @@ import axios from "axios";
 import { useContext } from "react";
 import { useCookies } from "react-cookie";
 const uri = "https://gelisim-okullari.herokuapp.com/api/v1";
-
+const location = window.location;
 export async function GetAuthentication(username, password) {
   // axios
   //   .post("https://gelisim-okullari.herokuapp.com/api/v1/auth/login", {
@@ -27,6 +27,42 @@ export async function GetAuthentication(username, password) {
     body: JSON.stringify({ username: username, password: password }), // body data type must match "Content-Type" header
   });
   return response.json();
+}
+export async function UpdateAnnouncements(id, title, token) {
+  console.log(id);
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = await axios.put(
+    `${uri}/announcements/${id}`,
+    {
+      title: title,
+    },
+    config
+  );
+  return response;
+}
+export async function DeleteAnnouncements(id, token) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = await axios.delete(`${uri}/announcements/${id}`, config);
+  return response;
+}
+
+export async function AddAnnouncements(title, detail, token) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = await axios.post(
+    `${uri}/announcements`,
+    {
+      title: title,
+      detail: detail,
+    },
+    config
+  );
+  return response;
 }
 
 export async function GetUser(token) {
@@ -74,5 +110,66 @@ export async function GetSSO(token, appName) {
     headers: { authorization: `Bearer ${token}` },
   };
   const response = axios.get(`${uri}/gelisim-sso/${appName}`, config);
+  return response;
+}
+
+export default function IsAdmin(data) {
+  if (data.data.data.role && data.data.data.role === "admin") {
+    location.replace("/admin");
+  }
+}
+export function IsRoleAdmin() {
+  const token = GetToken();
+  GetUser(token).then((data) => {
+    if (data.data.data.role && data.data.data.role === "admin") {
+      return true;
+    } else return false;
+  });
+}
+
+export async function getAllClass(token, limit = 20, page = 1) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = await axios.get(
+    `${uri}/classes?limit=${limit}&page=${1}`,
+    config
+  );
+  return response;
+}
+export async function updateClass(token, classId, name) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = await axios.put(
+    `${uri}/classes/${classId}`,
+    { name: name },
+    config
+  );
+  return response;
+}
+export async function deleteClass(token, classId) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = await axios.delete(`${uri}/classes/${classId}`, config);
+  return response;
+}
+export async function addClass(token, instructorId, classesName) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = await axios.post(
+    `${uri}/classes`,
+    { name: classesName, instructor: instructorId },
+    config
+  );
+  return response;
+}
+export function getAllUser(token) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = axios.get(`${uri}/users`, config);
   return response;
 }

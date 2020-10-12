@@ -5,7 +5,7 @@ import Card from "../../components/Card/card";
 import Avatar from "../../assets/images/teacherAvatar.png";
 import AnnouncementImage from "../../assets/images/announcements.png";
 import { UserContext } from "../../context/userContext";
-import {
+import IsAdmin, {
   GetAnnouncements,
   GetToken,
   GetUser,
@@ -17,13 +17,17 @@ export default function Home() {
   const [announcementsData, setAnnouncementsData] = useState(false);
   const [loading, setLoading] = useState(false);
   const token = GetToken();
+
   console.log("userdata: ", userData);
   useEffect(() => {
     if (IsAuth(token)) {
       if (!userData) {
         setLoading(true);
         GetUser(token)
-          .then((data) => setUserData(data))
+          .then((data) => {
+            IsAdmin(data);
+            setUserData(data);
+          })
           .then(() => setLoading(false))
           .catch((e) => console.error(e));
       }
@@ -32,8 +36,7 @@ export default function Home() {
           .then((data) => setAnnouncementsData(data))
           .catch((e) => console.error(e));
       }
-    }
-    // else window.location.replace("/");
+    } else window.location.replace("/");
   }, []);
   return (
     <>

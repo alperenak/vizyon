@@ -1,4 +1,4 @@
-@import '../../../../helpers/variableBreakpoints.scss';
+@import "../../../../helpers/variableBreakpoints.scss";
 
 .announcementsCard {
     display: flex;
@@ -11,21 +11,50 @@
     margin-top: 40px;
     box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
 
-
-    & .title {
+    & .topSide {
         display: flex;
         width: 100%;
-        margin-left: 20px;
-        margin-top: 27px;
-        font-family: SofiaBold;
-        color: $darkBlue;
-        font-size: 18px
+        position: relative;
+        align-items: center;
+
+        & .title {
+            margin-left: 20px;
+            margin-top: 27px;
+            font-family: SofiaBold;
+            color: $darkBlue;
+            font-size: 18px;
+        }
+
+        & .addAnnouncements {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            right: 20px;
+            top: 27px;
+            cursor: pointer;
+
+
+            & .addAnnouncementsIcon {
+                width: 20px;
+                margin-right: 10px;
+                color: $darkPurple;
+            }
+
+            & .addAnnouncementsTitle {
+                color: $darkPurple;
+            }
+        }
+
+        & .addAnnouncements:hover .addAnnouncementsTitle {
+            text-decoration: underline;
+        }
     }
 
     & .announcementsSection {
         display: flex;
         flex-direction: column;
         margin-top: 20px;
+        width: 100%;
 
         & .announcements {
             display: flex;
@@ -33,7 +62,6 @@
             align-items: center;
             margin: 10px 20px;
             height: 40px;
-
             width: calc(100% - 40px);
 
             & .imageCircle {
@@ -44,7 +72,6 @@
 
                 & img {
                     width: 100%;
-
                 }
             }
 
@@ -55,15 +82,36 @@
                 margin-left: 20px;
             }
 
-            & .announcementsDate {
-                position: absolute;
-                font-size: 12px;
-                color: $lightPurple;
-                right: 0;
+            & .announcementsAdminIcon {
+                display: flex;
+                align-items: center;
+                margin-right: 20px;
+                justify-content: flex-end;
+                width: 30%;
 
+                & .editIcon {
+                    color: rgba(94, 191, 155, 1);
+                    width: 20px;
+                    height: 20px;
+                    cursor: pointer;
+                    margin-right: 10px;
+                }
+
+                & .trashIcon {
+                    color: red;
+                    width: 20px;
+                    height: 20px;
+                    cursor: pointer;
+                }
+
+                & .announcementsDate {
+                    position: absolute;
+                    font-size: 12px;
+                    color: $lightPurple;
+                    right: 0;
+                }
             }
         }
-
     }
 
     & .seeAll {
@@ -75,6 +123,6 @@
         justify-content: center;
         align-items: center;
         font-size: 13px;
-        color: $lightPurple
+        color: $lightPurple;
     }
 }

@@ -1,0 +1,362 @@
+@import '../../../../helpers/variableBreakpoints.scss';
+
+::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+::-webkit-scrollbar-button {
+    width: 0px;
+    height: 0px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #525252;
+    border: 16px none #ffffff;
+    border-radius: 50px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #545454;
+}
+
+::-webkit-scrollbar-thumb:active {
+    background: #3d3d3d;
+}
+
+::-webkit-scrollbar-track {
+    background: #fafafa;
+    border: 0px none #ffffff;
+    border-radius: 50px;
+}
+
+::-webkit-scrollbar-track:hover {
+    background: #cfcfcf;
+}
+
+::-webkit-scrollbar-track:active {
+    background: #ffffff;
+}
+
+::-webkit-scrollbar-corner {
+    background: transparent;
+}
+
+.schedule {
+    width: 770px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+    background-color: white;
+    margin-top: 40px;
+    position: relative;
+    overflow-y: scroll;
+    max-height: 500px;
+
+
+
+    & .topSide {
+        display: flex;
+        margin: 0 30px;
+        width: calc(100% -60px);
+        position: relative;
+        justify-content: flex-end;
+        padding-top: 30px;
+
+        & .title {
+            position: absolute;
+            font-size: 18px;
+            font-family: SofiaBold;
+            color: $darkBlue;
+            left: 0;
+        }
+
+        & .downloadSyllabus {
+            display: flex;
+            align-items: center;
+            width: 212px;
+            background-color: #e9fff8;
+            border-radius: 8px;
+            height: 30px;
+            justify-content: space-around;
+            align-items: center;
+
+
+            & .formatXLS {
+                display: flex;
+                border-radius: 8px;
+                width: 46px;
+                justify-content: center;
+                align-items: center;
+                height: 24px;
+                box-shadow: 0px 5px 27px -8px rgba(94, 191, 155, 1);
+                background-color: white;
+
+                & .formatIcon {
+                    width: 9px;
+                    height: 9px;
+                }
+
+                & .formatName {
+                    color: #5ebf9b;
+                    font-size: 11px;
+                    margin-left: 5px;
+                    font-family: SofiaBlack;
+                }
+            }
+
+            & .downloadTitle {
+                font-family: SofiaSemiBold;
+                color: #5ebf9b;
+                font-size: 14px
+            }
+        }
+
+        & .feedback {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            cursor: pointer;
+            padding: 0 10px;
+            height: 30px;
+            background-color: rgba(225, 238, 253, 0.51);
+            border-radius: 8px;
+            margin-right: -10px;
+
+            & .feedbackIcon {
+                color: $darkBlue;
+            }
+
+            & .feedbackTitle {
+                font-size: 14px;
+                font-family: SofiaSemiBold;
+                color: $darkBlue;
+                margin-left: 10px
+            }
+
+        }
+    }
+
+
+
+    & .scheduleTitlesSection {
+        display: flex;
+        margin-top: 34px;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 100%;
+
+        & table {
+            width: 100%;
+
+
+            & .scheduleTitlesRow {
+                display: flex;
+                align-items: center;
+                width: 100%;
+
+                & .scheduleTitles {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    & .scheduleTitlesIcon {
+                        width: 30px;
+                        height: 30px;
+                    }
+                }
+
+                & .ogretmen {
+                    margin-right: 80px;
+                }
+
+                & .tarih {
+                    margin-right: 80px;
+                }
+
+                & .user {
+                    margin-left: 25px;
+                }
+
+                & .date {
+                    margin-left: 140px;
+                }
+
+                & td {
+                    width: inherit;
+                    font-size: 14px;
+                    font-family: SofiaMedium;
+                    color: $darkBlue;
+                    margin-left: 10px;
+                    text-align: center;
+                }
+            }
+        }
+    }
+
+    & .scheduleSection {
+        display: flex;
+        width: 100%;
+        margin-top: 10px;
+
+        & table {
+            width: 100%;
+            border-collapse: collapse;
+            border: none;
+
+
+            & tr {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                height: 60px;
+                width: 100%;
+                border: none;
+                text-align: center;
+                box-shadow: 0 1px 2px 0 rgba(224, 236, 255, 0.95);
+
+                & .addExamIcon {
+                    width: 20px;
+                    height: 20px;
+                    color: $darkPurple;
+                    cursor: pointer
+                }
+
+                & .editIcon {
+                    width: 20px;
+                    height: 20px;
+                    color: rgba(94, 191, 155, 1);
+                    cursor: pointer
+                }
+
+                & .deleteIcon {
+                    width: 20px;
+                    height: 20px;
+                    color: red;
+                    cursor: pointer
+                }
+
+                & .space {
+                    width: 100px;
+                    display: flex;
+                    justify-content: space-around;
+
+                }
+
+                & .scheduleTeacher {
+                    display: flex;
+                    justify-content: flex-start;
+                    align-items: center;
+                    height: 60px;
+
+                    & td {
+                        margin-left: 15px;
+                    }
+
+
+                    & .avatar {
+                        width: 24px;
+                        height: 24px;
+                        border-radius: 50%;
+                        margin-left: 30px;
+                        overflow: hidden;
+
+                        & img {
+                            width: 100%;
+                        }
+                    }
+                }
+
+
+                & td {
+                    color: $darkBlue;
+                    font-size: 14px;
+                    font-family: SofiaMedium;
+                }
+            }
+
+            & tr:hover {
+                background-color: #f9f7ff;
+                box-shadow: 0 1px 2px 0 rgba(224, 236, 255, 0.95);
+            }
+        }
+    }
+
+    & .greenTip {
+        position: absolute;
+        left: 20px;
+        width: 20px;
+        height: 20px;
+    }
+
+    & .dropdown {
+        position: relative;
+        display: inline-block;
+        z-index: 1;
+
+        & .dropdownName {
+            display: flex;
+            align-items: center;
+            color: $darkBlue;
+            width: 200px;
+            height: 30px;
+            cursor: pointer;
+            font-family: SofiaBold;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+            padding: 10px 20px;
+            padding-right: 40px;
+            position: relative;
+
+            & .downIcon {
+                position: absolute;
+                right: 10px;
+                color: black
+            }
+
+        }
+
+        & .dropdownContent {
+            display: none;
+            position: absolute;
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            background-color: white;
+            width: calc(100% - 18px);
+            left: 13px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+            overflow-y: scroll;
+            max-height: 300px;
+            font-size: 14px;
+            color: $darkBlue;
+            font-family: SofiaBold;
+            z-index: 1;
+
+
+            & .dropdownItems {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                min-height: 50px;
+                background-color: white;
+                box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+                cursor: pointer;
+
+                &:hover {
+                    background-color: rgb(243, 243, 243);
+                }
+            }
+        }
+
+
+
+        & .active {
+            display: flex;
+        }
+    }
+}

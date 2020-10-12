@@ -10,7 +10,12 @@ import {
   Medal,
 } from "../../icons/";
 import { UserContext } from "../../context/userContext";
-import { GetSSO, GetToken, GetUser, IsAuth } from "../../actions/action";
+import IsAdmin, {
+  GetSSO,
+  GetToken,
+  GetUser,
+  IsAuth,
+} from "../../actions/action";
 import Loading from "../../components/Loading/loading";
 import Office from "../../assets/images/office.png";
 import Actively from "../../assets/images/actively.png";
@@ -33,6 +38,7 @@ export default function Apps() {
         GetUser(token)
           .then((data) => {
             setUserData(data);
+            IsAdmin(data);
           })
           .then(() => setLoading(false))
           .catch((e) => window.location.reload());

@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./login.module.scss";
 import LoginImages from "../../assets/images/loginBackground.png";
 import TeacherLoginImages from "../../assets/images/teacher.jpg";
@@ -7,7 +7,7 @@ import { IconLock, IconUser, LoginLogo } from "../../icons";
 import Button from "../../components/Button/button";
 import CheckBox from "../../components/CheckBox/checkbox";
 import { Link } from "react-router-dom";
-import { GetAuthentication, GetUser } from "../../actions/action";
+import IsAdmin, { GetAuthentication, GetUser } from "../../actions/action";
 import { TokenContext } from "../../context/tokenContext";
 import { useCookies } from "react-cookie";
 import { UserContext } from "../../context/userContext";
@@ -24,10 +24,25 @@ export default function Login({}) {
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
   const { pathname } = useLocation();
+  useEffect(() => {
+    if (cookies.token || (token !== "" && token)) {
+      if (
+        userData.data &&
+        userData.data.data.role &&
+        userData.data.data.role === "admin"
+      ) {
+        console.log(userData.data.data.role);
+        window.location.replace("/admin");
+      } else if (
+        userData.data &&
+        !userData.data.data.role &&
+        userData.data.data.role !== "admin"
+      )
+        window.location.replace("/home");
+    }
+  });
   console.log(token);
-  if (cookies.token || (token !== "" && token)) {
-    window.location.replace("/home");
-  }
+
   return (
     <>
       {loading ? (
@@ -130,14 +145,21 @@ function RenderLoginMethod({
                 if (data.success) {
                   setErrorMessage(false);
                   console.log(data.data.token);
-                  GetUser(data.data.token).then(() => {
+                  GetUser(data.data.token).then((uData) => {
                     let tomorrow = new Date();
                     tomorrow.setDate(tomorrow.getDate() + 1);
-                    window.location.replace("/home");
                     setToken(data.data.token);
                     setCookies("token", data.data.token, {
                       expires: tomorrow,
                     });
+                    IsAdmin(uData);
+                    if (
+                      uData.data.data &&
+                      uData.data.data.role &&
+                      uData.data.role !== "admin"
+                    ) {
+                      window.location.replace("/home");
+                    }
                   });
                 } else {
                   setLoading(false);
