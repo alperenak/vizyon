@@ -151,7 +151,7 @@ function RenderCard({ pathname, announcementsData }) {
   } else if (pathname === "/admin/syllabus") {
     return (
       <>
-        <Card type={"dropzone"} tabsType={tabsType} />
+        <Card type={"syllabusManagement"} tabsType={tabsType} />
       </>
     );
   } else if (pathname === "/admin/activity") {

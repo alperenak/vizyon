@@ -37,6 +37,7 @@ export { default as SearchSolid } from "./SearchSolid";
 export { default as TrashSolid } from "./TrashSolid";
 export { default as Trash } from "./Trash";
 export { default as Txt } from "./Txt";
+export { default as UploadSolid } from "./UploadSolid";
 export { default as User } from "./User";
 export { default as Uygulamalar } from "./Uygulamalar";
 export { default as Vlog } from "./Vlog";

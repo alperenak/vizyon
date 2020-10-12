@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from "react";
+import styles from "./dragDrop.module.scss";
 import { useDropzone } from "react-dropzone";
 import { GetToken, uploadFile } from "../../../actions/action";
 import Button from "../../Button/button";
@@ -17,11 +18,7 @@ export default function DropzoneField(props) {
 
   const files = acceptedFiles.map((file) => {
     // console.log(file);
-    return (
-      <li key={file.path}>
-        {file.path} - {file.size} bytes
-      </li>
-    );
+    return <li key={file.path}>{file.path}</li>;
   });
   const baseStyle = {
     flex: 1,
@@ -68,9 +65,8 @@ export default function DropzoneField(props) {
         <p>Drag 'n' drop some files here, or click to select files</p>
         <Button title={"Choose"} type={"outlined"} onClick={open} />
       </div>
-      <aside>
-        <h4>Files</h4>
-        <ul>{files}</ul>
+      <aside className={styles.Aside}>
+        <div className={styles.fileName}>{files}</div>
       </aside>
     </section>
   );

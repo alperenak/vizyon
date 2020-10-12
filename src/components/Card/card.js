@@ -10,6 +10,7 @@ import Schedule from "./sub-components/Schedule/schedule";
 import Syllabus from "./sub-components/Syllabus/syllabus";
 import Teachers from "./sub-components/Teachers/teacher";
 import UserManagement from "./sub-components/User Management/userManagement";
+import SyllabusManagement from "./sub-components/SyllabusManagement/syllabusManagement";
 export default function Card(props) {
   return (
     <div className={styles.cardContainer}>
@@ -40,6 +41,8 @@ function RenderByTypes(props) {
     return <ActivityManagement {...props} />;
   } else if (type === "activityDetails") {
     return <ActivityDetail {...props} />;
+  } else if (type === "syllabusManagement") {
+    return <SyllabusManagement {...props} />;
   } else {
     return <div>hata</div>;
   }
