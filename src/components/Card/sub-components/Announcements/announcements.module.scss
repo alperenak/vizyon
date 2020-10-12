@@ -33,7 +33,6 @@
             top: 27px;
             cursor: pointer;
 
-
             & .addAnnouncementsIcon {
                 width: 20px;
                 margin-right: 10px;
@@ -85,6 +84,8 @@
             & .announcementsAdminIcon {
                 display: flex;
                 align-items: center;
+                position: absolute;
+                right: 100px;
                 margin-right: 20px;
                 justify-content: flex-end;
                 width: 30%;
@@ -103,8 +104,6 @@
                     height: 20px;
                     cursor: pointer;
                 }
-
-
             }
         }
 
@@ -128,4 +127,8 @@
         font-size: 13px;
         color: $lightPurple;
     }
+}
+
+.errorMessage {
+    color: red;
 }

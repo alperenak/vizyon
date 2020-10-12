@@ -101,6 +101,9 @@ function RenderModal({ isActive, setIsActive, id, type }) {
   const [announcementsTitle, setAnnouncementsTitle] = useState("");
   const [addAnnouncementsTitle, setAddAnnouncementsTitle] = useState("");
   const [addAnnouncementsDetail, setAddAnnouncementsDetails] = useState("");
+  const [errorTitle, setErrorTitle] = useState(false);
+  const [errorDetail, setErrorDetail] = useState(false);
+  const [errorTitle1, setErrorTitle1] = useState(false);
   const token = GetToken();
   console.log(id);
   return (
@@ -113,15 +116,29 @@ function RenderModal({ isActive, setIsActive, id, type }) {
             onChange={(e) => setAnnouncementsTitle(e.target.value)}
             inputStyle={"modal"}
           />
+          {errorTitle1 ? (
+            <div className={styles.errorMessage}>
+              Duyuru başlığı 8 karakterden büyük olmalı
+            </div>
+          ) : (
+            ""
+          )}
           <Button
             type={"modal"}
             title={"Güncelle"}
             onClick={() => {
-              UpdateAnnouncements(id, announcementsTitle, token).then(() =>
-                // GetAnnouncements(token)
-                window.location.reload()
-              );
-              setIsActive(false);
+              if (announcementsTitle >= 8) {
+                UpdateAnnouncements(id, announcementsTitle, token)
+                  .then(() =>
+                    // GetAnnouncements(token)
+                    window.location.reload()
+                  )
+                  .catch((e) => console.log(e));
+                setIsActive(false);
+              }
+              if (announcementsTitle.length < 8) {
+                setErrorTitle1(true);
+              }
             }}
           />
         </>
@@ -133,25 +150,56 @@ function RenderModal({ isActive, setIsActive, id, type }) {
             onChange={(e) => setAddAnnouncementsTitle(e.target.value)}
             inputStyle={"modal"}
           />
+          {errorTitle ? (
+            <div className={styles.errorMessage}>
+              Duyuru başlığı 8 karakterden büyük olmalı
+            </div>
+          ) : (
+            ""
+          )}
           <Input
             value={addAnnouncementsDetail}
             placeholder="Duyurunun detaylarını giriniz"
             onChange={(e) => setAddAnnouncementsDetails(e.target.value)}
             inputStyle={"modal"}
           />
+          {errorDetail ? (
+            <div className={styles.errorMessage}>
+              Duyuru Detayları 8 karakterden büyük olmalı
+            </div>
+          ) : (
+            ""
+          )}
           <Button
             type={"modal"}
             title={"Ekle"}
             onClick={() => {
-              AddAnnouncements(
-                addAnnouncementsTitle,
-                addAnnouncementsDetail,
-                token
-              ).then(() =>
-                // GetAnnouncements(token)
-                window.location.reload()
-              );
-              setIsActive(false);
+              if (
+                addAnnouncementsTitle.length >= 8 &&
+                addAnnouncementsDetail >= 8
+              ) {
+                AddAnnouncements(
+                  addAnnouncementsTitle,
+                  addAnnouncementsDetail,
+                  token
+                ).then(() =>
+                  // GetAnnouncements(token)
+                  window.location.reload()
+                );
+                setIsActive(false);
+              }
+              if (
+                addAnnouncementsTitle.length < 8 &&
+                addAnnouncementsTitle !== ""
+              ) {
+                setErrorTitle(true);
+              }
+              if (
+                addAnnouncementsDetail.length < 8 &&
+                addAnnouncementsDetail !== ""
+              ) {
+                setErrorDetail(true);
+              }
             }}
           />
         </>

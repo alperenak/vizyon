@@ -73,7 +73,7 @@ function RenderCard({ pathname, announcementsData }) {
       setDropdownActive(false);
     }
   };
-  if (pathname === "/admin/announcements")
+  if (pathname === "/admin")
     return (
       <Card
         type={"announcements"}
@@ -85,7 +85,7 @@ function RenderCard({ pathname, announcementsData }) {
     return (
       <>
         <div className={styles.topSide}>
-          <Input inputStyle={"search"}>
+          <Input placeholder="Ara" inputStyle={"search"}>
             <SearchSolid className={styles.searchIcon} />
           </Input>
           <div
@@ -123,7 +123,7 @@ function RenderCard({ pathname, announcementsData }) {
     return (
       <>
         <div className={styles.topSide}>
-          <Input inputStyle={"search"}>
+          <Input placeholder="Ara" inputStyle={"search"}>
             <SearchSolid className={styles.searchIcon} />
           </Input>
           <div className={styles.tabs}>
