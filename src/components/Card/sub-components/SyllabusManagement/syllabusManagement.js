@@ -220,6 +220,18 @@ function RenderModalContent({
     return (
       <>
         <Card type={"dropzone"} />
+        <Button
+          type={"primary"}
+          title={"Yükle"}
+          onClick={() => {
+            setIsActive(false);
+            addClass(token, instructorId, updatingClassName).then(() =>
+              // GetAnnouncements(token)
+              window.location.reload()
+            );
+            setIsActive(false);
+          }}
+        />
       </>
     );
   else if (type === "add") {
