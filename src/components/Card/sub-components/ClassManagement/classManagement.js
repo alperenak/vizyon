@@ -84,7 +84,11 @@ export default function ClassManagement() {
             </div>
             <div className={styles.scheduleTitles}>
               <User className={`${styles.scheduleTitlesIcon}`} />
-              <td>Ekle ve düzenle</td>
+              <td>Sınav Ekle</td>
+            </div>
+            <div className={styles.scheduleTitles}>
+              <User className={`${styles.scheduleTitlesIcon}`} />
+              <td>Düzenle</td>
             </div>
             <div className={styles.scheduleTitles}>
               <User className={`${styles.scheduleTitlesIcon}`} />
@@ -115,8 +119,10 @@ export default function ClassManagement() {
                     <td>{item.name}</td>
                   </div>
                   <td>{item.teacher ? item.teacher : "Eyüp Saruhan"}</td>
-                  <td className={styles.space}>
+                  <td>
                     <PlusCircleSolid className={styles.addExamIcon} />
+                  </td>
+                  <td className={styles.space}>
                     <EditSolid
                       onClick={() => {
                         setClassId(item._id);

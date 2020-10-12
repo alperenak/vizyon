@@ -75,15 +75,21 @@ function RenderCard({ pathname, announcementsData }) {
   };
   if (pathname === "/admin")
     return (
-      <Card
-        type={"announcements"}
-        announcementsData={announcementsData ? announcementsData.data.data : []}
-        isAdmin={true}
-      />
+      <>
+        <h1>Duyurular Yönetimi</h1>
+        <Card
+          type={"announcements"}
+          announcementsData={
+            announcementsData ? announcementsData.data.data : []
+          }
+          isAdmin={true}
+        />
+      </>
     );
   else if (pathname === "/admin/class") {
     return (
       <>
+        <h1>Sınıf Yönetimi</h1>
         <div className={styles.topSide}>
           <Input placeholder="Ara" inputStyle={"search"}>
             <SearchSolid className={styles.searchIcon} />
@@ -122,6 +128,7 @@ function RenderCard({ pathname, announcementsData }) {
   } else if (pathname === "/admin/user") {
     return (
       <>
+        <h1>Kullanıcı Yönetimi</h1>
         <div className={styles.topSide}>
           <Input placeholder="Ara" inputStyle={"search"}>
             <SearchSolid className={styles.searchIcon} />
@@ -157,6 +164,7 @@ function RenderCard({ pathname, announcementsData }) {
   } else if (pathname === "/admin/activity") {
     return (
       <>
+        <h1>Aktivite Yönetimi</h1>
         <div className={styles.topSide}>
           <Input placeholder="Ara" inputStyle={"search"}>
             <SearchSolid className={styles.searchIcon} />
@@ -181,6 +189,44 @@ function RenderCard({ pathname, announcementsData }) {
           </div>
         </div>
         <Card type={"activity"} tabsType={tabsType} />
+      </>
+    );
+  } else if (pathname === "/admin/apps") {
+    return (
+      <>
+        <h1>Uygulamalar Yönetimi</h1>
+        <div
+          id={"classDropdown"}
+          onClick={() => setDropdownActive(!dropdownActive)}
+          className={styles.dropdown}
+        >
+          <div id={"dropdownName"} className={styles.dropdownName}>
+            <Down id={"dropdownIcon"} className={styles.downIcon} />
+            {dropdownName}
+          </div>
+          <div
+            className={`${styles.dropdownContent}  ${
+              dropdownActive ? styles.active : ""
+            }`}
+            onClick={() => {}}
+          >
+            {ClassesNameData.map((item) => {
+              return (
+                <div
+                  onClick={() => setDropdownName(item.name)}
+                  className={styles.dropdownItems}
+                >
+                  {item.name}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        <Card
+          dropdownValue={dropdownName}
+          type={"appManagement"}
+          tabsType={tabsType}
+        />
       </>
     );
   } else return <></>;
