@@ -27,7 +27,7 @@ import {
   GetToken,
   updateClass,
 } from "../../../../actions/action";
-// import teacherAvatar from "../../../../assets/images/teacherAvatar.png";
+import teacherAvatar from "../../../../assets/images/teacherAvatar.png";
 export default function ClassManagement() {
   const [classData, setClassData] = useState([
     { name: "5 A", teacher: "Alperen Karaguzel" },
@@ -82,6 +82,14 @@ export default function ClassManagement() {
               <User className={`${styles.scheduleTitlesIcon}`} />
               <td>Öğretmen Adı</td>
             </div>
+            <div className={styles.scheduleTitles}>
+              <User className={`${styles.scheduleTitlesIcon}`} />
+              <td>Ekle ve düzenle</td>
+            </div>
+            <div className={styles.scheduleTitles}>
+              <User className={`${styles.scheduleTitlesIcon}`} />
+              <td>Sil</td>
+            </div>
           </tr>
         </table>
       </div>
@@ -101,7 +109,7 @@ export default function ClassManagement() {
                         // src={String(
                         //   getTeacherAvatar(teachersData, item.course.code)
                         // ).replace(/,/gi, "")}\
-                        src={"s"}
+                        src={teacherAvatar}
                       />
                     </div>
                     <td>{item.name}</td>

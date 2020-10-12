@@ -167,10 +167,14 @@
                         width: 30px;
                         height: 30px;
                     }
+
+                    & .editAndDelete {
+                        margin-left: 250px;
+                    }
                 }
 
                 & .ogretmen {
-                    margin-right: 80px;
+                    margin-right: 150px;
                 }
 
                 & .tarih {
@@ -178,7 +182,7 @@
                 }
 
                 & .user {
-                    margin-left: 25px;
+                    margin-left: 35px;
                 }
 
                 & .date {
@@ -240,7 +244,7 @@
                 }
 
                 & .space {
-                    width: 100px;
+                    width: 150px;
                     display: flex;
                     justify-content: space-around;
 
@@ -275,6 +279,7 @@
                     color: $darkBlue;
                     font-size: 14px;
                     font-family: SofiaMedium;
+                    width: 150px;
                 }
             }
 

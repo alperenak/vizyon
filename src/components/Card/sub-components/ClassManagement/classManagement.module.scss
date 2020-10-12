@@ -156,6 +156,7 @@
                 display: flex;
                 align-items: center;
                 width: 100%;
+                justify-content: space-around;
 
                 & .scheduleTitles {
                     display: flex;
@@ -168,16 +169,14 @@
                     }
                 }
 
-                & .ogretmen {
-                    margin-right: 80px;
-                }
+                & .ogretmen {}
 
                 & .tarih {
                     margin-right: 80px;
                 }
 
                 & .user {
-                    margin-left: 25px;
+                    margin-left: -25px;
                 }
 
                 & .date {

@@ -92,6 +92,12 @@ export default function UserManagement({ tabsType }) {
               <Ders className={`${styles.scheduleTitlesIcon}`} />
               <td>Sınıf</td>
             </div>
+            <div className={styles.scheduleTitles}>
+              <Ders
+                className={`${styles.scheduleTitlesIcon} ${styles.editAndDelete}`}
+              />
+              <td>Düzenle ve Sil</td>
+            </div>
           </tr>
         </table>
       </div>
