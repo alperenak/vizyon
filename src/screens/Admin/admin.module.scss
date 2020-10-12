@@ -94,6 +94,31 @@
                     display: flex;
                 }
             }
+
+            & .tabs {
+                display: flex;
+                width: 400px;
+                box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+                border-radius: 8px;
+                height: 40px;
+
+                & .tabsButton {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-family: SofiaBold;
+                    width: 200px;
+                    box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+                    border-radius: 8px;
+                    transition: 0.3s;
+                    cursor: pointer;
+                }
+
+                & .tabsButtonActive {
+                    background-color: $darkPurple;
+                    color: white
+                }
+            }
         }
 
     }

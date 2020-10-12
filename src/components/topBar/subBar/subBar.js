@@ -20,7 +20,7 @@ export default function SubBar({ isActive }) {
         }`}
       >
         <Kampus className={styles.kampusIcon} />
-        <div className={styles.subBarButtonTitle}> Dijital Kampüs</div>
+        <div className={styles.subBarButtonTitle}> Anasayfa</div>
       </div>
       <div
         onClick={() => history.push("/apps")}

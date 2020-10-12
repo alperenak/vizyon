@@ -104,13 +104,16 @@
                     cursor: pointer;
                 }
 
-                & .announcementsDate {
-                    position: absolute;
-                    font-size: 12px;
-                    color: $lightPurple;
-                    right: 0;
-                }
+
             }
+        }
+
+        & .announcementsDate {
+            position: absolute;
+            right: 10px;
+            font-size: 12px;
+            color: $lightPurple;
+            right: 0;
         }
     }
 

@@ -3,9 +3,11 @@ import styles from "./sidebar.module.scss";
 import Logo from "../../assets/images/logo.png";
 import Clock from "../../icons/Clock";
 import { useLocation, useHistory } from "react-router-dom";
+import { useCookies } from "react-cookie";
 export default function SideBar() {
   const { pathname } = useLocation();
   const history = useHistory();
+  const [cookies, setCookies, removeCookies] = useCookies(["token"]);
   const pt = "/admin/";
   const buttons = [
     { title: "Anasayfa", icon: <Clock />, path: "/admin" },
@@ -35,6 +37,16 @@ export default function SideBar() {
               </div>
             );
           })}
+          <div
+            onClick={() => {
+              removeCookies("token", { path: "/" });
+              removeCookies("admin", { path: "/" });
+            }}
+            className={`${styles.sidebarButton}`}
+          >
+            <Clock />
+            <div className={styles.buttonTitle}>Çıkış Yap</div>
+          </div>
         </div>
       </div>
     </div>

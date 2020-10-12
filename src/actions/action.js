@@ -113,9 +113,12 @@ export async function GetSSO(token, appName) {
   return response;
 }
 
-export default function IsAdmin(data) {
+export default function IsAdmin(data, setCookies = false) {
   if (data.data.data.role && data.data.data.role === "admin") {
     location.replace("/admin");
+    if (setCookies) {
+      setCookies("admin", true);
+    }
   }
 }
 export function IsRoleAdmin() {
@@ -171,5 +174,62 @@ export function getAllUser(token) {
     headers: { authorization: `Bearer ${token}` },
   };
   const response = axios.get(`${uri}/users`, config);
+  return response;
+}
+
+export async function CreateUser(
+  token,
+  firstname,
+  lastname,
+  username,
+  phone,
+  role,
+  gender
+) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = await axios.post(
+    `${uri}/users`,
+    {
+      first_name: firstname,
+      last_name: lastname,
+      username: username,
+      phone: phone,
+      gender: gender,
+      role: role,
+    },
+    config
+  );
+  return response;
+}
+export async function updateUser(
+  token,
+  firstname,
+  lastname,
+  username,
+  phone,
+  userId
+) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = await axios.put(
+    `${uri}/users/${userId}`,
+    {
+      first_name: firstname,
+      last_name: lastname,
+      username: username,
+      phone: phone,
+    },
+    config
+  );
+  return response;
+}
+export async function deleteUser(token, userId) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = await axios.delete(`${uri}/users/${userId}`, config);
   return response;
 }

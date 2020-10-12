@@ -14,35 +14,36 @@ import Input from "../../components/Input/input";
 import Button from "../../components/Button/button";
 import { useLocation } from "react-router-dom";
 import { Down, SearchSolid } from "../../icons";
+import { useCookies } from "react-cookie";
 export default function Admin() {
   const [announcementsData, setAnnouncementsData] = useState(false);
   const [userData, setUserData] = useContext(UserContext);
   const [loading, setLoading] = useState(false);
+  const [cookies, setCookies] = useCookies(false);
   const [active, setActive] = useState(false);
   const token = GetToken();
   const { pathname } = useLocation();
   useEffect(() => {
-    console.log(announcementsData);
-    if (IsAuth(token)) {
-      if (!userData) {
-        setLoading(true);
-        GetUser(token)
-          .then((data) => {
-            setUserData(data);
-            console.log(data);
-          })
-          .then(() => setLoading(false))
-          .catch((e) => console.error(e));
+    if (token || cookies.admin) {
+      if (IsAuth(token)) {
+        if (!userData) {
+          setLoading(true);
+          GetUser(token)
+            .then((data) => {
+              setUserData(data);
+            })
+            .then(() => setLoading(false))
+            .catch((e) => console.error(e));
+        }
+        if (!announcementsData) {
+          GetAnnouncements(5, 1, token)
+            .then((data) => {
+              setAnnouncementsData(data);
+            })
+            .catch((e) => console.error(e));
+        }
       }
-      if (!announcementsData) {
-        GetAnnouncements(5, 1, token)
-          .then((data) => {
-            setAnnouncementsData(data);
-            console.log(data);
-          })
-          .catch((e) => console.error(e));
-      }
-    }
+    } else window.location.replace("/");
   });
   return (
     <div className={styles.adminContainer}>
@@ -63,13 +64,12 @@ export default function Admin() {
 
 function RenderCard({ pathname, announcementsData }) {
   const [dropdownActive, setDropdownActive] = useState();
+  const [tabsType, setTabsType] = useState("student");
   const [dropdownName, setDropdownName] = useState("Sınıf Seçiniz");
   const dropdownNames = document.getElementById("dropdownName");
   const dropdownIcon = document.getElementById("dropdownIcon");
   window.onclick = function (e) {
-    console.log(e.target);
     if (e.target !== dropdownNames && e.target !== dropdownIcon) {
-      console.log(e.target !== dropdownNames);
       setDropdownActive(false);
     }
   };
@@ -117,6 +117,35 @@ function RenderCard({ pathname, announcementsData }) {
           </div>
         </div>
         <Card type={"classManagement"} />
+      </>
+    );
+  } else if (pathname === "/admin/user") {
+    return (
+      <>
+        <div className={styles.topSide}>
+          <Input inputStyle={"search"}>
+            <SearchSolid className={styles.searchIcon} />
+          </Input>
+          <div className={styles.tabs}>
+            <div
+              className={`${styles.tabsButton} ${
+                tabsType === "student" ? styles.tabsButtonActive : ""
+              }`}
+              onClick={() => setTabsType("student")}
+            >
+              Öğrenci
+            </div>
+            <div
+              className={`${styles.tabsButton} ${
+                tabsType === "teacher" ? styles.tabsButtonActive : ""
+              }`}
+              onClick={() => setTabsType("teacher")}
+            >
+              Öğretmen
+            </div>
+          </div>
+        </div>
+        <Card type={"userManagement"} tabsType={tabsType} />
       </>
     );
   } else return <></>;

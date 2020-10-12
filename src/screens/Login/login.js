@@ -26,19 +26,9 @@ export default function Login({}) {
   const { pathname } = useLocation();
   useEffect(() => {
     if (cookies.token || (token !== "" && token)) {
-      if (
-        userData.data &&
-        userData.data.data.role &&
-        userData.data.data.role === "admin"
-      ) {
-        console.log(userData.data.data.role);
+      if (cookies.admin) {
         window.location.replace("/admin");
-      } else if (
-        userData.data &&
-        !userData.data.data.role &&
-        userData.data.data.role !== "admin"
-      )
-        window.location.replace("/home");
+      } else if (!cookies.admin) window.location.replace("/home");
     }
   });
   console.log(token);
@@ -105,6 +95,7 @@ function RenderLoginMethod({
       <>
         <div className={styles.formTitle}>Hoşgeldin, Giriş Yap!</div>
         <Input
+          method={"login"}
           type={"text"}
           inputStyle={"primary"}
           onChange={(e) => setUsername(e.target.value)}
@@ -115,6 +106,7 @@ function RenderLoginMethod({
         </Input>
         <Input
           onChange={(e) => setPassword(e.target.value)}
+          method={"login"}
           type={"password"}
           placeholder={"Şifre"}
           inputStyle={"primary"}
@@ -152,13 +144,15 @@ function RenderLoginMethod({
                     setCookies("token", data.data.token, {
                       expires: tomorrow,
                     });
-                    IsAdmin(uData);
+
+                    setTimeout(() => IsAdmin(uData, setCookies), 100);
+
                     if (
                       uData.data.data &&
                       uData.data.data.role &&
                       uData.data.role !== "admin"
                     ) {
-                      window.location.replace("/home");
+                      setTimeout(() => window.location.replace("/home"), 100);
                     }
                   });
                 } else {

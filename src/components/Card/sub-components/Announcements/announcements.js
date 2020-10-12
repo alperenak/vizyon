@@ -17,6 +17,7 @@ import Input from "../../../Input/input";
 export default function Announcements({
   title = "Duyurular",
   announcementsData,
+  isAdmin,
 }) {
   const [active, setActive] = useState(false);
   const [modalType, setModalType] = useState("updateAnnouncements");
@@ -37,16 +38,20 @@ export default function Announcements({
       <div className={styles.announcementsCard}>
         <div className={styles.topSide}>
           <div className={styles.title}>Duyurular</div>
-          <div
-            onClick={() => {
-              setModalType("addAnnouncements");
-              setActive(true);
-            }}
-            className={styles.addAnnouncements}
-          >
-            <PlusCircleSolid className={styles.addAnnouncementsIcon} />
-            <div className={styles.addAnnouncementsTitle}>Duyuru Ekle</div>
-          </div>
+          {isAdmin ? (
+            <div
+              onClick={() => {
+                setModalType("addAnnouncements");
+                setActive(true);
+              }}
+              className={styles.addAnnouncements}
+            >
+              <PlusCircleSolid className={styles.addAnnouncementsIcon} />
+              <div className={styles.addAnnouncementsTitle}>Duyuru Ekle</div>
+            </div>
+          ) : (
+            ""
+          )}
         </div>
         <div className={styles.announcementsSection}>
           {announcementsData.map((item) => {
@@ -58,25 +63,28 @@ export default function Announcements({
                   />
                 </div>
                 <div className={styles.announcementsTitle}>{item.title}</div>
-                {}{" "}
-                <div className={styles.announcementsAdminIcon}>
-                  <EditSolid
-                    className={styles.editIcon}
-                    onClick={() => {
-                      setActive(true);
-                      setId(item._id);
-                      setModalType("updateAnnouncements");
-                    }}
-                  />
-                  <TrashSolid
-                    className={styles.trashIcon}
-                    onClick={() => {
-                      DeleteAnnouncements(item._id, token).then(() => {
-                        window.location.reload();
-                      });
-                    }}
-                  />
-                </div>
+                {isAdmin ? (
+                  <div className={styles.announcementsAdminIcon}>
+                    <EditSolid
+                      className={styles.editIcon}
+                      onClick={() => {
+                        setActive(true);
+                        setId(item._id);
+                        setModalType("updateAnnouncements");
+                      }}
+                    />
+                    <TrashSolid
+                      className={styles.trashIcon}
+                      onClick={() => {
+                        DeleteAnnouncements(item._id, token).then(() => {
+                          window.location.reload();
+                        });
+                      }}
+                    />
+                  </div>
+                ) : (
+                  ""
+                )}
                 <div className={styles.announcementsDate}>
                   {ConvertDate(item.createdAt)}
                 </div>
