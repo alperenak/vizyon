@@ -42,6 +42,16 @@ export default function SubBar({ isActive }) {
         <Dosyalar className={styles.docsIcon} />
         <div className={styles.subBarButtonTitle}> Dosyalar</div>
       </div>
+      <div
+        id="subBarButton"
+        onClick={() => history.push("/homeworks")}
+        className={`${isActive ? styles.subBarButtons : styles.displayNone}  ${
+          pathname === "/docs" ? styles.backgroundWhite : ""
+        }`}
+      >
+        <Dosyalar className={styles.docsIcon} />
+        <div className={styles.subBarButtonTitle}> Ödevlerim</div>
+      </div>
     </div>
   );
 }

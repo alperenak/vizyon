@@ -87,17 +87,6 @@ export default function SyllabusManagement() {
     <div className={styles.schedule}>
       <div className={styles.topSide}>
         <div className={styles.title}>Ders Programı</div>
-
-        <div
-          onClick={() => {
-            setIsActive(true);
-            setModalType("add");
-          }}
-          className={styles.feedback}
-        >
-          <PlusCircleSolid className={styles.feedbackIcon} />
-          <div className={styles.feedbackTitle}>Yeni Sınıf Oluştur</div>
-        </div>
       </div>
       <div className={styles.scheduleTitlesSection}>
         <table>

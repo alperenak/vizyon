@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import TopBar from "./components/topBar/topBar";
 import Apps from "./screens/Apps/apps";
 import Docs from "./screens/Docs/docs";
+import Homework from "./screens/HomeWork/homework";
 import Admin from "./screens/Admin/admin";
 import IsAdmin, { GetToken, GetUser } from "./actions/action";
 import { useCookies } from "react-cookie";
@@ -80,6 +81,15 @@ function App() {
               if (!auth) {
                 return <Docs />;
               } else return <Docs />;
+            }}
+          />
+          <Route
+            exact={true}
+            path="/homeworks"
+            component={() => {
+              if (!auth) {
+                return <Homework />;
+              } else return <Homework />;
             }}
           />
           <Route exact={true} path="/admin" component={Admin} />
