@@ -115,7 +115,7 @@ export async function GetSSO(token, appName) {
 
 export default function IsAdmin(data, setCookies = false) {
   if (data.data.data.role && data.data.data.role === "admin") {
-    location.replace("/admin");
+    location.replace("/admin/announcements");
     if (setCookies) {
       setCookies("admin", true);
     }
