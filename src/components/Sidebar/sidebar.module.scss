@@ -7,10 +7,12 @@
   width: 100%;
   align-items: flex-start;
   padding-top: 100px;
-  height: 100%;
+  height: 120%;
   background-color: $darkPurple;
 
   & .sidebarCard {
+    position: fixed;
+    left: 30px;
     display: flex;
     flex-direction: column;
 

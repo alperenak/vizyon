@@ -12,6 +12,7 @@ import IsAdmin, { GetToken, GetUser } from "./actions/action";
 import { useCookies } from "react-cookie";
 import { UserContext } from "./context/userContext";
 import ActivityDetail from "./screens/Admin/ActivityDetail/activityDetail";
+import SideBar from "./components/Sidebar/sidebar";
 function App() {
   const token = GetToken();
   const [auth, setAuth] = useState(false);
@@ -103,7 +104,14 @@ function App() {
           <Route
             exact={true}
             path="/admin/activity/:id"
-            component={ActivityDetail}
+            component={() => {
+              return (
+                <div style={{ display: "flex", width: "100%", height: "100%" }}>
+                  <SideBar />
+                  <ActivityDetail />
+                </div>
+              );
+            }}
           />
         </Switch>
       </Router>

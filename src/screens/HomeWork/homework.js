@@ -42,6 +42,12 @@ export default function Homework({ title = "Duyurular", isAdmin }) {
           )}
         </div>
         <div className={styles.announcementsSection}>
+          <div className={styles.homeworkTitles}>
+            <div className={styles.homeworkTitleHomework}>Ödev Adı</div>
+            <div className={styles.homeworkTitle}>Öğretmen</div>
+            <div className={styles.homeworkTitle}>Durum</div>
+            <div className={styles.homeworkTitle}>Teslim tarihi aralığı</div>
+          </div>
           {homeworkData.slice(0, 5).map((item) => {
             return (
               <div className={styles.announcements}>
@@ -54,7 +60,9 @@ export default function Homework({ title = "Duyurular", isAdmin }) {
                 <div className={styles.announcementsTitleTeacher}>
                   {item.teacher}
                 </div>
-
+                <div className={styles.announcementsTitleComplete}>
+                  {item.isCompleted ? "Tamamlandı" : "Tamamlanmadı"}
+                </div>
                 {isAdmin ? (
                   <div className={styles.announcementsAdminIcon}>
                     <EditSolid
@@ -93,84 +101,98 @@ const homeworkData = [
   {
     name: "Asal sayıların Tarihsel Gelişimi",
     teacher: "Muhammet Karaca",
+    isCompleted: false,
     startingDate: "20 Ekim 2020",
     endingDate: "27 Ekim 2020",
   },
   {
     name: "Asal sayıların Tarihsel Gelişimi",
     teacher: "Muhammet Karaca",
+    isCompleted: false,
     startingDate: "20 Ekim 2020",
     endingDate: "27 Ekim 2020",
   },
   {
     name: "Asal sayıların Tarihsel Gelişimi",
     teacher: "Muhammet Karaca",
+    isCompleted: false,
     startingDate: "20 Ekim 2020",
     endingDate: "27 Ekim 2020",
   },
   {
     name: "Asal sayıların Tarihsel Gelişimi",
     teacher: "Muhammet Karaca",
+    isCompleted: false,
     startingDate: "20 Ekim 2020",
     endingDate: "27 Ekim 2020",
   },
   {
     name: "Asal sayıların Tarihsel Gelişimi",
     teacher: "Muhammet Karaca",
+    isCompleted: false,
     startingDate: "20 Ekim 2020",
     endingDate: "27 Ekim 2020",
   },
   {
     name: "Asal sayıların Tarihsel Gelişimi",
     teacher: "Muhammet Karaca",
+    isCompleted: false,
     startingDate: "20 Ekim 2020",
     endingDate: "27 Ekim 2020",
   },
   {
     name: "Asal sayıların Tarihsel Gelişimi",
     teacher: "Muhammet Karaca",
+    isCompleted: false,
     startingDate: "20 Ekim 2020",
     endingDate: "27 Ekim 2020",
   },
   {
     name: "Asal sayıların Tarihsel Gelişimi",
     teacher: "Muhammet Karaca",
+    isCompleted: false,
     startingDate: "20 Ekim 2020",
     endingDate: "27 Ekim 2020",
   },
   {
     name: "Asal sayıların Tarihsel Gelişimi",
     teacher: "Muhammet Karaca",
+    isCompleted: false,
     startingDate: "20 Ekim 2020",
     endingDate: "27 Ekim 2020",
   },
   {
     name: "Asal sayıların Tarihsel Gelişimi",
     teacher: "Muhammet Karaca",
+    isCompleted: false,
     startingDate: "20 Ekim 2020",
     endingDate: "27 Ekim 2020",
   },
   {
     name: "Asal sayıların Tarihsel Gelişimi",
     teacher: "Muhammet Karaca",
+    isCompleted: false,
     startingDate: "20 Ekim 2020",
     endingDate: "27 Ekim 2020",
   },
   {
     name: "Asal sayıların Tarihsel Gelişimi",
     teacher: "Muhammet Karaca",
+    isCompleted: false,
     startingDate: "20 Ekim 2020",
     endingDate: "27 Ekim 2020",
   },
   {
     name: "Asal sayıların Tarihsel Gelişimi",
     teacher: "Muhammet Karaca",
+    isCompleted: false,
     startingDate: "20 Ekim 2020",
     endingDate: "27 Ekim 2020",
   },
   {
     name: "Asal sayıların Tarihsel Gelişimi",
     teacher: "Muhammet Karaca",
+    isCompleted: false,
     startingDate: "20 Ekim 2020",
     endingDate: "27 Ekim 2020",
   },

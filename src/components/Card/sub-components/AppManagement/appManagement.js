@@ -10,6 +10,7 @@ import Okuvaryum from "../../../../assets/images/okvaryum.png";
 import RazKids from "../../../../assets/images/razkids.png";
 import Udemy from "../../../../assets/images/udemy.png";
 import { CheckSolid } from "../../../../icons";
+import Button from "../../../Button/button";
 
 export default function AppManagement({ dropdownValue }) {
   const [changeValue, setChangeValue] = useState({});
@@ -73,6 +74,7 @@ export default function AppManagement({ dropdownValue }) {
             })}
           </div>
         </div>
+        <Button type={"primary"} title={"kaydet"} />
       </div>
     </>
   );

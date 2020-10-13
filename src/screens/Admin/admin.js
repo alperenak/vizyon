@@ -158,6 +158,7 @@ function RenderCard({ pathname, announcementsData }) {
   } else if (pathname === "/admin/syllabus") {
     return (
       <>
+        <h1>Ders Programı Yönetimi</h1>
         <Card type={"syllabusManagement"} tabsType={tabsType} />
       </>
     );
