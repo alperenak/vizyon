@@ -45,11 +45,7 @@ export default function Login({}) {
           <div className={styles.loginImages}>
             <img
               src={
-                pathname === "/admin"
-                  ? AdminLoginImages
-                  : pathname === "/login/teacher"
-                  ? TeacherLoginImages
-                  : LoginImages
+                pathname === "/login/teacher" ? TeacherLoginImages : LoginImages
               }
             />
           </div>
