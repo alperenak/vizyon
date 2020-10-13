@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Dosyalar, Kampus, Uygulamalar } from "../../../icons";
+import { Dosyalar, Kampus, Odev, Uygulamalar } from "../../../icons";
 import { useLocation, useHistory } from "react-router-dom";
 import styles from "./subBar.module.scss";
 
@@ -49,8 +49,8 @@ export default function SubBar({ isActive }) {
           pathname === "/homeworks" ? styles.backgroundWhite : ""
         }`}
       >
-        <Dosyalar className={styles.docsIcon} />
-        <div className={styles.subBarButtonTitle}> Ödevlerim</div>
+        <Odev className={styles.docsIcon} />
+        <div className={styles.subBarButtonTitle}> Ödevler</div>
       </div>
     </div>
   );

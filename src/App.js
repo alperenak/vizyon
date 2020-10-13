@@ -93,7 +93,7 @@ function App() {
               } else return <Homework />;
             }}
           />
-          <Route exact={true} path="/admin" component={Admin} />
+          <Route exact={true} path="/admin" component={Login} />
           <Route exact={true} path="/admin/home" component={Admin} />
           <Route exact={true} path="/admin/announcements" component={Admin} />
           <Route exact={true} path="/admin/class" component={Admin} />

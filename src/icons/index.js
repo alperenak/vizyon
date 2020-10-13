@@ -9,6 +9,7 @@ export { default as Dosyalar } from "./Dosyalar";
 export { default as Down } from "./Down";
 export { default as PdfDownload } from "./PdfDownload";
 export { default as Download } from "./Download";
+export { default as Odev } from "./Odev";
 export { default as EditSolid } from "./EditSolid";
 export { default as Edit } from "./Edit";
 export { default as Exam } from "./Exam";

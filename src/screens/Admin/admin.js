@@ -15,6 +15,7 @@ import Button from "../../components/Button/button";
 import { useLocation } from "react-router-dom";
 import { Down, SearchSolid } from "../../icons";
 import { useCookies } from "react-cookie";
+import Login from "../../screens/Login/login";
 export default function Admin() {
   const [announcementsData, setAnnouncementsData] = useState(false);
   const [userData, setUserData] = useContext(UserContext);
@@ -73,7 +74,7 @@ function RenderCard({ pathname, announcementsData }) {
       setDropdownActive(false);
     }
   };
-  if (pathname === "/admin")
+  if (pathname === "/admin/announcements")
     return (
       <>
         <h1>Duyurular Yönetimi</h1>
@@ -228,6 +229,12 @@ function RenderCard({ pathname, announcementsData }) {
           type={"appManagement"}
           tabsType={tabsType}
         />
+      </>
+    );
+  } else if (pathname === "/admin") {
+    return (
+      <>
+        <Login />
       </>
     );
   } else return <></>;

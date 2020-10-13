@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import styles from "./login.module.scss";
 import LoginImages from "../../assets/images/loginBackground.png";
 import TeacherLoginImages from "../../assets/images/teacher.jpg";
+import AdminLoginImages from "../../assets/images/admin.jpg";
 import Input from "../../components/Input/input";
 import { IconLock, IconUser, LoginLogo } from "../../icons";
 import Button from "../../components/Button/button";
@@ -13,6 +14,7 @@ import { useCookies } from "react-cookie";
 import { UserContext } from "../../context/userContext";
 import Loading from "../../components/Loading/loading";
 import { useLocation, useHistory } from "react-router-dom";
+import jwt_decode from "jwt-decode";
 
 export default function Login({}) {
   const [rememberUser, setRememberUser] = useState(false);
@@ -43,7 +45,11 @@ export default function Login({}) {
           <div className={styles.loginImages}>
             <img
               src={
-                pathname === "/login/teacher" ? TeacherLoginImages : LoginImages
+                pathname === "/admin"
+                  ? AdminLoginImages
+                  : pathname === "/login/teacher"
+                  ? TeacherLoginImages
+                  : LoginImages
               }
             />
           </div>
@@ -90,7 +96,11 @@ function RenderLoginMethod({
 }) {
   const { pathname } = useLocation();
   const history = useHistory();
-  if (pathname === "/login/student" || pathname === "/login/teacher") {
+  if (
+    pathname === "/login/student" ||
+    pathname === "/login/teacher" ||
+    pathname === "/admin"
+  ) {
     return (
       <>
         <div className={styles.formTitle}>Hoşgeldin, Giriş Yap!</div>
@@ -135,26 +145,32 @@ function RenderLoginMethod({
             GetAuthentication(username, password)
               .then((data) => {
                 if (data.success) {
+                  setLoading(false);
                   setErrorMessage(false);
                   console.log(data.data.token);
-                  GetUser(data.data.token).then((uData) => {
-                    let tomorrow = new Date();
-                    tomorrow.setDate(tomorrow.getDate() + 1);
-                    setToken(data.data.token);
-                    setCookies("token", data.data.token, {
-                      expires: tomorrow,
+                  const tokenData = jwt_decode(data.data.token);
+                  if (tokenData.role === "admin" && pathname !== "/admin") {
+                    setErrorMessage("E-posta,telefon veya şifre yanlış");
+                  } else {
+                    GetUser(data.data.token).then((uData) => {
+                      let tomorrow = new Date();
+                      tomorrow.setDate(tomorrow.getDate() + 1);
+                      setToken(data.data.token);
+                      setCookies("token", data.data.token, {
+                        expires: tomorrow,
+                      });
+
+                      setTimeout(() => IsAdmin(uData, setCookies), 100);
+
+                      if (
+                        uData.data.data &&
+                        uData.data.data.role &&
+                        uData.data.role !== "admin"
+                      ) {
+                        setTimeout(() => window.location.replace("/home"), 100);
+                      }
                     });
-
-                    setTimeout(() => IsAdmin(uData, setCookies), 100);
-
-                    if (
-                      uData.data.data &&
-                      uData.data.data.role &&
-                      uData.data.role !== "admin"
-                    ) {
-                      setTimeout(() => window.location.replace("/home"), 100);
-                    }
-                  });
+                  }
                 } else {
                   setLoading(false);
                   setErrorMessage("E-posta,telefon veya şifre yanlış");
