@@ -7,6 +7,7 @@ export { default as Date } from "./Date";
 export { default as Ders } from "./Ders";
 export { default as Dosyalar } from "./Dosyalar";
 export { default as Down } from "./Down";
+export { default as PdfDownload } from "./PdfDownload";
 export { default as Download } from "./Download";
 export { default as EditSolid } from "./EditSolid";
 export { default as Edit } from "./Edit";

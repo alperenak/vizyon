@@ -1,6 +1,6 @@
 import React from "react";
 import styles from "./syllabus.module.scss";
-import { Download, Info, Xls, YellowTip } from "../../../../icons";
+import { Download, Info, PdfDownload, Xls, YellowTip } from "../../../../icons";
 import Dropdown from "../../../Dropdown/dropdown";
 import TeacherAvatar from "../../../../assets/images/teacherAvatar.png";
 import AlertBox from "../../../Alert/alert";
@@ -14,6 +14,14 @@ export default function Syllabus({ syllabusData }) {
   return (
     <div className={styles.SyllabusCard}>
       <div className={styles.topSide}>
+        <div className={styles.title}>Ders Programı</div>
+        <div className={styles.downloadSyllabusPdf}>
+          <div className={styles.formatXLS}>
+            <PdfDownload className={styles.formatIcon} />
+            <div className={styles.formatName}>PDF</div>
+          </div>
+          <div className={styles.downloadTitle}>Ders Programını İndir</div>
+        </div>
         <div className={styles.title}>Ders Programı</div>
         <div className={styles.downloadSyllabus}>
           <div className={styles.formatXLS}>

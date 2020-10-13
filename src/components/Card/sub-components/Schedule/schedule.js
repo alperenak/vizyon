@@ -7,6 +7,7 @@ import {
   User,
   Date,
   Clock,
+  PdfDownload,
   GreenTip,
 } from "../../../../icons";
 import AlertBox from "../../../Alert/alert";
@@ -17,6 +18,13 @@ export default function Schedule({ scheduleData, teachersData }) {
     <div className={styles.schedule}>
       <div className={styles.topSide}>
         <div className={styles.title}>Sınav Takvimi</div>
+        <div className={styles.downloadSyllabusPdf}>
+          <div className={styles.formatXLS}>
+            <PdfDownload className={styles.formatIcon} />
+            <div className={styles.formatName}>PDF</div>
+          </div>
+          <div className={styles.downloadTitle}>Ders Programını İndir</div>
+        </div>
         <div className={styles.downloadSyllabus}>
           <div className={styles.formatXLS}>
             <Download className={styles.formatIcon} />
