@@ -52,9 +52,7 @@ export default function Apps() {
       ) : (
         <div className={styles.apps}>
           <div className={styles.appsContainer}>
-            <div className={styles.title}>
-              Uygulamalar <span>({count})</span>
-            </div>
+            <div className={styles.title}>Uygulamalar</div>
             <div className={styles.appsGrid}>
               {userData &&
               userData !== null &&

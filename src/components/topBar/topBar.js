@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import styles from "./topBar.module.scss";
 import Logo from "../../assets/images/logo.png";
-import { Down, Menu, Notification } from "../../icons";
+import { Down, EnvelopeSolid, Menu, Notification } from "../../icons";
 import Avatar from "../../assets/images/avatar.png";
 import SubBar from "./subBar/subBar";
 import { UserContext } from "../../context/userContext";
@@ -39,6 +39,7 @@ export default function TopBar() {
           className={styles.Menu}
         />
         <div className={styles.profileSection}>
+          <EnvelopeSolid className={styles.Notification} />
           <Notification className={styles.Notification} />
           <div className={styles.profile}>
             <div className={styles.avatar}>
