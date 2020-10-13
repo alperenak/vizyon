@@ -44,7 +44,7 @@
 }
 
 .schedule {
-    width: 770px;
+    width: 1000px;
     display: flex;
     flex-direction: column;
     border-radius: 12px;
@@ -169,16 +169,16 @@
                     }
 
                     & .editAndDelete {
-                        margin-left: 250px;
+                        margin-left: 400px;
                     }
                 }
 
                 & .ogretmen {
-                    margin-right: 150px;
+                    margin-right: 230px;
                 }
 
                 & .tarih {
-                    margin-right: 80px;
+                    margin-right: 100px;
                 }
 
                 & .user {
