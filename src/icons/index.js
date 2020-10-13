@@ -20,6 +20,7 @@ export { default as IconUser } from "./IconUser";
 export { default as Inbox } from "./Inbox";
 export { default as Info } from "./Info";
 export { default as Kampus } from "./Kampus";
+export { default as LinkSolid } from "./LinkSolid";
 export { default as LoadingIcon } from "./Loading";
 export { default as LoginLogo } from "./LoginLogo";
 export { default as Medal } from "./Medal";

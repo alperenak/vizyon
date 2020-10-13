@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "./homework.module.scss";
 import duyurular from "../../assets/images/announcements.png";
 import { ConvertDate } from "../../utils/utils";
-import { EditSolid, TrashSolid, PlusCircleSolid } from "../../icons";
+import { EditSolid, TrashSolid, PlusCircleSolid, LinkSolid } from "../../icons";
 import {
   AddAnnouncements,
   DeleteAnnouncements,
@@ -60,9 +60,23 @@ export default function Homework({ title = "Duyurular", isAdmin }) {
                 <div className={styles.announcementsTitleTeacher}>
                   {item.teacher}
                 </div>
-                <div className={styles.announcementsTitleComplete}>
+                <div
+                  className={`${
+                    item.isCompleted
+                      ? styles.announcementsTitleComplete
+                      : styles.announcementsTitleNotComplete
+                  }`}
+                >
                   {item.isCompleted ? "Tamamlandı" : "Tamamlanmadı"}
                 </div>
+                <LinkSolid
+                  onClick={() =>
+                    window.open(
+                      "http://microsoft.com/en-us/microsoft-365/microsoft-teams/log-in"
+                    )
+                  }
+                  className={styles.linkSolid}
+                />
                 {isAdmin ? (
                   <div className={styles.announcementsAdminIcon}>
                     <EditSolid
@@ -115,7 +129,7 @@ const homeworkData = [
   {
     name: "Asal sayıların Tarihsel Gelişimi",
     teacher: "Muhammet Karaca",
-    isCompleted: false,
+    isCompleted: true,
     startingDate: "20 Ekim 2020",
     endingDate: "27 Ekim 2020",
   },

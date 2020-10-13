@@ -1,134 +1,137 @@
 @import "../../../../helpers/variableBreakpoints.scss";
 
 .announcementsCard {
+  display: flex;
+  flex-direction: column;
+  border-radius: 12px;
+  height: 430px;
+  width: 770px;
+  background-color: #fefdff;
+  position: relative;
+  margin-top: 40px;
+  box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+
+  & .topSide {
+    display: flex;
+    width: 100%;
+    position: relative;
+    align-items: center;
+
+    & .title {
+      margin-left: 20px;
+      margin-top: 27px;
+      font-family: SofiaBold;
+      color: $darkBlue;
+      font-size: 18px;
+    }
+
+    & .addAnnouncements {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      right: 20px;
+      top: 27px;
+      cursor: pointer;
+
+      & .addAnnouncementsIcon {
+        width: 20px;
+        margin-right: 10px;
+        color: $darkPurple;
+      }
+
+      & .addAnnouncementsTitle {
+        color: $darkPurple;
+      }
+    }
+
+    & .addAnnouncements:hover .addAnnouncementsTitle {
+      text-decoration: underline;
+    }
+  }
+
+  & .announcementsSection {
     display: flex;
     flex-direction: column;
-    border-radius: 12px;
-    height: 430px;
-    width: 1000px;
-    background-color: #fefdff;
-    position: relative;
-    margin-top: 40px;
-    box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+    margin-top: 20px;
+    width: 100%;
 
-    & .topSide {
+    & .announcements {
+      display: flex;
+      position: relative;
+      align-items: center;
+      margin: 10px 20px;
+      height: 40px;
+      width: calc(100% - 40px);
+
+      & .imageCircle {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        overflow: hidden;
+
+        & img {
+          width: 100%;
+        }
+      }
+
+      & .announcementsTitle {
+        font-family: SofiaMedium;
+        color: $darkBlue;
+        font-size: 14px;
+        margin-left: 20px;
+      }
+
+      & .announcementsAdminIcon {
         display: flex;
-        width: 100%;
-        position: relative;
         align-items: center;
-
-        & .title {
-            margin-left: 20px;
-            margin-top: 27px;
-            font-family: SofiaBold;
-            color: $darkBlue;
-            font-size: 18px;
-        }
-
-        & .addAnnouncements {
-            position: absolute;
-            display: flex;
-            align-items: center;
-            right: 20px;
-            top: 27px;
-            cursor: pointer;
-
-            & .addAnnouncementsIcon {
-                width: 20px;
-                margin-right: 10px;
-                color: $darkPurple;
-            }
-
-            & .addAnnouncementsTitle {
-                color: $darkPurple;
-            }
-        }
-
-        & .addAnnouncements:hover .addAnnouncementsTitle {
-            text-decoration: underline;
-        }
-    }
-
-    & .announcementsSection {
-        display: flex;
-        flex-direction: column;
-        margin-top: 20px;
-        width: 100%;
-
-        & .announcements {
-            display: flex;
-            position: relative;
-            align-items: center;
-            margin: 10px 20px;
-            height: 40px;
-            width: calc(100% - 40px);
-
-            & .imageCircle {
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                overflow: hidden;
-
-                & img {
-                    width: 100%;
-                }
-            }
-
-            & .announcementsTitle {
-                font-family: SofiaMedium;
-                color: $darkBlue;
-                font-size: 14px;
-                margin-left: 20px;
-            }
-
-            & .announcementsAdminIcon {
-                display: flex;
-                align-items: center;
-                position: absolute;
-                right: 100px;
-                margin-right: 20px;
-                justify-content: flex-end;
-                width: 30%;
-
-                & .editIcon {
-                    color: rgba(94, 191, 155, 1);
-                    width: 20px;
-                    height: 20px;
-                    cursor: pointer;
-                    margin-right: 10px;
-                }
-
-                & .trashIcon {
-                    color: red;
-                    width: 20px;
-                    height: 20px;
-                    cursor: pointer;
-                }
-            }
-        }
-
-        & .announcementsDate {
-            position: absolute;
-            right: 10px;
-            font-size: 12px;
-            color: $lightPurple;
-            right: 0;
-        }
-    }
-
-    & .seeAll {
-        display: flex;
         position: absolute;
-        height: 36px;
-        bottom: 0;
-        width: 100%;
-        justify-content: center;
-        align-items: center;
-        font-size: 13px;
-        color: $lightPurple;
+        right: 100px;
+        margin-right: 20px;
+        justify-content: flex-end;
+        width: 30%;
+
+        & .editIcon {
+          color: rgba(94, 191, 155, 1);
+          width: 20px;
+          height: 20px;
+          cursor: pointer;
+          margin-right: 10px;
+        }
+
+        & .trashIcon {
+          color: red;
+          width: 20px;
+          height: 20px;
+          cursor: pointer;
+        }
+      }
     }
+
+    & .announcementsDate {
+      position: absolute;
+      right: 10px;
+      font-size: 12px;
+      color: $lightPurple;
+      right: 0;
+    }
+  }
+
+  & .seeAll {
+    display: flex;
+    position: absolute;
+    height: 36px;
+    bottom: 0;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    font-size: 13px;
+    color: $lightPurple;
+  }
 }
 
 .errorMessage {
-    color: red;
+  color: red;
+}
+.big {
+  width: 1000px;
 }

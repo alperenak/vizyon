@@ -14,6 +14,7 @@ import {
 import Modal from "../../../Modal/modal";
 import Button from "../../../Button/button";
 import Input from "../../../Input/input";
+import { useLocation } from "react-router-dom";
 export default function Announcements({
   title = "Duyurular",
   announcementsData,
@@ -26,7 +27,7 @@ export default function Announcements({
   const isRoledAdmin = IsRoleAdmin();
   console.log("anon", announcementsData);
   console.log("is", isRoledAdmin);
-
+  const { pathname } = useLocation();
   return (
     <>
       <RenderModal
@@ -35,7 +36,11 @@ export default function Announcements({
         id={id}
         type={modalType}
       />
-      <div className={styles.announcementsCard}>
+      <div
+        className={`${styles.announcementsCard}  ${
+          pathname?.includes("/admin") ? styles.big : ""
+        }`}
+      >
         <div className={styles.topSide}>
           <div className={styles.title}>Duyurular</div>
           {isAdmin ? (

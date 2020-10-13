@@ -88,7 +88,6 @@
                 border-radius: 12px;
                 padding: 0 10px;
                 width: calc(100% - 70px);
-                cursor: pointer;
                 transition: 0.3s;
 
                 &:hover {
@@ -125,11 +124,12 @@
                     color: red;
                     font-size: 14px;
                     margin-left: 20px;
+
                 }
 
                 & .announcementsTitleComplete {
                     font-family: SofiaBold;
-                    color: red;
+                    color: $darkBlue;
                     font-size: 14px;
                     margin-left: 20px;
                 }
@@ -185,4 +185,10 @@
 
 .errorMessage {
     color: red;
+}
+
+.linkSolid {
+    margin-left: 20px;
+    color: $darkBlue;
+    cursor: pointer;
 }
