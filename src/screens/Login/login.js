@@ -29,7 +29,7 @@ export default function Login({}) {
   useEffect(() => {
     if (cookies.token || (token !== "" && token)) {
       if (cookies.admin) {
-        window.location.replace("/admin");
+        window.location.replace("/admin/announcements");
       } else if (!cookies.admin) window.location.replace("/home");
     }
   });
