@@ -46,7 +46,7 @@ export default function SubBar({ isActive }) {
         id="subBarButton"
         onClick={() => history.push("/homeworks")}
         className={`${isActive ? styles.subBarButtons : styles.displayNone}  ${
-          pathname === "/docs" ? styles.backgroundWhite : ""
+          pathname === "/homeworks" ? styles.backgroundWhite : ""
         }`}
       >
         <Dosyalar className={styles.docsIcon} />
