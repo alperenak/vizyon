@@ -273,3 +273,13 @@ export async function GetSyllabusDownloadLink(token, classId) {
   );
   return response;
 }
+export async function GetSchedulesDownloadLink(token, classId) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = await axios.get(
+    `${uri}/classes/exams-xls/${classId}`,
+    config
+  );
+  return response;
+}

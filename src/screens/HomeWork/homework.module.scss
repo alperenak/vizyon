@@ -185,7 +185,7 @@
 
     & .activeSee {
         height: max-content;
-        padding-bottom: 20px;
+        padding-bottom: 40px;
     }
 }
 
@@ -197,9 +197,4 @@
     margin-left: 20px;
     color: $darkBlue;
     cursor: pointer;
-}
-
-.activeSee {
-    height: max-content;
-    padding-bottom: 20px;
 }

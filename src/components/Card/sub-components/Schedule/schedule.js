@@ -13,7 +13,9 @@ import {
 import AlertBox from "../../../Alert/alert";
 import { ConvertDate, ConvertTime } from "../../../../utils/utils";
 import teacherAvatar from "../../../../assets/images/teacherAvatar.png";
-export default function Schedule({ scheduleData, teachersData }) {
+import { GetSchedulesDownloadLink, GetToken } from "../../../../actions/action";
+export default function Schedule({ scheduleData, teachersData, classInfo }) {
+  const token = GetToken();
   return (
     <div className={styles.schedule}>
       <div className={styles.topSide}>
@@ -25,7 +27,14 @@ export default function Schedule({ scheduleData, teachersData }) {
           </div>
           <div className={styles.downloadTitle}>Ders Programını İndir</div>
         </div>
-        <div className={styles.downloadSyllabus}>
+        <div
+          className={styles.downloadSyllabus}
+          onClick={() =>
+            GetSchedulesDownloadLink(token, classInfo._id).then((item) =>
+              window.open(item.data.data[0])
+            )
+          }
+        >
           <div className={styles.formatXLS}>
             <Download className={styles.formatIcon} />
             <div className={styles.formatName}>XLS</div>

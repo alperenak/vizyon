@@ -70,6 +70,7 @@ export default function Home() {
                       ? userData.data.data.studentInfo.class.courses
                       : []
                   }
+                  classInfo={userData.data.data?.studentInfo.class}
                 />
               </div>
             </div>
