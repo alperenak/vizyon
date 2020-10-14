@@ -7,6 +7,7 @@ import AnnouncementImage from "../../assets/images/announcements.png";
 import { UserContext } from "../../context/userContext";
 import IsAdmin, {
   GetAnnouncements,
+  GetAnnouncementsStudent,
   GetToken,
   GetUser,
   IsAuth,
@@ -25,15 +26,19 @@ export default function Home() {
         setLoading(true);
         GetUser(token)
           .then((data) => {
+            setLoading(false);
             IsAdmin(data);
             setUserData(data);
+            if (!announcementsData) {
+              GetAnnouncementsStudent(
+                token,
+                data.data.data.studentInfo?.class._id
+              )
+                .then((data) => setAnnouncementsData(data))
+                .catch((e) => console.error(e));
+            }
           })
-          .then(() => setLoading(false))
-          .catch((e) => console.error(e));
-      }
-      if (!announcementsData) {
-        GetAnnouncements(100, 1, token)
-          .then((data) => setAnnouncementsData(data))
+          .then(() => {})
           .catch((e) => console.error(e));
       }
     } else window.location.replace("/");

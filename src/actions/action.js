@@ -88,7 +88,14 @@ export async function GetAnnouncements(limit, page, token) {
 
   return response;
 }
+export async function GetAnnouncementsStudent(token, classId) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = axios.get(`${uri}/announcements?classId=${classId}`, config);
 
+  return response;
+}
 export async function GetStorage(token) {
   const config = {
     headers: { authorization: `Bearer ${token}` },
