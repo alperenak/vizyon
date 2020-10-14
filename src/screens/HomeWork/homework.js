@@ -14,7 +14,10 @@ import {
 
 export default function Homework({ title = "Duyurular", isAdmin }) {
   const [active, setActive] = useState(false);
+  const [mapCount, setMapCount] = useState(5);
+  const [seeAll, setSeeAll] = useState(false);
   const [modalType, setModalType] = useState("updateAnnouncements");
+
   const [id, setId] = useState(false);
   const token = GetToken();
   const isRoledAdmin = IsRoleAdmin();
@@ -23,7 +26,11 @@ export default function Homework({ title = "Duyurular", isAdmin }) {
 
   return (
     <div className={styles.homeworkContainer}>
-      <div className={styles.announcementsCard}>
+      <div
+        className={`${styles.announcementsCard} ${
+          seeAll ? styles.activeSee : ""
+        }`}
+      >
         <div className={styles.topSide}>
           <div className={styles.title}>Ödevlerim</div>
           {isAdmin ? (
@@ -48,7 +55,7 @@ export default function Homework({ title = "Duyurular", isAdmin }) {
             <div className={styles.homeworkTitle}>Durum</div>
             <div className={styles.homeworkTitle}>Teslim tarihi aralığı</div>
           </div>
-          {homeworkData.slice(0, 5).map((item) => {
+          {homeworkData.slice(0, mapCount).map((item) => {
             return (
               <div className={styles.announcements}>
                 <div className={styles.imageCircle}>
@@ -106,7 +113,16 @@ export default function Homework({ title = "Duyurular", isAdmin }) {
             );
           })}
         </div>
-        <div className={styles.seeAll}>Tümünü Gör</div>
+        <div
+          onClick={() => {
+            setSeeAll(!seeAll);
+            if (!seeAll) setMapCount(homeworkData.length);
+            else setMapCount(5);
+          }}
+          className={`${styles.seeAll} `}
+        >
+          {seeAll ? "Küçült" : "Tümünü Gör"}
+        </div>
       </div>
     </div>
   );
