@@ -54,6 +54,7 @@ export default function Home() {
                 <Card
                   type={"syllabus"}
                   syllabusData={getSyllabusData(userData.data.data)}
+                  classInfo={userData.data.data?.studentInfo.class}
                 />
                 <Card
                   type={"schedule"}

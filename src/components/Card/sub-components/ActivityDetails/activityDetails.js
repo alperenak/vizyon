@@ -20,7 +20,24 @@ import Input from "../../../Input/input";
 import Button from "../../../Button/button";
 import Office from "../../../../assets/images/office.png";
 import teacherAvatar from "../../../../assets/images/teacherAvatar.png";
-export default function ActivityManagement({ tabsType }) {
+import { getAppsLog, GetToken } from "../../../../actions/action";
+import { useLocation } from "react-router-dom";
+export default function ActivityDetails({ tabsType, match }) {
+  console.log(match);
+  const location = useLocation();
+  const token = GetToken();
+  useEffect(() => {
+    getAppsLog(
+      token,
+      0,
+      "2020-08-08",
+      "2020-10-10",
+      1000,
+      match?.params.id
+    ).then((data) => {
+      console.log(data);
+    });
+  }, []);
   return (
     <div className={styles.schedule}>
       <div className={styles.topSide}>

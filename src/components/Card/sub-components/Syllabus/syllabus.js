@@ -5,12 +5,14 @@ import Dropdown from "../../../Dropdown/dropdown";
 import TeacherAvatar from "../../../../assets/images/teacherAvatar.png";
 import AlertBox from "../../../Alert/alert";
 import { sumTimes } from "../../../../utils/utils";
-export default function Syllabus({ syllabusData }) {
+import { GetSyllabusDownloadLink, GetToken } from "../../../../actions/action";
+export default function Syllabus({ syllabusData, classInfo }) {
   console.log("syllabu", syllabusData);
+  console.log("classInfo", classInfo);
   let date = new Date();
   let weekDays = ["Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma"];
   let daysData = getDayData(weekDays);
-
+  const token = GetToken();
   return (
     <div className={styles.SyllabusCard}>
       <div className={styles.topSide}>
@@ -23,7 +25,14 @@ export default function Syllabus({ syllabusData }) {
           <div className={styles.downloadTitle}>Ders Programını İndir</div>
         </div>
         <div className={styles.title}>Ders Programı</div>
-        <div className={styles.downloadSyllabus}>
+        <div
+          className={styles.downloadSyllabus}
+          onClick={() => {
+            GetSyllabusDownloadLink(token, classInfo._id).then((item) =>
+              window.open(item.data.data[0])
+            );
+          }}
+        >
           <div className={styles.formatXLS}>
             <Download className={styles.formatIcon} />
             <div className={styles.formatName}>XLS</div>
@@ -57,7 +66,6 @@ export default function Syllabus({ syllabusData }) {
             return (
               <table>
                 {item.periods.slice(0, 5).map((item, index) => {
-                  console.log(item.course.name);
                   return (
                     <tr>
                       <div className={styles.lessonLabelWrapper}>
@@ -125,7 +133,6 @@ function getTeacherName(item) {
   } else return "";
 }
 function getLessonTime(course) {
-  console.log(course, course.startsAt, course.endsAt);
   if (course !== null && course && course.startsAt && course.endsAt) {
     return { startingTime: course.startsAt, endingTime: course.endsAt };
   } else {

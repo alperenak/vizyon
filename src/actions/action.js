@@ -263,3 +263,13 @@ export async function getAppsLog(
   );
   return response;
 }
+export async function GetSyllabusDownloadLink(token, classId) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = await axios.get(
+    `${uri}/classes/schedule-xls/${classId}`,
+    config
+  );
+  return response;
+}

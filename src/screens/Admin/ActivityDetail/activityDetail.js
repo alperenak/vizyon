@@ -82,7 +82,7 @@ export default function ActivityDetail({ match }) {
           </div>
         </div>
       </div>
-      <Card type={"activityDetails"} tabsType={tabsType} />
+      <Card type={"activityDetails"} tabsType={tabsType} match={match} />
     </div>
   );
 }

@@ -25,6 +25,7 @@ import {
   getAllClass,
   getAllUser,
   getSpesificRoleUsers,
+  GetSyllabusDownloadLink,
   GetToken,
   updateClass,
 } from "../../../../actions/action";
@@ -69,19 +70,19 @@ export default function SyllabusManagement() {
   const [teachersData, setTeachersData] = useState([]);
   const token = GetToken();
   useEffect(() => {
-    // getAllClass(token).then((data) => {
-    //   setClassData(data.data.data);
-    //   console.log(data);
-    // });
-    // getAllUser(token).then((data) => {
-    //   setTeachersData(
-    //     data.data.data.filter((item) => item.role === "instructor")
-    //   );
-    //   console.log(
-    //     "user",
-    //     data.data.data.filter((item) => item.role === "instructor")
-    //   );
-    // });
+    getAllClass(token).then((data) => {
+      setClassData(data.data.data);
+      console.log("sinif", data);
+    });
+    getAllUser(token).then((data) => {
+      setTeachersData(
+        data.data.data.filter((item) => item.role === "instructor")
+      );
+      console.log(
+        "user",
+        data.data.data.filter((item) => item.role === "instructor")
+      );
+    });
   }, []);
   return (
     <div className={styles.schedule}>
@@ -131,11 +132,21 @@ export default function SyllabusManagement() {
                     </div>
                     <td>{item.name}</td>
                   </div>
-                  <td>{item.teacher ? item.teacher : "Eyüp Saruhan"}</td>
+                  <td>
+                    {item.instructor
+                      ? `${item.instructor.first_name} ${item.instructor.last_name}`
+                      : "Eyüp Saruhan"}
+                  </td>
                   <div>
-                    <td>{item.activeProgram}</td>
+                    <td>
+                      {item.activeProgram
+                        ? item.activeProgram
+                        : "ders programi.xls"}
+                    </td>
                   </div>
-                  <td>{item.createdAt}</td>
+                  <td>
+                    {item.createdAt ? item.createdAt : "20 Ekim 2020 19:12"}
+                  </td>
                   <td>
                     <UploadSolid
                       onClick={() => {
@@ -147,7 +158,14 @@ export default function SyllabusManagement() {
                   </td>
 
                   <td>
-                    <div className={styles.downloadSyllabus}>
+                    <div
+                      className={styles.downloadSyllabus}
+                      onClick={() =>
+                        GetSyllabusDownloadLink(token, item._id).then((data) =>
+                          window.open(data.data.data[0])
+                        )
+                      }
+                    >
                       <div className={styles.formatXLS}>
                         <Download className={styles.formatIcon} />
                         <div className={styles.formatName}>XLS</div>

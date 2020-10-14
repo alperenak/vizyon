@@ -62,6 +62,47 @@
     justify-content: flex-end;
     padding-top: 30px;
 
+    & .downloadSyllabus {
+      display: flex;
+      align-items: center;
+      width: 212px;
+      background-color: #e9fff8;
+      border-radius: 8px;
+      height: 30px;
+      justify-content: space-around;
+      align-items: center;
+
+
+      & .formatXLS {
+        display: flex;
+        border-radius: 8px;
+        width: 46px;
+        justify-content: center;
+        align-items: center;
+        height: 24px;
+        box-shadow: 0px 5px 27px -8px rgba(94, 191, 155, 1);
+        background-color: white;
+
+        & .formatIcon {
+          width: 9px;
+          height: 9px;
+        }
+
+        & .formatName {
+          color: #5ebf9b;
+          font-size: 11px;
+          margin-left: 5px;
+          font-family: SofiaBlack;
+        }
+      }
+
+      & .downloadTitle {
+        font-family: SofiaSemiBold;
+        color: #5ebf9b;
+        font-size: 14px
+      }
+    }
+
     & .title {
       position: absolute;
       font-size: 18px;
@@ -116,14 +157,14 @@
           justify-content: center;
           align-items: center;
           font-size: 12px;
+
           & .scheduleTitlesIcon {
             width: 30px;
             height: 30px;
           }
         }
 
-        & .ogretmen {
-        }
+        & .ogretmen {}
 
         & .tarih {
           margin-right: 80px;
