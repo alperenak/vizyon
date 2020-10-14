@@ -15,6 +15,7 @@ import Modal from "../../../Modal/modal";
 import Button from "../../../Button/button";
 import Input from "../../../Input/input";
 import { useLocation } from "react-router-dom";
+import Selectbox from "../../../SelectBox/selectbox";
 export default function Announcements({
   title = "Duyurular",
   announcementsData,
@@ -186,6 +187,7 @@ function RenderModal({ isActive, setIsActive, id, type }) {
           ) : (
             ""
           )}
+          <Selectbox />
           <Button
             type={"modal"}
             title={"Ekle"}

@@ -38,6 +38,7 @@ export { default as Quiz } from "./Quiz";
 export { default as Rar } from "./Rar";
 export { default as Right } from "./Right";
 export { default as SearchSolid } from "./SearchSolid";
+export { default as TimesSolid } from "./TimesSolid";
 export { default as TrashSolid } from "./TrashSolid";
 export { default as Trash } from "./Trash";
 export { default as Txt } from "./Txt";
