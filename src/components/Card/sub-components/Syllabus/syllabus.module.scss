@@ -45,6 +45,7 @@ $lblpurplebg:#dcd1f8;
 
         & .downloadSyllabusPdf {
             display: flex;
+            cursor: pointer;
             align-items: center;
             width: 212px;
             background-color: #FFD3D3;
@@ -85,6 +86,7 @@ $lblpurplebg:#dcd1f8;
         }
 
         & .downloadSyllabus {
+            cursor: pointer;
             display: flex;
             align-items: center;
             width: 212px;
