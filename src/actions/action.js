@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useContext } from "react";
 import { useCookies } from "react-cookie";
-const uri = "https://gelisim-okullari.herokuapp.com/api/v1";
+const uri = "https://gelisim.herokuapp.com/api/v1";
 const location = window.location;
 export async function GetAuthentication(username, password) {
   // axios
