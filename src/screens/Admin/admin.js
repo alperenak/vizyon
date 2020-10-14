@@ -45,7 +45,7 @@ export default function Admin() {
         }
       }
     } else window.location.replace("/");
-  });
+  }, []);
   return (
     <div className={styles.adminContainer}>
       <SideBar />

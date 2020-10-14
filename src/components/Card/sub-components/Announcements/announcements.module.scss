@@ -9,6 +9,7 @@
   background-color: #fefdff;
   position: relative;
   margin-top: 40px;
+  transition: height 1s;
   box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
 
   & .topSide {
@@ -132,6 +133,12 @@
 .errorMessage {
   color: red;
 }
+
 .big {
   width: 1000px;
+}
+
+.activeSee {
+  height: max-content;
+  padding-bottom: 20px;
 }

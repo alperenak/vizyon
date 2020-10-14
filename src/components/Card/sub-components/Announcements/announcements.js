@@ -23,6 +23,8 @@ export default function Announcements({
   const [active, setActive] = useState(false);
   const [modalType, setModalType] = useState("updateAnnouncements");
   const [id, setId] = useState(false);
+  const [seeAll, setSeeAll] = useState(false);
+  const [mapCount, setMapCount] = useState(5);
   const token = GetToken();
   const isRoledAdmin = IsRoleAdmin();
   console.log("anon", announcementsData);
@@ -39,7 +41,7 @@ export default function Announcements({
       <div
         className={`${styles.announcementsCard}  ${
           pathname?.includes("/admin") ? styles.big : ""
-        }`}
+        } ${seeAll ? styles.activeSee : ""}`}
       >
         <div className={styles.topSide}>
           <div className={styles.title}>Duyurular</div>
@@ -59,7 +61,7 @@ export default function Announcements({
           )}
         </div>
         <div className={styles.announcementsSection}>
-          {announcementsData.map((item) => {
+          {announcementsData.slice(0, mapCount).map((item) => {
             return (
               <div className={styles.announcements}>
                 <div className={styles.imageCircle}>
@@ -97,7 +99,16 @@ export default function Announcements({
             );
           })}
         </div>
-        <div className={styles.seeAll}>Tümünü Gör</div>
+        <div
+          onClick={() => {
+            setSeeAll(!seeAll);
+            if (!seeAll) setMapCount(announcementsData.length);
+            else setMapCount(5);
+          }}
+          className={`${styles.seeAll} `}
+        >
+          {seeAll ? "Küçült" : "Tümünü Gör"}
+        </div>
       </div>
     </>
   );
@@ -179,9 +190,10 @@ function RenderModal({ isActive, setIsActive, id, type }) {
             type={"modal"}
             title={"Ekle"}
             onClick={() => {
+              console.log(addAnnouncementsDetail, addAnnouncementsTitle);
               if (
                 addAnnouncementsTitle.length >= 8 &&
-                addAnnouncementsDetail >= 8
+                addAnnouncementsDetail.length >= 8
               ) {
                 AddAnnouncements(
                   addAnnouncementsTitle,
