@@ -50,7 +50,7 @@ export async function DeleteAnnouncements(id, token) {
   return response;
 }
 
-export async function AddAnnouncements(title, detail, token) {
+export async function AddAnnouncements(title, detail, ispublic, to, token) {
   const config = {
     headers: { authorization: `Bearer ${token}` },
   };
@@ -59,6 +59,8 @@ export async function AddAnnouncements(title, detail, token) {
     {
       title: title,
       detail: detail,
+      public: ispublic,
+      to: to,
     },
     config
   );

@@ -2,7 +2,12 @@ import React, { useState } from "react";
 import styles from "./announcements.module.scss";
 import duyurular from "../../../../assets/images/announcements.png";
 import { ConvertDate } from "../../../../utils/utils";
-import { EditSolid, TrashSolid, PlusCircleSolid } from "../../../../icons";
+import {
+  EditSolid,
+  TrashSolid,
+  PlusCircleSolid,
+  Down,
+} from "../../../../icons";
 import {
   AddAnnouncements,
   DeleteAnnouncements,
@@ -118,6 +123,10 @@ function RenderModal({ isActive, setIsActive, id, type }) {
   const [announcementsTitle, setAnnouncementsTitle] = useState("");
   const [addAnnouncementsTitle, setAddAnnouncementsTitle] = useState("");
   const [addAnnouncementsDetail, setAddAnnouncementsDetails] = useState("");
+  const [dropdownActive, setDropdownActive] = useState();
+  const [dropdownName, setDropdownName] = useState("Kimler görebilir");
+  const [classArray, setClassArray] = useState([]);
+  const [classIdArray, setClasIdArray] = useState([]);
   const [errorTitle, setErrorTitle] = useState(false);
   const [errorDetail, setErrorDetail] = useState(false);
   const [errorTitle1, setErrorTitle1] = useState(false);
@@ -161,6 +170,35 @@ function RenderModal({ isActive, setIsActive, id, type }) {
         </>
       ) : (
         <>
+          <div
+            id={"classDropdown"}
+            onClick={() => setDropdownActive(!dropdownActive)}
+            className={styles.dropdown}
+          >
+            <div id={"dropdownName"} className={styles.dropdownName}>
+              <Down id={"dropdownIcon"} className={styles.downIcon} />
+              {dropdownName}
+            </div>
+            <div
+              className={`${styles.dropdownContent}  ${
+                dropdownActive ? styles.active : ""
+              }`}
+              onClick={() => {}}
+            >
+              {[{ name: "Herkes" }, { name: "Seçilen Sınıflar" }].map(
+                (item) => {
+                  return (
+                    <div
+                      onClick={() => setDropdownName(item.name)}
+                      className={styles.dropdownItems}
+                    >
+                      {item.name}
+                    </div>
+                  );
+                }
+              )}
+            </div>
+          </div>
           <Input
             value={addAnnouncementsTitle}
             placeholder="Duyurunun Başlığını giriniz"
@@ -187,7 +225,16 @@ function RenderModal({ isActive, setIsActive, id, type }) {
           ) : (
             ""
           )}
-          <Selectbox />
+
+          {dropdownName === "Seçilen Sınıflar" ? (
+            <Selectbox
+              onChange={(e) => {
+                setClassArray(e);
+              }}
+            />
+          ) : (
+            ""
+          )}
           <Button
             type={"modal"}
             title={"Ekle"}
@@ -197,9 +244,14 @@ function RenderModal({ isActive, setIsActive, id, type }) {
                 addAnnouncementsTitle.length >= 8 &&
                 addAnnouncementsDetail.length >= 8
               ) {
+                classArray.map((item) => {
+                  setClasIdArray([...classArray, item._id]);
+                });
                 AddAnnouncements(
                   addAnnouncementsTitle,
                   addAnnouncementsDetail,
+                  dropdownName === "Seçilen Sınıflar" ? false : true,
+                  classIdArray,
                   token
                 ).then(() =>
                   // GetAnnouncements(token)
