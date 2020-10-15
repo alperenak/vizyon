@@ -33,6 +33,7 @@ export default function Announcements({
   const [seeAll, setSeeAll] = useState(false);
   const [mapCount, setMapCount] = useState(5);
   const [editableTitle, setEditableTitle] = useState("");
+  const [details, setDetail] = useState("");
   const [isPublic, setIsPublic] = useState(false);
   const token = GetToken();
   const isRoledAdmin = IsRoleAdmin();
@@ -91,6 +92,7 @@ export default function Announcements({
                         setActive(true);
                         setId(item._id);
                         setEditableTitle(item.title);
+                        setDetail(item.detail);
                         setClassArray(item.to);
                         setIsPublic(item.public);
                         setModalType("updateAnnouncements");
@@ -152,14 +154,51 @@ function RenderModal({
   const [errorTitle1, setErrorTitle1] = useState(false);
   const token = GetToken();
   console.log(announcementsTitle);
+  console.log("class", classArray);
   return (
     <Modal isActive={isActive} setIsActive={setIsActive}>
       {type === "updateAnnouncements" ? (
         <>
+          {" "}
+          <div
+            id={"classDropdown"}
+            onClick={() => setDropdownActive(!dropdownActive)}
+            className={styles.dropdown}
+          >
+            <div id={"dropdownName"} className={styles.dropdownName}>
+              <Down id={"dropdownIcon"} className={styles.downIcon} />
+              {dropdownName}
+            </div>
+            <div
+              className={`${styles.dropdownContent}  ${
+                dropdownActive ? styles.active : ""
+              }`}
+              onClick={() => {}}
+            >
+              {[{ name: "Herkes" }, { name: "Seçilen Sınıflar" }].map(
+                (item) => {
+                  return (
+                    <div
+                      onClick={() => setDropdownName(item.name)}
+                      className={styles.dropdownItems}
+                    >
+                      {item.name}
+                    </div>
+                  );
+                }
+              )}
+            </div>
+          </div>
           <Input
             value={editableTitle}
             placeholder="Duyurunun Başlığını giriniz"
             onChange={(e) => setEditableTitle(e.target.value)}
+            inputStyle={"modal"}
+          />
+          <Input
+            value={addAnnouncementsDetail}
+            placeholder="Duyurunun detaylarını giriniz"
+            onChange={(e) => setAddAnnouncementsDetails(e.target.value)}
             inputStyle={"modal"}
           />
           {errorTitle1 ? (
@@ -169,6 +208,11 @@ function RenderModal({
           ) : (
             ""
           )}
+          <Selectbox
+            onChange={(e) => {
+              setClassArray(e);
+            }}
+          />
           <Button
             type={"modal"}
             title={"Güncelle"}
@@ -272,7 +316,7 @@ function RenderModal({
                   addAnnouncementsDetail,
                   dropdownName === "Seçilen Sınıflar" ? false : true,
                   classArray.map((item) => {
-                    return item._id;
+                    return item.id;
                   }),
                   token
                 ).then(() =>
