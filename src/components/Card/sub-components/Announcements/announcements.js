@@ -49,7 +49,11 @@ export default function Announcements({
         type={modalType}
         editableTitle={editableTitle}
         setEditableTitle={setEditableTitle}
-        classArray={classArray}
+        detail={details}
+        setDetail={setDetail}
+        isPublic={isPublic}
+        setIsPublic={setIsPublic}
+        classArrayPopulate={classArray}
         isPublic={isPublic}
       />
       <div
@@ -138,6 +142,11 @@ function RenderModal({
   type,
   editableTitle,
   setEditableTitle,
+  detail,
+  setDetail,
+  isPublic,
+  classArrayPopulate,
+  setIsPublic,
 }) {
   console.log("ed", editableTitle);
   const [announcementsTitle, setAnnouncementsTitle] = useState("");
@@ -154,12 +163,11 @@ function RenderModal({
   const [errorTitle1, setErrorTitle1] = useState(false);
   const token = GetToken();
   console.log(announcementsTitle);
-  console.log("class", classArray);
+  console.log("class", classArrayPopulate);
   return (
     <Modal isActive={isActive} setIsActive={setIsActive}>
       {type === "updateAnnouncements" ? (
         <>
-          {" "}
           <div
             id={"classDropdown"}
             onClick={() => setDropdownActive(!dropdownActive)}
@@ -167,7 +175,7 @@ function RenderModal({
           >
             <div id={"dropdownName"} className={styles.dropdownName}>
               <Down id={"dropdownIcon"} className={styles.downIcon} />
-              {dropdownName}
+              {isPublic ? "Herkes" : "Seçilen Sınıflar"}
             </div>
             <div
               className={`${styles.dropdownContent}  ${
@@ -196,9 +204,9 @@ function RenderModal({
             inputStyle={"modal"}
           />
           <Input
-            value={addAnnouncementsDetail}
+            value={detail}
             placeholder="Duyurunun detaylarını giriniz"
-            onChange={(e) => setAddAnnouncementsDetails(e.target.value)}
+            onChange={(e) => setDetail(e.target.value)}
             inputStyle={"modal"}
           />
           {errorTitle1 ? (
@@ -209,9 +217,8 @@ function RenderModal({
             ""
           )}
           <Selectbox
-            onChange={(e) => {
-              setClassArray(e);
-            }}
+            dataToArray={classArrayPopulate}
+            onChange={(e) => console.log(e)}
           />
           <Button
             type={"modal"}

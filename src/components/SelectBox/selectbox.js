@@ -4,10 +4,10 @@ import { Down, TimesSolid } from "../../icons";
 import SvgRar from "../../icons/Rar";
 import styles from "./selectbox.module.scss";
 
-export default function Selectbox({ onChange }) {
+export default function Selectbox({ onChange, dataToArray = [] }) {
   const [dropdownActive, setDropdownActive] = useState();
   const [dropdownName, setDropdownName] = useState("Sınıf Seçiniz");
-  const [dropdownArray, setDropdownArray] = useState([]);
+  const [dropdownArray, setDropdownArray] = useState(dataToArray);
   const token = GetToken();
   const [ClassesNameData, setClassNameData] = useState([
     { name: "sadssad" },
@@ -15,11 +15,17 @@ export default function Selectbox({ onChange }) {
     { name: "sadsadfafaa" },
     { name: "sadsaasdadd" },
   ]);
+  console.log("tooo", dropdownArray);
+
   useEffect(() => {
+    if (dataToArray) {
+      setDropdownName(false);
+      setDropdownArray(dataToArray);
+    }
     getAllClass(token, 1000, 1).then((data) =>
       setClassNameData(data.data.data)
     );
-  }, []);
+  }, [dataToArray]);
   return (
     <div className={styles.selectbox}>
       <div
