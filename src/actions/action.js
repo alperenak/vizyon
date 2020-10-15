@@ -28,15 +28,29 @@ export async function GetAuthentication(username, password) {
   });
   return response.json();
 }
-export async function UpdateAnnouncements(id, title, token) {
+export async function UpdateAnnouncements(
+  id,
+  title,
+  detail,
+  to,
+  isPublic,
+  token
+) {
   console.log(id);
   const config = {
     headers: { authorization: `Bearer ${token}` },
   };
+  let arr = [];
+  to.map((item) => {
+    arr.push(item._id);
+  });
   const response = await axios.put(
     `${uri}/announcements/${id}`,
     {
       title: title,
+      detail: detail,
+      public: isPublic,
+      to: arr,
     },
     config
   );

@@ -29,8 +29,11 @@ export default function Announcements({
   const [active, setActive] = useState(false);
   const [modalType, setModalType] = useState("updateAnnouncements");
   const [id, setId] = useState(false);
+  const [classArray, setClassArray] = useState([]);
   const [seeAll, setSeeAll] = useState(false);
   const [mapCount, setMapCount] = useState(5);
+  const [editableTitle, setEditableTitle] = useState("");
+  const [isPublic, setIsPublic] = useState(false);
   const token = GetToken();
   const isRoledAdmin = IsRoleAdmin();
   console.log("anon", announcementsData);
@@ -43,6 +46,10 @@ export default function Announcements({
         setIsActive={setActive}
         id={id}
         type={modalType}
+        editableTitle={editableTitle}
+        setEditableTitle={setEditableTitle}
+        classArray={classArray}
+        isPublic={isPublic}
       />
       <div
         className={`${styles.announcementsCard}  ${
@@ -83,6 +90,9 @@ export default function Announcements({
                       onClick={() => {
                         setActive(true);
                         setId(item._id);
+                        setEditableTitle(item.title);
+                        setClassArray(item.to);
+                        setIsPublic(item.public);
                         setModalType("updateAnnouncements");
                       }}
                     />
@@ -119,9 +129,19 @@ export default function Announcements({
     </>
   );
 }
-function RenderModal({ isActive, setIsActive, id, type }) {
+function RenderModal({
+  isActive,
+  setIsActive,
+  id,
+  type,
+  editableTitle,
+  setEditableTitle,
+}) {
+  console.log("ed", editableTitle);
   const [announcementsTitle, setAnnouncementsTitle] = useState("");
-  const [addAnnouncementsTitle, setAddAnnouncementsTitle] = useState("");
+  const [addAnnouncementsTitle, setAddAnnouncementsTitle] = useState(
+    editableTitle
+  );
   const [addAnnouncementsDetail, setAddAnnouncementsDetails] = useState("");
   const [dropdownActive, setDropdownActive] = useState();
   const [dropdownName, setDropdownName] = useState("Kimler görebilir");
@@ -131,15 +151,15 @@ function RenderModal({ isActive, setIsActive, id, type }) {
   const [errorDetail, setErrorDetail] = useState(false);
   const [errorTitle1, setErrorTitle1] = useState(false);
   const token = GetToken();
-  console.log(id);
+  console.log(announcementsTitle);
   return (
     <Modal isActive={isActive} setIsActive={setIsActive}>
       {type === "updateAnnouncements" ? (
         <>
           <Input
-            value={announcementsTitle}
+            value={editableTitle}
             placeholder="Duyurunun Başlığını giriniz"
-            onChange={(e) => setAnnouncementsTitle(e.target.value)}
+            onChange={(e) => setEditableTitle(e.target.value)}
             inputStyle={"modal"}
           />
           {errorTitle1 ? (
@@ -251,7 +271,9 @@ function RenderModal({ isActive, setIsActive, id, type }) {
                   addAnnouncementsTitle,
                   addAnnouncementsDetail,
                   dropdownName === "Seçilen Sınıflar" ? false : true,
-                  classIdArray,
+                  classArray.map((item) => {
+                    return item._id;
+                  }),
                   token
                 ).then(() =>
                   // GetAnnouncements(token)
