@@ -224,8 +224,15 @@ function RenderModal({
             type={"modal"}
             title={"Güncelle"}
             onClick={() => {
-              if (announcementsTitle >= 8) {
-                UpdateAnnouncements(id, announcementsTitle, token)
+              if (editableTitle.length >= 8) {
+                UpdateAnnouncements(
+                  id,
+                  editableTitle,
+                  detail,
+                  classArrayPopulate,
+                  isPublic,
+                  token
+                )
                   .then(() =>
                     // GetAnnouncements(token)
                     window.location.reload()
@@ -233,7 +240,7 @@ function RenderModal({
                   .catch((e) => console.log(e));
                 setIsActive(false);
               }
-              if (announcementsTitle.length < 8) {
+              if (editableTitle.length < 8) {
                 setErrorTitle1(true);
               }
             }}
