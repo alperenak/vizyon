@@ -181,6 +181,25 @@
   padding-bottom: 20px;
 }
 
+.deleteQuestion {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+
+  & .deleteQuestionTitle {
+    font-family: SofiaBold;
+    font-size: 16px;
+  }
+
+  & .deleteQuestionButtons {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+  }
+}
+
 .dropdown {
   position: relative;
   display: inline-block;

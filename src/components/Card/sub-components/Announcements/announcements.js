@@ -35,6 +35,7 @@ export default function Announcements({
   const [editableTitle, setEditableTitle] = useState("");
   const [details, setDetail] = useState("");
   const [isPublic, setIsPublic] = useState(false);
+  const [deletedId, setDeletedId] = useState("");
   const token = GetToken();
   const isRoledAdmin = IsRoleAdmin();
   console.log("anon", announcementsData);
@@ -46,6 +47,8 @@ export default function Announcements({
         isActive={active}
         setIsActive={setActive}
         id={id}
+        deletedId={deletedId}
+        setDeletedId={setDeletedId}
         type={modalType}
         editableTitle={editableTitle}
         setEditableTitle={setEditableTitle}
@@ -129,9 +132,9 @@ export default function Announcements({
                     <TrashSolid
                       className={styles.trashIcon}
                       onClick={() => {
-                        DeleteAnnouncements(item._id, token).then(() => {
-                          // window.location.reload();
-                        });
+                        setDeletedId(item._id);
+                        setModalType("delete");
+                        setActive(true);
                       }}
                     />
                   </div>
@@ -170,6 +173,8 @@ function RenderModal({
   setDetail,
   isPublic,
   classArrayPopulate,
+  deletedId,
+  setDeletedId,
   setIsPublic,
 }) {
   console.log("ed", editableTitle);
@@ -191,7 +196,29 @@ function RenderModal({
   console.log("class", classArrayPopulate);
   return (
     <Modal isActive={isActive} setIsActive={setIsActive}>
-      {type === "updateAnnouncements" ? (
+      {type === "delete" ? (
+        <div className={styles.deleteQuestion}>
+          <div className={styles.deleteQuestionTitle}>
+            Silmek istediğinizden emin misiniz?
+          </div>
+          <div className={styles.deleteQuestionButtons}>
+            <Button
+              type={"delete"}
+              onClick={() => {
+                DeleteAnnouncements(deletedId, token).then(() => {
+                  window.location.reload();
+                });
+              }}
+              title={"evet"}
+            />
+            <Button
+              type={"delete"}
+              onClick={() => setIsActive(false)}
+              title={"hayır"}
+            />
+          </div>
+        </div>
+      ) : type === "updateAnnouncements" ? (
         <>
           <div
             id={"classDropdown"}

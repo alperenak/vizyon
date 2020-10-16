@@ -246,7 +246,7 @@ function RenderModalContent({
           inputStyle={"modal"}
         />
         <Input
-          placeholder="Kullanıcı adını giriniz"
+          placeholder="E-postasını giriniz"
           onChange={(e) => setLastname(e.target.value)}
           inputStyle={"modal"}
         />

@@ -78,6 +78,9 @@ function RenderCard({ pathname, announcementsData }) {
     return (
       <>
         <h1>Duyurular Yönetimi</h1>
+        <Input placeholder="Ara" inputStyle={"search"}>
+          <SearchSolid className={styles.searchIcon} />
+        </Input>
         <Card
           type={"announcements"}
           announcementsData={
