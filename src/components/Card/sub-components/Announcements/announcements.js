@@ -38,8 +38,6 @@ export default function Announcements({
   const [deletedId, setDeletedId] = useState("");
   const token = GetToken();
   const isRoledAdmin = IsRoleAdmin();
-  console.log("anon", announcementsData);
-  console.log("is", isRoledAdmin);
   const { pathname } = useLocation();
   return (
     <>
@@ -177,7 +175,6 @@ function RenderModal({
   setDeletedId,
   setIsPublic,
 }) {
-  console.log("ed", editableTitle);
   const [announcementsTitle, setAnnouncementsTitle] = useState("");
   const [addAnnouncementsTitle, setAddAnnouncementsTitle] = useState(
     editableTitle
@@ -190,10 +187,8 @@ function RenderModal({
   const [errorTitle, setErrorTitle] = useState(false);
   const [errorDetail, setErrorDetail] = useState(false);
   const [errorTitle1, setErrorTitle1] = useState(false);
-  const [updatingSelectbox, setUpdatingSelectbox] = useState(false);
+  const [updatingSelectbox, setUpdatingSelectbox] = useState([]);
   const token = GetToken();
-  console.log(announcementsTitle);
-  console.log("class", classArrayPopulate);
   return (
     <Modal isActive={isActive} setIsActive={setIsActive}>
       {type === "delete" ? (
@@ -227,7 +222,11 @@ function RenderModal({
           >
             <div id={"dropdownName"} className={styles.dropdownName}>
               <Down id={"dropdownIcon"} className={styles.downIcon} />
-              {isPublic ? "Herkes" : "Seçilen Sınıflar"}
+              {dropdownName === "Kimler görebilir"
+                ? isPublic
+                  ? "Herkes"
+                  : "Seçilen Sınıflar"
+                : dropdownName}
             </div>
             <div
               className={`${styles.dropdownContent}  ${
@@ -239,7 +238,10 @@ function RenderModal({
                 (item) => {
                   return (
                     <div
-                      onClick={() => setDropdownName(item.name)}
+                      onClick={() => {
+                        // if (item.name === "Seçilen Sınıflar") setIsPublic(true);
+                        setDropdownName(item.name);
+                      }}
                       className={styles.dropdownItems}
                     >
                       {item.name}
@@ -268,10 +270,13 @@ function RenderModal({
           ) : (
             ""
           )}
-          {!isPublic ? (
+          {!isPublic || dropdownName === "Seçilen Sınıflar" ? (
             <Selectbox
               dataToArray={classArrayPopulate}
-              onChange={(e) => setUpdatingSelectbox(e)}
+              onChange={(e) => {
+                console.log(e);
+                setUpdatingSelectbox(e);
+              }}
             />
           ) : (
             ""
@@ -286,13 +291,15 @@ function RenderModal({
                   id,
                   editableTitle,
                   detail,
-                  updatingSelectbox ? updatingSelectbox : classArray,
+                  updatingSelectbox.length !== 0
+                    ? updatingSelectbox
+                    : classArray,
                   isPublic,
                   token
                 )
                   .then(
                     () => {
-                      window.location.reload();
+                      // window.location.reload();
                     }
                     // GetAnnouncements(token)
                   )
@@ -376,7 +383,6 @@ function RenderModal({
             type={"modal"}
             title={"Ekle"}
             onClick={() => {
-              console.log(addAnnouncementsDetail, addAnnouncementsTitle);
               if (
                 addAnnouncementsTitle.length >= 8 &&
                 addAnnouncementsDetail.length >= 8

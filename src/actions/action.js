@@ -42,16 +42,14 @@ export async function UpdateAnnouncements(
   };
   let arr = [];
   to.map((item) => {
-    if (to[0].exams) {
-      arr.push(item._id);
-    }
+    arr.push(item._id);
   });
   const response = await axios.put(
     `${uri}/announcements/${id}`,
     {
       title: title,
       detail: detail,
-      public: isPublic,
+      public: arr.length === 0 ? true : false,
       to: arr,
     },
     config

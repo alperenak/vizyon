@@ -7,23 +7,20 @@ import styles from "./selectbox.module.scss";
 export default function Selectbox({ onChange, dataToArray = [] }) {
   const [dropdownActive, setDropdownActive] = useState();
   const [dropdownName, setDropdownName] = useState("Sınıf Seçiniz");
-  const [dropdownArray, setDropdownArray] = useState(dataToArray);
+  const [dropdownArray, setDropdownArray] = useState([]);
   const token = GetToken();
-  const [ClassesNameData, setClassNameData] = useState([
-    { name: "sadssad" },
-    { name: "sadsadssadsas" },
-    { name: "sadsadfafaa" },
-    { name: "sadsaasdadd" },
-  ]);
+  const [ClassesNameData, setClassNameData] = useState([]);
   console.log("tooo", dropdownArray);
 
   useEffect(() => {
-    if (dataToArray) {
+    if (dataToArray && dataToArray.length !== 0) {
       setDropdownArray(dataToArray);
     }
-    getAllClass(token, 1000, 1).then((data) =>
-      setClassNameData(data.data.data)
-    );
+    if (ClassesNameData.length === 0) {
+      getAllClass(token, 1000, 1).then((data) =>
+        setClassNameData(data.data.data)
+      );
+    }
   }, [dataToArray]);
   return (
     <div className={styles.selectbox}>
@@ -36,6 +33,9 @@ export default function Selectbox({ onChange, dataToArray = [] }) {
           <Down id={"dropdownIcon"} className={styles.downIcon} />
           {dropdownArray.length !== 0
             ? dropdownArray.map((item) => {
+                ClassesNameData.filter((data) => {
+                  return data._id !== item._id;
+                });
                 return (
                   <div className={`${styles.multiselect} ${styles.active}`}>
                     <TimesSolid
