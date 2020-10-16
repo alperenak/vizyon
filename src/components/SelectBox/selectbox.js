@@ -19,7 +19,6 @@ export default function Selectbox({ onChange, dataToArray = [] }) {
 
   useEffect(() => {
     if (dataToArray) {
-      setDropdownName(false);
       setDropdownArray(dataToArray);
     }
     getAllClass(token, 1000, 1).then((data) =>
@@ -35,9 +34,8 @@ export default function Selectbox({ onChange, dataToArray = [] }) {
       >
         <div id={"dropdownName"} className={styles.dropdownName}>
           <Down id={"dropdownIcon"} className={styles.downIcon} />
-          {dropdownName
-            ? dropdownName
-            : dropdownArray.map((item) => {
+          {dropdownArray.length !== 0
+            ? dropdownArray.map((item) => {
                 return (
                   <div className={`${styles.multiselect} ${styles.active}`}>
                     <TimesSolid
@@ -63,7 +61,8 @@ export default function Selectbox({ onChange, dataToArray = [] }) {
                     </div>
                   </div>
                 );
-              })}
+              })
+            : dropdownName}
         </div>
         <div
           className={`${styles.dropdownContent}  ${
@@ -78,7 +77,7 @@ export default function Selectbox({ onChange, dataToArray = [] }) {
                   setDropdownName(false);
                   setDropdownArray([
                     ...dropdownArray,
-                    { name: item.name, id: item._id },
+                    { name: item.name, _id: item._id },
                   ]);
                   setClassNameData(
                     ClassesNameData.filter((data) => {

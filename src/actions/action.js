@@ -36,13 +36,15 @@ export async function UpdateAnnouncements(
   isPublic,
   token
 ) {
-  console.log(id);
+  console.log("id", to);
   const config = {
     headers: { authorization: `Bearer ${token}` },
   };
   let arr = [];
   to.map((item) => {
-    arr.push(item._id);
+    if (to[0].exams) {
+      arr.push(item._id);
+    }
   });
   const response = await axios.put(
     `${uri}/announcements/${id}`,

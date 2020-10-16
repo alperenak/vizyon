@@ -79,6 +79,12 @@ export default function Announcements({
           )}
         </div>
         <div className={styles.announcementsSection}>
+          <div className={styles.homeworkTitles}>
+            <div className={styles.homeworkTitleHomework}>Duyuru Başlığı</div>
+            <div className={styles.homeworkTitle}>Görünürlük</div>
+            <div className={styles.homeworkTitle}>Gösterilecek Sınıflar</div>
+            <div className={styles.homeworkTitle}>Teslim tarihi aralığı</div>
+          </div>
           {announcementsData.slice(0, mapCount).map((item) => {
             return (
               <div className={styles.announcements}>
@@ -87,7 +93,25 @@ export default function Announcements({
                     src={item.icon.includes("http") ? item.icon : duyurular}
                   />
                 </div>
-                <div className={styles.announcementsTitle}>{item.title}</div>
+                <div className={styles.announcementsTitles}>
+                  <div
+                    className={`${styles.announcementsTitle} ${styles.width}`}
+                  >
+                    {item.title}
+                  </div>
+                  <div
+                    className={`${styles.announcementsTitle} ${styles.class}`}
+                  >
+                    {item.public ? "Herkes" : "Seçili Sınıflar"}
+                  </div>
+                  <div className={styles.announcementsTitle}>
+                    {item.to.length !== 0
+                      ? item.to.map((item) => {
+                          return `${item.name},`;
+                        })
+                      : "Bütün sınıflar"}
+                  </div>
+                </div>
                 {isAdmin ? (
                   <div className={styles.announcementsAdminIcon}>
                     <EditSolid
@@ -106,7 +130,7 @@ export default function Announcements({
                       className={styles.trashIcon}
                       onClick={() => {
                         DeleteAnnouncements(item._id, token).then(() => {
-                          window.location.reload();
+                          // window.location.reload();
                         });
                       }}
                     />
@@ -161,6 +185,7 @@ function RenderModal({
   const [errorTitle, setErrorTitle] = useState(false);
   const [errorDetail, setErrorDetail] = useState(false);
   const [errorTitle1, setErrorTitle1] = useState(false);
+  const [updatingSelectbox, setUpdatingSelectbox] = useState(false);
   const token = GetToken();
   console.log(announcementsTitle);
   console.log("class", classArrayPopulate);
@@ -216,10 +241,15 @@ function RenderModal({
           ) : (
             ""
           )}
-          <Selectbox
-            dataToArray={classArrayPopulate}
-            onChange={(e) => console.log(e)}
-          />
+          {!isPublic ? (
+            <Selectbox
+              dataToArray={classArrayPopulate}
+              onChange={(e) => setUpdatingSelectbox(e)}
+            />
+          ) : (
+            ""
+          )}
+
           <Button
             type={"modal"}
             title={"Güncelle"}
@@ -229,13 +259,15 @@ function RenderModal({
                   id,
                   editableTitle,
                   detail,
-                  classArrayPopulate,
+                  updatingSelectbox ? updatingSelectbox : classArray,
                   isPublic,
                   token
                 )
-                  .then(() =>
+                  .then(
+                    () => {
+                      window.location.reload();
+                    }
                     // GetAnnouncements(token)
-                    window.location.reload()
                   )
                   .catch((e) => console.log(e));
                 setIsActive(false);
@@ -330,7 +362,7 @@ function RenderModal({
                   addAnnouncementsDetail,
                   dropdownName === "Seçilen Sınıflar" ? false : true,
                   classArray.map((item) => {
-                    return item.id;
+                    return item._id;
                   }),
                   token
                 ).then(() =>

@@ -222,7 +222,7 @@ function RenderModalContent({
             width: 700,
           }}
         >
-          <div
+          {/* <div
             id={"teacherDropdown"}
             onClick={() => setDropdownActive(!dropdownActive)}
             className={styles.dropdown}
@@ -251,7 +251,7 @@ function RenderModalContent({
                 );
               })}
             </div>
-          </div>
+          </div> */}
           <Input
             // value={addAnnouncementsTitle}
             placeholder="Sınıfın adını giriniz"

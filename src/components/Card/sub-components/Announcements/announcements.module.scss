@@ -56,6 +56,27 @@
     margin-top: 20px;
     width: 100%;
 
+    & .homeworkTitles {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 10px 0;
+
+      & .homeworkTitleHomework {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: $darkBlue;
+        font-family: SofiaBold;
+        width: 250px;
+      }
+
+      & .homeworkTitle {
+        color: $darkBlue;
+        font-family: SofiaBold;
+      }
+    }
+
     & .announcements {
       display: flex;
       position: relative;
@@ -75,11 +96,27 @@
         }
       }
 
-      & .announcementsTitle {
-        font-family: SofiaMedium;
-        color: $darkBlue;
-        font-size: 14px;
-        margin-left: 20px;
+      & .announcementsTitles {
+        display: flex;
+        width: 70%;
+        justify-content: space-around;
+
+        & .announcementsTitle {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: SofiaMedium;
+          color: $darkBlue;
+          font-size: 14px;
+        }
+
+        & .width {
+          width: 200px;
+        }
+
+        & .class {
+          width: 100px;
+        }
       }
 
       & .announcementsAdminIcon {
