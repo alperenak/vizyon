@@ -201,6 +201,7 @@ export default function UserManagement({ tabsType }) {
           setIsActive={setIsActive}
           type={modalType}
           classId={classId}
+          tabsType={tabsType}
           teachersData={teachersData}
         />
       </Modal>
@@ -214,6 +215,7 @@ function RenderModalContent({
   setIsActive,
   classId,
   teachersData,
+  tabsType,
 }) {
   console.log(classId);
   const [updatingClassName, setUpdatingClassName] = useState("");
@@ -223,9 +225,15 @@ function RenderModalContent({
   const [phone, setPhone] = useState("");
   const [role, setRole] = useState("");
   const [gender, setGender] = useState("");
-  const [dropdownName, setDropdownName] = useState("Öğretmen Seçiniz");
+  const [dropdownActive, setDropdownActive] = useState();
+  const [dropdownName, setDropdownName] = useState("Sınıf Seçiniz");
   const [instructorId, setInstructorId] = useState("");
   const token = GetToken();
+
+  useEffect(() => {
+    if (tabsType === "student") setRole("student");
+    else setRole("instructor");
+  }, [tabsType]);
   if (type === "edit")
     return (
       <>
@@ -288,7 +296,7 @@ function RenderModalContent({
         />
         <Input
           // value={addAnnouncementsTitle}
-          placeholder="Kullanıcı adı giriniz"
+          placeholder="E-posta giriniz"
           onChange={(e) => setUsername(e.target.value)}
           inputStyle={"modal"}
         />
@@ -298,18 +306,49 @@ function RenderModalContent({
           onChange={(e) => setPhone(e.target.value)}
           inputStyle={"modal"}
         />
-        <Input
+        {/* <Input
           // value={addAnnouncementsTitle}
           placeholder="Cinsiyeti giriniz"
           onChange={(e) => setGender(e.target.value)}
           inputStyle={"modal"}
-        />
-        <Input
+        /> */}
+        <div
+          id={"classDropdown"}
+          onClick={() => setDropdownActive(!dropdownActive)}
+          className={styles.dropdown}
+        >
+          <div id={"dropdownName"} className={styles.dropdownName}>
+            <Down id={"dropdownIcon"} className={styles.downIcon} />
+            {dropdownName}
+          </div>
+          <div
+            className={`${styles.dropdownContent}  ${
+              dropdownActive ? styles.active : ""
+            }`}
+            onClick={() => {}}
+          >
+            {[{ name: "Erkek" }, { name: "Kız" }].map((item) => {
+              return (
+                <div
+                  onClick={() => {
+                    setDropdownName(item.name);
+                    if (item.name === "Erkek") setGender("male");
+                    else if (item.name === "Kız") setGender("female");
+                  }}
+                  className={styles.dropdownItems}
+                >
+                  {item.name}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        {/* <Input
           // value={addAnnouncementsTitle}
           placeholder="Rolünü giriniz (admin, öğrenci, öğretmen)"
           onChange={(e) => setRole(e.target.value)}
           inputStyle={"modal"}
-        />
+        /> */}
         <Button
           type={"modal"}
           title={"Ekle"}
@@ -323,7 +362,9 @@ function RenderModalContent({
               phone,
               role,
               gender
-            );
+            ).then(() => {
+              window.location.reload();
+            });
           }}
         />
       </>

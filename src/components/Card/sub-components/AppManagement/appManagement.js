@@ -17,7 +17,7 @@ export default function AppManagement({ dropdownValue }) {
   const [fakeAppsData, setFakeAppsData] = useState([
     { isSelected: true, appName: "Office 365", icon: "office365" },
     { isSelected: false, appName: "Khan Academy", icon: "khanAcademy" },
-    { isSelected: true, appName: "Udemy", icon: "udemy" },
+    // { isSelected: true, appName: "Udemy", icon: "udemy" },
     { isSelected: false, appName: "Raz Kids", icon: "razkids" },
     { isSelected: false, appName: "Messenger", icon: "morpa" },
     {

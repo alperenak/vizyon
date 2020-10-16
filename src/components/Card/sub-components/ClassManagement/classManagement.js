@@ -214,15 +214,7 @@ function RenderModalContent({
   else if (type === "add") {
     return (
       <>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            width: 700,
-          }}
-        >
-          {/* <div
+        {/* <div
             id={"teacherDropdown"}
             onClick={() => setDropdownActive(!dropdownActive)}
             className={styles.dropdown}
@@ -252,13 +244,12 @@ function RenderModalContent({
               })}
             </div>
           </div> */}
-          <Input
-            // value={addAnnouncementsTitle}
-            placeholder="Sınıfın adını giriniz"
-            onChange={(e) => setUpdatingClassName(e.target.value)}
-            inputStyle={"modal"}
-          />
-        </div>
+        <Input
+          // value={addAnnouncementsTitle}
+          placeholder="Sınıfın adını giriniz"
+          onChange={(e) => setUpdatingClassName(e.target.value)}
+          inputStyle={"modal"}
+        />
         <Button
           type={"modal"}
           title={"Ekle"}

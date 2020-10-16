@@ -68,7 +68,7 @@ export default function ActivityManagement({ tabsType }) {
   return (
     <div className={styles.schedule}>
       <div className={styles.topSide}>
-        <div className={styles.title}>Aktivite Yönetimi</div>
+        <div className={styles.title}>Raporlar</div>
       </div>
       <div className={styles.scheduleTitlesSection}>
         <table>
