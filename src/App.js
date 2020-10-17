@@ -101,6 +101,7 @@ function App() {
           <Route exact={true} path="/admin/syllabus" component={Admin} />
           <Route exact={true} path="/admin/activity" component={Admin} />
           <Route exact={true} path="/admin/apps" component={Admin} />
+          <Route exact={true} path="/admin/exams" component={Admin} />
           <Route
             exact={true}
             path="/admin/activity/:id"

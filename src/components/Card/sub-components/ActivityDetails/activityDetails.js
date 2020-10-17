@@ -22,20 +22,16 @@ import Office from "../../../../assets/images/office.png";
 import teacherAvatar from "../../../../assets/images/teacherAvatar.png";
 import { getAppsLog, GetToken } from "../../../../actions/action";
 import { useLocation } from "react-router-dom";
-export default function ActivityDetails({ tabsType, match }) {
-  console.log(match);
+import { useParams } from "react-router-dom";
+import Card from "../../card";
+export default function ActivityDetails({ tabsType }) {
+  const [LogData, setLogData] = useState([]);
   const location = useLocation();
   const token = GetToken();
+  const { id } = useParams();
   useEffect(() => {
-    getAppsLog(
-      token,
-      0,
-      "2020-08-08",
-      "2020-10-10",
-      1000,
-      match?.params.id
-    ).then((data) => {
-      console.log(data);
+    getAppsLog(token, 0, "2020-08-08", "2020-10-10", 1000, id).then((data) => {
+      setLogData(data);
     });
   }, []);
   return (
@@ -64,44 +60,56 @@ export default function ActivityDetails({ tabsType, match }) {
       </div>
       <div className={styles.scheduleSection}>
         <table>
-          {studentsData && studentsData !== null && tabsType === "Genel"
-            ? studentsData.map((item) => {
-                return (
-                  <tr onClick={() => {}}>
-                    <div className={styles.scheduleTeacher}>
-                      <div className={styles.avatar}>
-                        <img
-                          // src={String(
-                          //   getTeacherAvatar(teachersData, item.course.code)
-                          // ).replace(/,/gi, "")}\
-                          src={Office}
-                        />
-                      </div>
-                      <td>{item.appName}</td>
+          {LogData.length !== 0 &&
+          LogData.data &&
+          LogData.data.data &&
+          LogData.data.data !== null &&
+          tabsType === "Genel" ? (
+            LogData.data.data.logs.map((item) => {
+              return (
+                <tr onClick={() => {}}>
+                  <div className={styles.scheduleTeacher}>
+                    <div className={styles.avatar}>
+                      <img
+                        // src={String(
+                        //   getTeacherAvatar(teachersData, item.course.code)
+                        // ).replace(/,/gi, "")}\
+                        src={Office}
+                      />
                     </div>
-                    <td>{item.count}</td>
-                    <td className={styles.space}>
-                      {/* <PlusCircleSolid className={styles.addExamIcon} /> */}
-                    </td>
-                    <td className={styles.space}></td>
-                  </tr>
-                );
-              })
-            : teachersData.map((item) => {
-                return (
-                  <tr>
-                    <div className={styles.scheduleTeacher}>
-                      <div className={styles.avatar}>
-                        <img src={Office} />
-                      </div>
-                      <td>{item.appName}</td>
+                    <td>{item.app}</td>
+                  </div>
+                  <td>{LogData.data.data?.count}</td>
+                  <td className={styles.space}>
+                    {/* <PlusCircleSolid className={styles.addExamIcon} /> */}
+                  </td>
+                  <td className={styles.space}></td>
+                </tr>
+              );
+            })
+          ) : LogData.length !== 0 &&
+            LogData.data &&
+            LogData.data.data &&
+            LogData.data.data !== null &&
+            tabsType === "Genel" ? (
+            LogData.data.data.logs.map((item) => {
+              return (
+                <tr>
+                  <div className={styles.scheduleTeacher}>
+                    <div className={styles.avatar}>
+                      <img src={Office} />
                     </div>
-                    <td>{item.date}</td>
-                    <td className={styles.space}></td>
-                    <td className={styles.space}></td>
-                  </tr>
-                );
-              })}
+                    <td>{item.app}</td>
+                  </div>
+                  <td>{ConvertDate(item.timestamp)}</td>
+                  <td className={styles.space}></td>
+                  <td className={styles.space}></td>
+                </tr>
+              );
+            })
+          ) : (
+            <div>data yok</div>
+          )}
         </table>
       </div>
     </div>

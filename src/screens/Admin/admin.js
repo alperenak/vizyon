@@ -240,8 +240,12 @@ function RenderCard({ pathname, announcementsData }) {
         <Login />
       </>
     );
-  } else if (pathname === "/exams") {
-    return <></>;
+  } else if (pathname === "/admin/exams") {
+    return (
+      <>
+        <Card type={"exams"} />
+      </>
+    );
   } else return <></>;
 }
 

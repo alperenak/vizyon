@@ -11,6 +11,7 @@ import RazKids from "../../../../assets/images/razkids.png";
 import Udemy from "../../../../assets/images/udemy.png";
 import { CheckSolid } from "../../../../icons";
 import Button from "../../../Button/button";
+import Apps from "../../../Apps/apps";
 
 export default function AppManagement({ dropdownValue }) {
   const [changeValue, setChangeValue] = useState({});
@@ -52,24 +53,11 @@ export default function AppManagement({ dropdownValue }) {
           <div className={styles.appsGrid}>
             {fakeAppsData.map((item, index) => {
               return (
-                <div
-                  onClick={() => {}}
-                  className={`${styles.renderApps} ${
-                    item.isSelected ? styles.selected : ""
-                  }`}
-                >
-                  {item.isSelected ? (
-                    <div className={styles.checkSolid}>
-                      <CheckSolid className={styles.checkSolidIcon} />
-                    </div>
-                  ) : (
-                    ""
-                  )}
-                  <div className={styles.appAvatar}>
-                    <RenderIcon iconName={item.icon} className={styles.icon} />
-                  </div>
-                  <div className={styles.appName}>{item.appName}</div>
-                </div>
+                <Apps
+                  iconName={item.icon}
+                  appName={item.appName}
+                  onClick={(e) => console.log("isselected", e)}
+                />
               );
             })}
           </div>
