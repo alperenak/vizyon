@@ -240,6 +240,8 @@ function RenderCard({ pathname, announcementsData }) {
         <Login />
       </>
     );
+  } else if (pathname === "/exams") {
+    return <></>;
   } else return <></>;
 }
 
@@ -260,3 +262,19 @@ const ClassesNameData = [
     name: "5. Sınıflar",
   },
 ];
+// function onSearchTextChange(value) {
+//   this.setState((state) => {
+//     if (value) {
+//       state.filteredStaticData = staticData.filter((el) =>
+//         `${el.name} ${el.title}`.includes(value)
+//       );
+//     } else {
+//       if (state.searchText) {
+//         state.filteredStaticData = staticData;
+//       }
+//     }
+
+//     state.searchText = value;
+//     return state;
+//   });
+// }

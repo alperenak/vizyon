@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import styles from "./classManagement.module.scss";
+import styles from "./exams.module.scss";
 import {
   Ders,
   Download,
@@ -28,7 +28,7 @@ import {
   updateClass,
 } from "../../../../actions/action";
 import teacherAvatar from "../../../../assets/images/teacherAvatar.png";
-export default function ClassManagement() {
+export default function Exams() {
   const [classData, setClassData] = useState([
     { name: "5 A", teacher: "Alperen Karaguzel" },
     { name: "5 B", teacher: "Alperen Karaguzel" },
