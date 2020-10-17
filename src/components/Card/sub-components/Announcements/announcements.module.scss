@@ -5,12 +5,15 @@
   flex-direction: column;
   border-radius: 12px;
   height: 430px;
+  max-height: 600px;
   width: 770px;
   background-color: #fefdff;
   position: relative;
   margin-top: 40px;
+  padding-bottom: 10px;
   transition: height 1s;
   box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+
 
   & .topSide {
     display: flex;
@@ -51,6 +54,7 @@
   }
 
   & .announcementsSection {
+    overflow-y: scroll;
     display: flex;
     flex-direction: column;
     margin-top: 20px;
@@ -112,6 +116,7 @@
 
         & .width {
           width: 200px;
+          text-align: center;
         }
 
         & .class {

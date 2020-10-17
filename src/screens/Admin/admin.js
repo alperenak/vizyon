@@ -37,7 +37,7 @@ export default function Admin() {
             .catch((e) => console.error(e));
         }
         if (!announcementsData) {
-          GetAnnouncements(5, 1, token)
+          GetAnnouncements(100, 1, token)
             .then((data) => {
               setAnnouncementsData(data);
             })
@@ -45,7 +45,7 @@ export default function Admin() {
         }
       }
     } else window.location.replace("/");
-  }, []);
+  }, [token]);
   return (
     <div className={styles.adminContainer}>
       <SideBar />

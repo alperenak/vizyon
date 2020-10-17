@@ -80,12 +80,16 @@ export default function Announcements({
           )}
         </div>
         <div className={styles.announcementsSection}>
-          <div className={styles.homeworkTitles}>
-            <div className={styles.homeworkTitleHomework}>Duyuru Başlığı</div>
-            <div className={styles.homeworkTitle}>Görünürlük</div>
-            <div className={styles.homeworkTitle}>Gösterilecek Sınıflar</div>
-            <div className={styles.homeworkTitle}>Teslim tarihi aralığı</div>
-          </div>
+          {isAdmin ? (
+            <div className={styles.homeworkTitles}>
+              <div className={styles.homeworkTitleHomework}>Duyuru Başlığı</div>
+              <div className={styles.homeworkTitle}>Görünürlük</div>
+              <div className={styles.homeworkTitle}>Gösterilecek Sınıflar</div>
+              <div className={styles.homeworkTitle}>Teslim tarihi aralığı</div>
+            </div>
+          ) : (
+            ""
+          )}
           {announcementsData.slice(0, mapCount).map((item) => {
             return (
               <div className={styles.announcements}>
@@ -96,22 +100,30 @@ export default function Announcements({
                 </div>
                 <div className={styles.announcementsTitles}>
                   <div
-                    className={`${styles.announcementsTitle} ${styles.width}`}
+                    className={`${styles.announcementsTitle} ${
+                      isAdmin ? styles.width : ""
+                    }`}
                   >
                     {item.title}
                   </div>
-                  <div
-                    className={`${styles.announcementsTitle} ${styles.class}`}
-                  >
-                    {item.public ? "Herkes" : "Seçili Sınıflar"}
-                  </div>
-                  <div className={styles.announcementsTitle}>
-                    {item.to.length !== 0
-                      ? item.to.map((item) => {
-                          return `${item.name},`;
-                        })
-                      : "Bütün sınıflar"}
-                  </div>
+                  {isAdmin ? (
+                    <>
+                      <div
+                        className={`${styles.announcementsTitle} ${styles.class}`}
+                      >
+                        {item.public ? "Herkes" : "Seçili Sınıflar"}
+                      </div>
+                      <div className={styles.announcementsTitle}>
+                        {item.to.length !== 0
+                          ? item.to.map((item) => {
+                              return `${item.name},`;
+                            })
+                          : "Bütün sınıflar"}
+                      </div>
+                    </>
+                  ) : (
+                    <></>
+                  )}
                 </div>
                 {isAdmin ? (
                   <div className={styles.announcementsAdminIcon}>

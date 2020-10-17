@@ -1,11 +1,12 @@
-import React, { useMemo, useState } from "react";
+import React, { useContext, useMemo, useState } from "react";
 import styles from "./dragDrop.module.scss";
 import { useDropzone } from "react-dropzone";
 import { GetToken, uploadFile } from "../../../actions/action";
 import Button from "../../Button/button";
 import axios from "axios";
+import { FileContext } from "../../../context/fileContext";
 export default function DropzoneField(props) {
-  const [file, setFile] = useState();
+  const [fileData, setFileData] = useContext(FileContext);
   const {
     acceptedFiles,
     getRootProps,
@@ -70,18 +71,4 @@ export default function DropzoneField(props) {
       </aside>
     </section>
   );
-}
-
-function getRequest(file) {
-  const token = GetToken();
-  const formdata = new FormData();
-  formdata.append("text", file);
-  formdata.append("name", "Alperen Karaguzel");
-  console.log(formdata);
-
-  uploadFile(token, file)
-    .then((data) => {
-      console.log(data);
-    })
-    .catch((e) => alert(e));
 }
