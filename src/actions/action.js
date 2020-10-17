@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useContext } from "react";
 import { useCookies } from "react-cookie";
-const uri = "https://gelisim-okullari.herokuapp.com/api/v1";
+const uri = "https://gelisim.herokuapp.com/api/v1";
 const location = window.location;
 export async function GetAuthentication(username, password) {
   // axios
@@ -304,5 +304,12 @@ export async function GetSchedulesDownloadLink(token, classId) {
     `${uri}/classes/exams-xls/${classId}`,
     config
   );
+  return response;
+}
+export async function GetAllExams(token) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = await axios.get(`${uri}/classes/exams`, config);
   return response;
 }

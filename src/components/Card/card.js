@@ -13,6 +13,7 @@ import UserManagement from "./sub-components/User Management/userManagement";
 import SyllabusManagement from "./sub-components/SyllabusManagement/syllabusManagement";
 import AppManagement from "./sub-components/AppManagement/appManagement";
 import Exams from "./sub-components/Exams/exams";
+
 export default function Card(props) {
   return (
     <div className={styles.cardContainer}>

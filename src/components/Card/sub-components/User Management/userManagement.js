@@ -88,10 +88,10 @@ export default function UserManagement({ tabsType }) {
               <User className={`${styles.scheduleTitlesIcon} ${styles.user}`} />
               <td className={styles.ogretmen}>Ad Soyad</td>
             </div>
-            <div className={styles.scheduleTitles}>
+            {/* <div className={styles.scheduleTitles}>
               <Ders className={`${styles.scheduleTitlesIcon}`} />
               <td>Sınıf</td>
-            </div>
+            </div> */}
             <div className={styles.scheduleTitles}>
               <Ders
                 className={`${styles.scheduleTitlesIcon} ${styles.editAndDelete}`}
@@ -122,7 +122,11 @@ export default function UserManagement({ tabsType }) {
                       </div>
                       <td>{`${item.first_name} ${item.last_name}`}</td>
                     </div>
-                    <td>{item.teacher ? item.teacher : "Eyüp Saruhan"}</td>
+                    <td>
+                      {item.studentInfo
+                        ? item.studentInfo.class.name
+                        : "sınıf bilgisi yok"}
+                    </td>
                     <td className={styles.space}>
                       {/* <PlusCircleSolid className={styles.addExamIcon} /> */}
                     </td>
@@ -163,7 +167,7 @@ export default function UserManagement({ tabsType }) {
                       </div>
                       <td>{`${item.first_name} ${item.last_name}`}</td>
                     </div>
-                    <td>{item.teacher ? item.teacher : "Eyüp Saruhan"}</td>
+                    {/* <td>{item. ? item.teacher : "Eyüp Saruhan"}</td> */}
                     <td className={styles.space}></td>
                     <td className={styles.space}>
                       <EditSolid

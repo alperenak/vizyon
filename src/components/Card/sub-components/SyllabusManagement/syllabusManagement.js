@@ -132,10 +132,10 @@ export default function SyllabusManagement() {
                     </div>
                     <td>{item.name}</td>
                   </div>
-                  <td>
+                  <td className={styles.instructorName}>
                     {item.instructor
                       ? `${item.instructor.first_name} ${item.instructor.last_name}`
-                      : "Eyüp Saruhan"}
+                      : "-"}
                   </td>
                   <div>
                     <td>

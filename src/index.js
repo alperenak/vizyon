@@ -6,15 +6,18 @@ import DataContextProvider from "./context/tokenContext";
 import * as serviceWorker from "./serviceWorker";
 import UserContextProvider from "./context/userContext";
 import StorageContextProvider from "./context/storageContext";
+import SingleUserContextProvider from "./context/singleUserContext";
 ReactDOM.render(
   <React.StrictMode>
-    <StorageContextProvider>
-      <UserContextProvider>
-        <DataContextProvider>
-          <App />
-        </DataContextProvider>
-      </UserContextProvider>
-    </StorageContextProvider>
+    <SingleUserContextProvider>
+      <StorageContextProvider>
+        <UserContextProvider>
+          <DataContextProvider>
+            <App />
+          </DataContextProvider>
+        </UserContextProvider>
+      </StorageContextProvider>
+    </SingleUserContextProvider>
   </React.StrictMode>,
   document.getElementById("root")
 );

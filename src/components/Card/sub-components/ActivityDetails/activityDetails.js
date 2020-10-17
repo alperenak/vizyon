@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./activityDetails.module.scss";
 import {
   Ders,
@@ -24,11 +24,14 @@ import { getAppsLog, GetToken } from "../../../../actions/action";
 import { useLocation } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import Card from "../../card";
+import { SingleUserContext } from "../../../../context/singleUserContext";
 export default function ActivityDetails({ tabsType }) {
   const [LogData, setLogData] = useState([]);
+  const [singleUser, setSingleUser] = useContext(SingleUserContext);
   const location = useLocation();
   const token = GetToken();
   const { id } = useParams();
+
   useEffect(() => {
     getAppsLog(token, 0, "2020-08-08", "2020-10-10", 1000, id).then((data) => {
       setLogData(data);
@@ -39,9 +42,9 @@ export default function ActivityDetails({ tabsType }) {
       <div className={styles.topSide}>
         <div className={styles.title}>
           <div className={styles.avatar}>
-            <img src={teacherAvatar} />
+            <img src={singleUser.profile} />
           </div>
-          <div className={styles.name}>Orhan Karabıyık</div>
+          <div className={styles.name}>{singleUser.name}</div>
         </div>
       </div>
       <div className={styles.scheduleTitlesSection}>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./exams.module.scss";
 import {
   Ders,
@@ -13,9 +13,19 @@ import {
 import AlertBox from "../../../Alert/alert";
 import { ConvertDate, ConvertTime } from "../../../../utils/utils";
 import teacherAvatar from "../../../../assets/images/teacherAvatar.png";
-import { GetSchedulesDownloadLink, GetToken } from "../../../../actions/action";
+import {
+  GetSchedulesDownloadLink,
+  GetToken,
+  GetAllExams,
+} from "../../../../actions/action";
 export default function Schedule({ scheduleData, teachersData, classInfo }) {
   const token = GetToken();
+  const [allExams, setAllExams] = useState([]);
+  useEffect(() => {
+    GetAllExams(token).then((data) => {
+      setAllExams(data);
+    });
+  });
   return (
     <div className={styles.schedule}>
       <div className={styles.topSide}>
@@ -70,24 +80,21 @@ export default function Schedule({ scheduleData, teachersData, classInfo }) {
       </div>
       <div className={styles.scheduleSection}>
         <table>
-          {scheduleData && scheduleData !== null ? (
-            scheduleData.map((item) => {
+          {allExams.data?.data && allExams.data.data !== null ? (
+            allExams.data.data.map((item) => {
               return (
                 <tr>
                   <div className={styles.scheduleTeacher}>
                     <div className={styles.avatar}>
-                      <img
-                        src={String(
-                          getTeacherAvatar(teachersData, item.course.code)
-                        ).replace(/,/gi, "")}
-                      />
+                      <img src={teacherAvatar} />
                     </div>
-                    <td>{getTeacherName(teachersData, item.course.code)}</td>
+                    <td>{item.class.name}</td>
                   </div>
+                  <td>{item.course.name}</td>
                   <td>
-                    {item.course.name
+                    {/* {item.course.name
                       ? `${item.course.name} Öğretmeni`
-                      : "none"}
+                      : "none"} */}
                   </td>
                   <td>{ConvertDate(item.date)}</td>
                   <td>{ConvertTime(item.date)}</td>
@@ -99,14 +106,6 @@ export default function Schedule({ scheduleData, teachersData, classInfo }) {
           )}
         </table>
       </div>
-      <AlertBox
-        title={
-          "Yukarıdaki ders programı **2020 / 2021 Eğitim - Öğretim Yılı**’nın ilk yarısına kadar geçerlidir."
-        }
-        type={"primary"}
-      >
-        <GreenTip className={styles.greenTip} />
-      </AlertBox>
     </div>
   );
 }

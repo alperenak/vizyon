@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import SideBar from "../../components/Sidebar/sidebar";
 import styles from "./admin.module.scss";
 import Card from "../../components/Card/card";
@@ -18,6 +18,7 @@ import { useCookies } from "react-cookie";
 import Login from "../../screens/Login/login";
 export default function Admin() {
   const [announcementsData, setAnnouncementsData] = useState(false);
+  const [newAnnouncementsData, setNewAnnouncementsData] = useState([]);
   const [userData, setUserData] = useContext(UserContext);
   const [loading, setLoading] = useState(false);
   const [cookies, setCookies] = useCookies(false);
@@ -57,34 +58,61 @@ export default function Admin() {
           }
           isAdmin={true}
         /> */}
-        <RenderCard pathname={pathname} announcementsData={announcementsData} />
+        <RenderCard
+          pathname={pathname}
+          announcementsData={announcementsData}
+          setAnnouncementsData={setAnnouncementsData}
+          newAnnouncementsData={newAnnouncementsData}
+          setNewAnnouncementsData={setNewAnnouncementsData}
+        />
       </div>
     </div>
   );
 }
 
-function RenderCard({ pathname, announcementsData }) {
+function RenderCard({
+  pathname,
+  announcementsData,
+  setAnnouncementsData,
+  newAnnouncementsData,
+  setNewAnnouncementsData,
+}) {
   const [tabsType, setTabsType] = useState("student");
   const [dropdownActive, setDropdownActive] = useState();
   const [dropdownName, setDropdownName] = useState("Sınıf Seçiniz");
   const dropdownNames = document.getElementById("dropdownName");
   const dropdownIcon = document.getElementById("dropdownIcon");
+  console.log(announcementsData);
   window.onclick = function (e) {
     if (e.target !== dropdownNames && e.target !== dropdownIcon) {
       setDropdownActive(false);
     }
   };
+  function onChangeText(evt) {
+    const value = evt.target.value;
+    let arr = announcementsData;
+    if (evt.target.value !== "")
+      arr.data.data = announcementsData.data.data.filter((item) => {
+        return item.title.includes(evt.target.value);
+      });
+    setNewAnnouncementsData(arr);
+    console.log(announcementsData.data.data);
+  }
   if (pathname === "/admin/announcements")
     return (
       <>
         <h1>Duyurular Yönetimi</h1>
-        <Input placeholder="Ara" inputStyle={"search"}>
+        <Input placeholder="Ara" inputStyle={"search"} onChange={onChangeText}>
           <SearchSolid className={styles.searchIcon} />
         </Input>
         <Card
           type={"announcements"}
           announcementsData={
-            announcementsData ? announcementsData.data.data : []
+            newAnnouncementsData.length !== 0
+              ? newAnnouncementsData
+              : announcementsData
+              ? announcementsData.data?.data
+              : []
           }
           isAdmin={true}
         />
@@ -243,6 +271,7 @@ function RenderCard({ pathname, announcementsData }) {
   } else if (pathname === "/admin/exams") {
     return (
       <>
+        <h1>Sınav Yönetimi</h1>
         <Card type={"exams"} />
       </>
     );
