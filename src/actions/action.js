@@ -313,3 +313,60 @@ export async function GetAllExams(token) {
   const response = await axios.get(`${uri}/classes/exams`, config);
   return response;
 }
+export async function UpdateExam(
+  token,
+  classId,
+  examId,
+  date,
+  duration,
+  courseId
+) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = await axios.put(
+    `${uri}/classes/${classId}/exams/${examId}`,
+    {
+      course: courseId,
+      date: date,
+      duration: duration,
+    },
+    config
+  );
+  return response;
+}
+export async function CreateExam(token, classId, date, duration, courseId) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = await axios.post(
+    `${uri}/classes/${classId}/exams`,
+    {
+      course: courseId,
+      date: date,
+      duration: duration,
+    },
+    config
+  );
+  return response;
+}
+export async function DeleteExam(token, classId, examId) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = await axios.delete(
+    `${uri}/classes/${classId}/exams/${examId}`,
+    config
+  );
+  return response;
+}
+export async function GetAllCourses(token) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = await axios.get(
+    `${uri}/courses?page=${1}&limit=${100}`,
+    config
+  );
+  return response;
+}

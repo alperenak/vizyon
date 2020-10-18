@@ -1,4 +1,4 @@
-const months = [
+export const months = [
   "Ocak",
   "Şubat",
   "Mart",
@@ -12,7 +12,7 @@ const months = [
   "Kasım",
   "Aralık",
 ];
-const days = [
+export const days = [
   "Pazar",
   "Pazartesi",
   "Salı",
@@ -57,4 +57,42 @@ export function ConvertTime(date, duration = "30") {
     secondSaat = `0${secondSaat}`;
   }
   return `${saat}.${minutes} - ${secondSaat}.${secondMin}`;
+}
+const date = new Date();
+export function getMonthNumber(month = "Nisan") {
+  const thirdyOne = [
+    "Ocak",
+    "Mart",
+    "Mayıs",
+    "Temmuz",
+    "Ağustos",
+    "Ekim",
+    "Aralık",
+  ];
+  if (thirdyOne.includes(month)) {
+    return createByNumberArray(31);
+  } else if (month === "Şubat") {
+    if (date.getFullYear() % 4 === 0) {
+      return createByNumberArray(29);
+    } else return createByNumberArray(28);
+  } else return createByNumberArray(30);
+}
+
+export function createByNumberArray(count) {
+  let arr = [];
+  for (let i = 1; i <= count; i++) {
+    if (String(i).length === 1) {
+      arr.push(`0${i}`);
+    } else {
+      arr.push(i);
+    }
+  }
+  return arr;
+}
+export function createBySpaceNumberArray(first, second) {
+  let arr = [];
+  for (let i = first; i <= second + 1; i++) {
+    arr.push(i);
+  }
+  return arr;
 }

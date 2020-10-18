@@ -3,7 +3,7 @@ export { default as ArrowLeftSolid } from "./ArrowLeftSolid";
 export { default as CheckSolid } from "./CheckSolid";
 export { default as Clock } from "./Clock";
 export { default as Comunication } from "./Comunication";
-export { default as Date } from "./Date";
+export { default as DateIcon } from "./Date";
 export { default as Ders } from "./Ders";
 export { default as Dosyalar } from "./Dosyalar";
 export { default as Down } from "./Down";

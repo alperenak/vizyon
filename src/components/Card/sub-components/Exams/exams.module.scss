@@ -29,106 +29,27 @@
         }
 
 
-        & .downloadSyllabusPdf {
-            display: flex;
-            align-items: center;
-            width: 212px;
-            background-color: #FFD3D3;
-            border-radius: 8px;
-            height: 30px;
-            justify-content: space-around;
-            cursor: pointer;
-            align-items: center;
-            margin-right: 10px;
-
-            & .formatXLS {
-                display: flex;
-                border-radius: 8px;
-                width: 46px;
-                justify-content: center;
-                align-items: center;
-                height: 24px;
-                box-shadow: 0px 4px 4px rgba(255, 0, 0, 0.25);
-                background-color: white;
-
-                & .formatIcon {
-                    width: 9px;
-                    height: 9px;
-                }
-
-                & .formatName {
-                    color: #CB0000;
-                    font-size: 11px;
-                    margin-left: 5px;
-                    font-family: SofiaBlack;
-                }
-            }
-
-            & .downloadTitle {
-                font-family: SofiaSemiBold;
-                color: #CB0000;
-                font-size: 14px
-            }
-        }
-
-        & .downloadSyllabus {
-            display: flex;
-            align-items: center;
-            width: 212px;
-            background-color: #e9fff8;
-            border-radius: 8px;
-            height: 30px;
-            justify-content: space-around;
-            align-items: center;
-            cursor: pointer;
-
-
-            & .formatXLS {
-                display: flex;
-                border-radius: 8px;
-                width: 46px;
-                justify-content: center;
-                align-items: center;
-                height: 24px;
-                box-shadow: 0px 5px 27px -8px rgba(94, 191, 155, 1);
-                background-color: white;
-
-                & .formatIcon {
-                    width: 9px;
-                    height: 9px;
-                }
-
-                & .formatName {
-                    color: #5ebf9b;
-                    font-size: 11px;
-                    margin-left: 5px;
-                    font-family: SofiaBlack;
-                }
-            }
-
-            & .downloadTitle {
-                font-family: SofiaSemiBold;
-                color: #5ebf9b;
-                font-size: 14px
-            }
-        }
-
         & .feedback {
             display: flex;
             justify-content: space-around;
             align-items: center;
-            width: 117px;
+            cursor: pointer;
+            padding: 0 10px;
             height: 30px;
             background-color: rgba(225, 238, 253, 0.51);
             border-radius: 8px;
-            margin-left: 10px;
+            margin-right: -10px;
+
+            & .feedbackIcon {
+                color: $darkBlue;
+            }
 
             & .feedbackTitle {
                 font-size: 14px;
                 font-family: SofiaSemiBold;
-                color: $darkBlue
+                color: $darkBlue;
+                margin-left: 10px;
             }
-
         }
     }
 
@@ -150,6 +71,7 @@
                 display: flex;
                 justify-content: space-around;
                 align-items: center;
+                padding-left: 30px;
                 width: 100%;
 
                 & .scheduleTitles {
@@ -164,13 +86,9 @@
                 }
 
 
-                & .tarih {
-                    margin-right: 80px;
-                }
+                & .tarih {}
 
-                & .user {
-                    margin-left: 25px;
-                }
+                & .user {}
 
 
                 & td {
@@ -233,6 +151,28 @@
                     font-size: 14px;
                     font-family: SofiaMedium;
                 }
+
+                & .editIcon {
+                    width: 20px;
+                    height: 20px;
+                    color: rgba(94, 191, 155, 1);
+                    cursor: pointer
+                }
+
+                & .deleteIcon {
+                    width: 20px;
+                    height: 20px;
+                    color: red;
+                    cursor: pointer
+                }
+
+
+                & .space {
+                    margin-left: 40px;
+                    align-items: center;
+                    justify-content: space-around;
+                    display: flex;
+                }
             }
 
             & tr:hover {
@@ -247,5 +187,92 @@
         left: 20px;
         width: 20px;
         height: 20px;
+    }
+
+    & .dropdown {
+        position: relative;
+        display: inline-block;
+        z-index: 1;
+        margin: 10px;
+
+        & .dropdownName {
+            display: flex;
+            align-items: center;
+            color: $darkBlue;
+            width: 50px;
+            height: 30px;
+            cursor: pointer;
+            font-family: SofiaBold;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+            padding: 10px 20px;
+            padding-right: 40px;
+            position: relative;
+
+            & .downIcon {
+                position: absolute;
+                right: 10px;
+                color: black;
+            }
+        }
+
+        & .course {
+            width: 200px;
+        }
+
+        & .dropdownContent {
+            display: none;
+            position: absolute;
+            flex-direction: column;
+            align-items: center;
+            background-color: white;
+            width: calc(100% - 18px);
+            left: 13px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+            overflow-y: scroll;
+            max-height: 200px;
+            font-size: 14px;
+            color: $darkBlue;
+            font-family: SofiaBold;
+            z-index: 1;
+
+            & .dropdownItems {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                min-height: 50px;
+                background-color: white;
+                box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+                cursor: pointer;
+
+                &:hover {
+                    background-color: rgb(243, 243, 243);
+                }
+
+                & .hour {}
+            }
+        }
+
+        & .course {
+            display: flex;
+        }
+
+        & .active {
+            display: flex;
+        }
+    }
+
+    & .classes {
+        z-index: 9999999999999999999;
+    }
+
+    & .hour {
+        z-index: 9999999999999;
+    }
+
+    & .dayzz {
+        z-index: 9999999999999999999;
     }
 }

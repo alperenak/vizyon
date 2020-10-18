@@ -230,8 +230,9 @@ function RenderModalContent({
   const [role, setRole] = useState("");
   const [gender, setGender] = useState("");
   const [dropdownActive, setDropdownActive] = useState();
-  const [dropdownName, setDropdownName] = useState("Sınıf Seçiniz");
+  const [dropdownName, setDropdownName] = useState("Cinsiyeti Seçiniz");
   const [instructorId, setInstructorId] = useState("");
+
   const token = GetToken();
 
   useEffect(() => {
@@ -254,12 +255,12 @@ function RenderModalContent({
         />
         <Input
           placeholder="Numarasını giriniz"
-          onChange={(e) => setLastname(e.target.value)}
+          onChange={(e) => setPhone(e.target.value)}
           inputStyle={"modal"}
         />
         <Input
           placeholder="E-postasını giriniz"
-          onChange={(e) => setLastname(e.target.value)}
+          onChange={(e) => setUsername(e.target.value)}
           inputStyle={"modal"}
         />
         <Button

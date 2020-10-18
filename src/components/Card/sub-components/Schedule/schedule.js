@@ -5,7 +5,7 @@ import {
   Download,
   Info,
   User,
-  Date,
+  DateIcon,
   Clock,
   PdfDownload,
   GreenTip,
@@ -58,7 +58,9 @@ export default function Schedule({ scheduleData, teachersData, classInfo }) {
               <td>Dersin Adı</td>
             </div>
             <div className={styles.scheduleTitles}>
-              <Date className={`${styles.scheduleTitlesIcon} ${styles.date}`} />
+              <DateIcon
+                className={`${styles.scheduleTitlesIcon} ${styles.date}`}
+              />
               <td className={styles.tarih}>Tarih</td>
             </div>
             <div className={styles.scheduleTitles}>
