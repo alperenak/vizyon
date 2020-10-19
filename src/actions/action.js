@@ -256,15 +256,19 @@ export async function deleteUser(token, userId) {
   const response = await axios.delete(`${uri}/users/${userId}`, config);
   return response;
 }
-export async function uploadFile(token, file) {
+export async function importSchedule(token, file) {
   const config = {
-    headers: { authorization: `Bearer ${token}` },
+    headers: {
+      authorization: `Bearer ${token}`,
+      "content-type": "multipart/form-data",
+    },
   };
-  const response = await axios.post(
-    `${uri}/storage/files/upload`,
-    file,
-    config
-  );
+  console.log("gelen", file);
+  // let fileData = file;
+  // let formdata = new FormData();
+  // formdata.append("file", fileData);
+  // formdata.append("name", "kara");
+  const response = await axios.put(`${uri}/classes/import`, file, config);
   return response;
 }
 export async function getAppsLog(

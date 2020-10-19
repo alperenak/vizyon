@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./syllabusManagement.module.scss";
 import {
   Ders,
@@ -28,9 +28,12 @@ import {
   GetSyllabusDownloadLink,
   GetToken,
   updateClass,
+  importSchedule,
 } from "../../../../actions/action";
 import Card from "../../card";
 import teacherAvatar from "../../../../assets/images/teacherAvatar.png";
+import { useDropzone } from "react-dropzone";
+import { FileContext } from "../../../../context/fileContext";
 export default function SyllabusManagement() {
   const [classData, setClassData] = useState([
     {
@@ -68,7 +71,18 @@ export default function SyllabusManagement() {
   const [modalType, setModalType] = useState(false);
   const [classId, setClassId] = useState(false);
   const [teachersData, setTeachersData] = useState([]);
+  const {
+    acceptedFiles,
+    getRootProps,
+    getInputProps,
+    isDragActive,
+    isDragAccept,
+    open,
+    isDragReject,
+  } = useDropzone({ noClick: true });
+  const [fileData, setFileData] = useContext(FileContext);
   const token = GetToken();
+  console.log(acceptedFiles);
   useEffect(() => {
     getAllClass(token).then((data) => {
       setClassData(data.data.data);
@@ -204,6 +218,7 @@ export default function SyllabusManagement() {
           type={modalType}
           classId={classId}
           teachersData={teachersData}
+          fileData={fileData}
         />
       </Modal>
     </div>
@@ -216,29 +231,26 @@ function RenderModalContent({
   setIsActive,
   classId,
   teachersData,
+  fileData,
 }) {
-  console.log(classId);
   const [updatingClassName, setUpdatingClassName] = useState("");
   const [dropdownActive, setDropdownActive] = useState("");
   const [dropdownName, setDropdownName] = useState("Öğretmen Seçiniz");
   const [instructorId, setInstructorId] = useState("");
+  const [realFileData, setRealFileData] = useState([]);
+  const selectedFile = document.getElementById("fileDrop")?.files[0];
   const token = GetToken();
   if (type === "edit")
     return (
       <>
-        <Card type={"dropzone"} />
-        <Button
-          type={"primary"}
-          title={"Yükle"}
-          onClick={() => {
-            setIsActive(false);
-            addClass(token, instructorId, updatingClassName).then(() =>
-              // GetAnnouncements(token)
-              window.location.reload()
-            );
-            setIsActive(false);
+        <Card type={"dropzone"} isActive={isActive} setIsActive={setIsActive} />
+        {/* <input
+          onChange={(e) => {
+            setRealFileData(e.target.files[0]);
           }}
-        />
+          type="file"
+          id="fileDrop"
+        /> */}
       </>
     );
   else if (type === "add") {
