@@ -67,7 +67,7 @@ export default function ActivityDetails({ tabsType }) {
   const token = GetToken();
   const { id } = useParams();
   useEffect(() => {
-    getAppsLog(token, 0, "2020-08-08", "2020-10-10", 1000)
+    getAppsLog(token, 0, "2020-08-08", "2020-10-10", 1000, id)
       .then((data) => {
         setLogData(data);
         setAppCountData(
