@@ -28,20 +28,22 @@ import {
   updateClass,
 } from "../../../../actions/action";
 import teacherAvatar from "../../../../assets/images/teacherAvatar.png";
-export default function ClassManagement() {
-  const [classData, setClassData] = useState([
-    { name: "5 A", teacher: "Alperen Karaguzel" },
-    { name: "5 B", teacher: "Alperen Karaguzel" },
-    { name: "5 C", teacher: "Alperen Karaguzel" },
-    { name: "5 D", teacher: "Alperen Karaguzel" },
-    { name: "5 E", teacher: "Alperen Karaguzel" },
-  ]);
+export default function ClassManagement({ filterClass }) {
+  const [classData, setClassData] = useState([{ name: "yükleniyor" }]);
   const [isActive, setIsActive] = useState(false);
   const [modalType, setModalType] = useState(false);
   const [classId, setClassId] = useState(false);
   const [teachersData, setTeachersData] = useState([]);
   const token = GetToken();
+  console.log(filterClass);
   useEffect(() => {
+    if (filterClass !== "" && classData) {
+      let arr = [];
+      arr = classData.filter((item) => {
+        return item.name.includes(filterClass);
+      });
+      setClassData(arr);
+    }
     getAllClass(token).then((data) => {
       setClassData(data.data.data);
       console.log(data);
@@ -55,7 +57,7 @@ export default function ClassManagement() {
         data.data.data.filter((item) => item.role === "instructor")
       );
     });
-  }, []);
+  }, [filterClass]);
   return (
     <div className={styles.schedule}>
       <div className={styles.topSide}>
@@ -77,10 +79,6 @@ export default function ClassManagement() {
             <div className={styles.scheduleTitles}>
               <Ders className={`${styles.scheduleTitlesIcon} ${styles.user}`} />
               <td className={styles.ogretmen}>Sınıf Adı</td>
-            </div>
-            <div className={styles.scheduleTitles}>
-              <User className={`${styles.scheduleTitlesIcon}`} />
-              <td>Öğretmen Adı</td>
             </div>
 
             <div className={styles.scheduleTitles}>
@@ -115,7 +113,6 @@ export default function ClassManagement() {
                     </div>
                     <td>{item.name}</td>
                   </div>
-                  <td>{item.teacher ? item.teacher : "Eyüp Saruhan"}</td>
                   {/* <td>
                     <PlusCircleSolid className={styles.addExamIcon} />
                   </td> */}
@@ -132,7 +129,9 @@ export default function ClassManagement() {
                   <td className={styles.space}>
                     <TrashSolid
                       onClick={() => {
-                        deleteClass(token, item._id);
+                        deleteClass(token, item._id).then((item) => {
+                          window.location.reload();
+                        });
                       }}
                       className={styles.deleteIcon}
                     />

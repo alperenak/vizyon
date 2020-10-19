@@ -118,7 +118,7 @@ export default function ActivityManagement({ tabsType }) {
                     </div>
                     <td>
                       {item.studentInfo
-                        ? item.studentInfo.class.name
+                        ? item.studentInfo.class?.name
                         : "sınıf bilgisi yok"}
                     </td>
                     <td className={styles.space}>
@@ -133,6 +133,11 @@ export default function ActivityManagement({ tabsType }) {
                   <tr
                     onClick={() => {
                       setClassId(item._id);
+                      setSingleUser({
+                        name: `${item.first_name} ${item.last_name}`,
+                        profile: item.profile_photo,
+                      });
+                      history.push(`/admin/activity/${item._id}`);
                     }}
                   >
                     <div className={styles.scheduleTeacher}>

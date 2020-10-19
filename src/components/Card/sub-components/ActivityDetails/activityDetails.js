@@ -14,27 +14,120 @@ import {
   Down,
 } from "../../../../icons";
 import AlertBox from "../../../Alert/alert";
-import { ConvertDate, ConvertTime } from "../../../../utils/utils";
+import {
+  ConvertDate,
+  convertHourMinute,
+  ConvertTime,
+} from "../../../../utils/utils";
 import Modal from "../../../Modal/modal";
 import Input from "../../../Input/input";
 import Button from "../../../Button/button";
 import Office from "../../../../assets/images/office.png";
 import teacherAvatar from "../../../../assets/images/teacherAvatar.png";
-import { getAppsLog, GetToken } from "../../../../actions/action";
+import { getAppsLog, GetToken, GetAllApps } from "../../../../actions/action";
 import { useLocation } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import Card from "../../card";
 import { SingleUserContext } from "../../../../context/singleUserContext";
+import Apps from "../../../Apps/apps";
 export default function ActivityDetails({ tabsType }) {
   const [LogData, setLogData] = useState([]);
   const [singleUser, setSingleUser] = useContext(SingleUserContext);
   const location = useLocation();
+  const apps = [
+    "udemy",
+    "khanAcademy",
+    "razkids",
+    "okuvaryumstudent",
+    "okuvaryumteacher",
+    "brainpop",
+    "activelylearn",
+    "morpa",
+    "writingaz",
+    "scienceaz",
+    "razplus",
+    "scienceaz",
+    "office365",
+  ];
+  const [appCountData, setAppCountData] = useState([
+    { name: "udemy", count: 0 },
+    { name: "khanAcademy", count: 0 },
+    { name: "razkids", count: 0 },
+    { name: "okuvaryumstudent", count: 0 },
+    { name: "okuvaryumteacher", count: 0 },
+    { name: "brainpop", count: 0 },
+    { name: "activelylearn", count: 0 },
+    { name: "morpa", count: 0 },
+    { name: "writingaz", count: 0 },
+    { name: "scienceaz", count: 0 },
+    { name: "razplus", count: 0 },
+    { name: "scienceaz", count: 0 },
+    { name: "office365", count: 0 },
+  ]);
   const token = GetToken();
   const { id } = useParams();
-
   useEffect(() => {
-    getAppsLog(token, 0, "2020-08-08", "2020-10-10", 1000, id).then((data) => {
-      setLogData(data);
+    getAppsLog(token, 0, "2020-08-08", "2020-10-10", 1000)
+      .then((data) => {
+        setLogData(data);
+        setAppCountData(
+          [
+            {
+              name: "udemy",
+              count: getOccurrence(data.data.data.logs, "udemy"),
+            },
+            {
+              name: "khanAcademy",
+              count: getOccurrence(data.data.data.logs, "khanAcademy"),
+            },
+            {
+              name: "razkids",
+              count: getOccurrence(data.data.data.logs, "razkids"),
+            },
+            {
+              name: "okuvaryumstudent",
+              count: getOccurrence(data.data.data.logs, "okuvaryumstudent"),
+            },
+            {
+              name: "okuvaryumteacher",
+              count: getOccurrence(data.data.data.logs, "okuvaryumteacher"),
+            },
+            {
+              name: "brainpop",
+              count: getOccurrence(data.data.data.logs, "brainpop"),
+            },
+            {
+              name: "activelylearn",
+              count: getOccurrence(data.data.data.logs, "activelylearn"),
+            },
+            {
+              name: "morpa",
+              count: getOccurrence(data.data.data.logs, "morpa"),
+            },
+            {
+              name: "writingaz",
+              count: getOccurrence(data.data.data.logs, "writingaz"),
+            },
+            {
+              name: "scienceaz",
+              count: getOccurrence(data.data.data.logs, "scienceaz"),
+            },
+            {
+              name: "razplus",
+              count: getOccurrence(data.data.data.logs, "razplus"),
+            },
+            {
+              name: "office365",
+              count: getOccurrence(data.data.data.logs, "office365"),
+            },
+          ].filter((item) => {
+            return item.count !== 0;
+          })
+        );
+      })
+      .then(() => {});
+    GetAllApps(token).then((item) => {
+      console.log(item);
     });
   }, []);
   return (
@@ -68,7 +161,7 @@ export default function ActivityDetails({ tabsType }) {
           LogData.data.data &&
           LogData.data.data !== null &&
           tabsType === "Genel" ? (
-            LogData.data.data.logs.map((item) => {
+            appCountData.map((item, index) => {
               return (
                 <tr onClick={() => {}}>
                   <div className={styles.scheduleTeacher}>
@@ -80,9 +173,9 @@ export default function ActivityDetails({ tabsType }) {
                         src={Office}
                       />
                     </div>
-                    <td>{item.app}</td>
+                    <td>{item.name}</td>
                   </div>
-                  <td>{LogData.data.data?.count}</td>
+                  <td>{item.count}</td>
                   <td className={styles.space}>
                     {/* <PlusCircleSolid className={styles.addExamIcon} /> */}
                   </td>
@@ -94,7 +187,7 @@ export default function ActivityDetails({ tabsType }) {
             LogData.data &&
             LogData.data.data &&
             LogData.data.data !== null &&
-            tabsType === "Genel" ? (
+            tabsType === "Detaylar" ? (
             LogData.data.data.logs.map((item) => {
               return (
                 <tr>
@@ -104,7 +197,9 @@ export default function ActivityDetails({ tabsType }) {
                     </div>
                     <td>{item.app}</td>
                   </div>
-                  <td>{ConvertDate(item.timestamp)}</td>
+                  <td>{`${ConvertDate(item.timestamp)} ${convertHourMinute(
+                    item.timestamp
+                  )}`}</td>
                   <td className={styles.space}></td>
                   <td className={styles.space}></td>
                 </tr>
@@ -137,3 +232,8 @@ const teachersData = [
   { appName: "Microsoft", date: "27 Ekim 10:02" },
   { appName: "Microsoft", date: "27 Ekim 10:02" },
 ];
+function getOccurrence(array, value) {
+  var count = 0;
+  array.forEach((v) => v.app === value && count++);
+  return count;
+}

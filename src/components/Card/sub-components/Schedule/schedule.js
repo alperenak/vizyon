@@ -92,7 +92,7 @@ export default function Schedule({ scheduleData, teachersData, classInfo }) {
                       : "none"}
                   </td>
                   <td>{ConvertDate(item.date)}</td>
-                  <td>{ConvertTime(item.date)}</td>
+                  <td>{ConvertTime(item.date, item.duration)}</td>
                 </tr>
               );
             })

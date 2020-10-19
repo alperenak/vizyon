@@ -39,6 +39,7 @@ export default function Announcements({
   const token = GetToken();
   const isRoledAdmin = IsRoleAdmin();
   const { pathname } = useLocation();
+  console.log("gelenAnon", announcementsData);
   return (
     <>
       <RenderModal

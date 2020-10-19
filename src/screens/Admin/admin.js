@@ -80,9 +80,10 @@ function RenderCard({
   const [tabsType, setTabsType] = useState("student");
   const [dropdownActive, setDropdownActive] = useState();
   const [dropdownName, setDropdownName] = useState("Sınıf Seçiniz");
+  const [selectedClass, setSelectedClass] = useState("");
   const dropdownNames = document.getElementById("dropdownName");
   const dropdownIcon = document.getElementById("dropdownIcon");
-  console.log(announcementsData);
+  console.log("umarim degismiyor", announcementsData);
   window.onclick = function (e) {
     if (e.target !== dropdownNames && e.target !== dropdownIcon) {
       setDropdownActive(false);
@@ -91,12 +92,19 @@ function RenderCard({
   function onChangeText(evt) {
     const value = evt.target.value;
     let arr = announcementsData;
-    if (evt.target.value !== "")
-      arr.data.data = announcementsData.data.data.filter((item) => {
+    let b = announcementsData.data.data;
+    if (evt.target.value) {
+      arr.data.data = b.filter((item) => {
         return item.title.includes(evt.target.value);
       });
-    setNewAnnouncementsData(arr);
-    console.log(announcementsData.data.data);
+      console.log(arr);
+      setNewAnnouncementsData(arr);
+    }
+    document.addEventListener("keydown", (e) => {
+      if (e.keyCode === 8) {
+        setNewAnnouncementsData(announcementsData);
+      }
+    });
   }
   if (pathname === "/admin/announcements")
     return (
@@ -109,7 +117,7 @@ function RenderCard({
           type={"announcements"}
           announcementsData={
             newAnnouncementsData.length !== 0
-              ? newAnnouncementsData
+              ? newAnnouncementsData.data?.data
               : announcementsData
               ? announcementsData.data?.data
               : []
@@ -144,7 +152,10 @@ function RenderCard({
               {ClassesNameData.map((item) => {
                 return (
                   <div
-                    onClick={() => setDropdownName(item.name)}
+                    onClick={() => {
+                      setSelectedClass(item.name);
+                      setDropdownName(item.name);
+                    }}
                     className={styles.dropdownItems}
                   >
                     {item.name}
@@ -154,7 +165,7 @@ function RenderCard({
             </div>
           </div>
         </div>
-        <Card type={"classManagement"} />
+        <Card filterClass={selectedClass[0]} type={"classManagement"} />
       </>
     );
   } else if (pathname === "/admin/user") {

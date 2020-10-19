@@ -37,28 +37,36 @@ export function sumTimes(first, second) {
     return `${firstHour + secondHour}.${firstMin + secondMin}`;
   } else return "hata";
 }
-export function ConvertTime(date, duration = "30") {
+export function ConvertTime(date, durations = "60") {
+  const duration = Number(durations);
   const d = new Date(date);
-  let minutes = d.getMinutes();
-  let saat = d.getHours();
-  let secondMin = minutes + duration;
-  let secondSaat = saat;
-  if (secondMin > 60) {
-    secondSaat = secondSaat + 1;
+  let minutes = `${d.getMinutes()}`;
+  let saat = `${d.getHours()}`;
+  let secondSaat = null;
+  let secondMin = null;
+  if (d.getMinutes() + duration >= 60) {
+    secondSaat = `${d.getHours() + 1}`;
+    secondMin = `${d.getMinutes() + duration - 60}`;
+  } else if (d.getMinutes() + duration < 60) {
+    secondMin = `${d.getMinutes() + duration}`;
+    secondSaat = `${d.getHours()}`;
   }
-  if (minutes == 0) {
-    secondMin = duration;
-    minutes = "00";
-  }
-  if (String(saat).length === 1) {
-    saat = `0${saat}`;
-  }
-  if (String(secondSaat).length === 1) {
-    secondSaat = `0${secondSaat}`;
-  }
-  return `${saat}.${minutes} - ${secondSaat}.${secondMin}`;
+  return `${String(saat).length === 1 ? 0 : ""}${saat}.${
+    String(minutes).length === 1 ? 0 : ""
+  }${minutes} - ${String(secondSaat).length === 1 ? 0 : ""}${secondSaat}.${
+    String(secondMin).length === 1 ? 0 : ""
+  }${secondMin}`;
 }
 const date = new Date();
+
+export function convertHourMinute(date) {
+  const d = new Date(date);
+  let minutes = `${d.getMinutes()}`;
+  let saat = `${d.getHours()}`;
+  return `${String(saat).length === 1 ? 0 : ""}${saat}:${
+    String(minutes).length === 1 ? 0 : ""
+  }${minutes}`;
+}
 export function getMonthNumber(month = "Nisan") {
   const thirdyOne = [
     "Ocak",

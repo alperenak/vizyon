@@ -32,6 +32,7 @@ import {
   CreateExam,
   UpdateExam,
   getAllClass,
+  DeleteExam,
 } from "../../../../actions/action";
 import Modal from "../../../Modal/modal";
 import Input from "../../../Input/input";
@@ -105,7 +106,7 @@ export default function Schedule({ scheduleData, teachersData, classInfo }) {
                   </div>
                   <td>{item.course.name}</td>
                   <td>{ConvertDate(item.date)}</td>
-                  <td>{ConvertTime(item.date)}</td>
+                  <td>{ConvertTime(item.date, item.duration)}</td>
                   <td className={styles.space}>
                     <EditSolid
                       onClick={() => {
@@ -119,6 +120,11 @@ export default function Schedule({ scheduleData, teachersData, classInfo }) {
                     <TrashSolid
                       onClick={() => {
                         // // deleteUser(token, item._id);
+                        DeleteExam(token, item.class._id, item._id).then(
+                          (item) => {
+                            window.location.reload();
+                          }
+                        );
                       }}
                       className={styles.deleteIcon}
                     />

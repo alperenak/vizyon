@@ -264,10 +264,7 @@ export async function importSchedule(token, file) {
     },
   };
   console.log("gelen", file);
-  // let fileData = file;
-  // let formdata = new FormData();
-  // formdata.append("file", fileData);
-  // formdata.append("name", "kara");
+
   const response = await axios.put(`${uri}/classes/import`, file, config);
   return response;
 }
@@ -372,5 +369,12 @@ export async function GetAllCourses(token) {
     `${uri}/courses?page=${1}&limit=${100}`,
     config
   );
+  return response;
+}
+export async function GetAllApps(token) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = await axios.get(`${uri}/apps`, config);
   return response;
 }

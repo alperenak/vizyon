@@ -124,7 +124,7 @@ export default function UserManagement({ tabsType }) {
                     </div>
                     <td>
                       {item.studentInfo
-                        ? item.studentInfo.class.name
+                        ? item.studentInfo.class?.name
                         : "sınıf bilgisi yok"}
                     </td>
                     <td className={styles.space}>

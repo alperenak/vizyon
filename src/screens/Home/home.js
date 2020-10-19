@@ -29,11 +29,18 @@ export default function Home() {
             setLoading(false);
             IsAdmin(data);
             setUserData(data);
-            if (!announcementsData) {
+            if (!announcementsData && data.data.data.role === "student") {
               GetAnnouncementsStudent(
                 token,
                 data.data.data.studentInfo?.class._id
               )
+                .then((data) => setAnnouncementsData(data))
+                .catch((e) => console.error(e));
+            } else if (
+              !announcementsData &&
+              data.data.data.role === "instructor"
+            ) {
+              GetAnnouncements(token, data.data.data.studentInfo?.class._id)
                 .then((data) => setAnnouncementsData(data))
                 .catch((e) => console.error(e));
             }
@@ -55,6 +62,7 @@ export default function Home() {
                   announcementsData={
                     announcementsData ? announcementsData.data.data : ""
                   }
+                  isRoleTeacher={userData.data?.data.role === "intructor"}
                 />
                 <Card
                   type={"syllabus"}
