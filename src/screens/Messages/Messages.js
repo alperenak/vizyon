@@ -49,7 +49,7 @@ class Messages extends Component {
 
     this.setState({ path: path[1] });
 
-    let res = await GetConversations();
+    let res = await GetConversations(GetToken());
     this.setState({ messages: res.data });
   };
 
@@ -164,7 +164,7 @@ export class MessageDetails extends Component {
   getMessageDetails = async () => {
     let conversationID = this.props.match.params.id;
 
-    let res = await GetMessageDetails({ conversationID });
+    let res = await GetMessageDetails({ conversationID, token: GetToken() });
 
     this.setState({
       singleMessages: res.data.messages,
@@ -181,6 +181,7 @@ export class MessageDetails extends Component {
       receiver,
       body: messageToSend,
       attachements: [],
+      token: GetToken(),
     });
 
     await this.getMessageDetails();
@@ -279,7 +280,7 @@ export class NewMessage extends Component {
 
     formData.append("body", message);
 
-    await CreateNewChat(formData);
+    await CreateNewChat(formData, GetToken());
   };
 
   onFileChange = async (file) => {
