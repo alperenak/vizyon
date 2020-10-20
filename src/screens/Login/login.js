@@ -44,9 +44,7 @@ export default function Login({}) {
           <LoginLogo className={styles.logoCircle} />
           <div className={styles.loginImages}>
             <img
-              src={
-                pathname === "/login/teacher" ? TeacherLoginImages : LoginImages
-              }
+              src={pathname === "/login/teacher" ? LoginImages : LoginImages}
             />
           </div>
           <div className={styles.loginForm}>
