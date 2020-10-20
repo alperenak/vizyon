@@ -262,7 +262,12 @@ function RenderCard({
               return (
                 <div
                   onClick={() => {
-                    history.push(`/admin/apps/${item.name[0]}`);
+                    history.push(
+                      `/admin/apps/${item.name.slice(
+                        0,
+                        item.name.indexOf(".")
+                      )}`
+                    );
                     setTimeout(() => {
                       window.location.reload();
                     }, 500);
