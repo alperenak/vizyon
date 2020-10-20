@@ -14,7 +14,7 @@ import IsAdmin, {
 } from "../../actions/action";
 import Loading from "../../components/Loading/loading";
 export default function Home() {
-  const [userData, setUserData] = useContext(UserContext);
+  const [userData, setUserData] = useState(false);
   const [announcementsData, setAnnouncementsData] = useState(false);
   const [loading, setLoading] = useState(false);
   const token = GetToken();
@@ -49,7 +49,7 @@ export default function Home() {
           .catch((e) => console.error(e));
       }
     } else window.location.replace("/");
-  }, []);
+  }, [userData, announcementsData]);
   return (
     <>
       {announcementsData && userData ? (

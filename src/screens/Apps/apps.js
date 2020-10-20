@@ -34,7 +34,7 @@ export default function Apps() {
   const [count, setCount] = useState(fakeAppsData.length);
   const [loading, setLoading] = useState(false);
   const [AppsData, setAppsData] = useState();
-  const [userData, setUserData] = useContext(UserContext);
+  const [userData, setUserData] = useState(false);
   const token = GetToken();
   useEffect(() => {
     if (IsAuth(token)) {
@@ -97,7 +97,7 @@ export default function Apps() {
                   );
                 })
               ) : (
-                <div>data yok</div>
+                <div>yükleniyor...</div>
               )}
             </div>
           </div>
