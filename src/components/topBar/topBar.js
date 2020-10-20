@@ -6,12 +6,14 @@ import Avatar from "../../assets/images/avatar.png";
 import SubBar from "./subBar/subBar";
 import { UserContext } from "../../context/userContext";
 import { useCookies } from "react-cookie";
+import { useHistory } from "react-router-dom";
 export default function TopBar() {
   const [userData, setUserData] = useContext(UserContext);
   const subBar = document.getElementById("subBar");
   const [subBarActive, setSubBarctive] = useState(false);
   const [dropdownActive, setDropdownActive] = useState(false);
   const [coookies, setCookies, removeCookies] = useCookies(["token"]);
+  const history = useHistory();
   window.document.body.addEventListener("click", () => {
     setDropdownActive(false);
   });
@@ -39,8 +41,13 @@ export default function TopBar() {
           className={styles.Menu}
         />
         <div className={styles.profileSection}>
-          <EnvelopeSolid className={styles.Notification} />
-          <Notification className={styles.Notification} />
+          <EnvelopeSolid
+            onClick={() => {
+              history.push("/messages");
+            }}
+            className={styles.Notification}
+          />
+          {/* <Notification className={styles.Notification} /> */}
           <div className={styles.profile}>
             <div className={styles.avatar}>
               <img

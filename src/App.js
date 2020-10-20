@@ -13,6 +13,7 @@ import { useCookies } from "react-cookie";
 import { UserContext } from "./context/userContext";
 import ActivityDetail from "./screens/Admin/ActivityDetail/activityDetail";
 import SideBar from "./components/Sidebar/sidebar";
+import Messages from "./screens/Messages/Messages";
 function App() {
   const token = GetToken();
   const [auth, setAuth] = useState(false);
@@ -111,6 +112,7 @@ function App() {
           <Route exact={true} path="/admin/activity" component={Admin} />
           <Route exact={true} path="/admin/apps" component={Admin} />
           <Route exact={true} path="/admin/exams" component={Admin} />
+          <Route exact={true} path="/messages" component={Messages} />
           <Route
             exact={true}
             path="/admin/activity/:id"
