@@ -12,7 +12,7 @@ import IsAdmin, {
 import Modal from "../../components/Modal/modal";
 import Input from "../../components/Input/input";
 import Button from "../../components/Button/button";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import { Down, SearchSolid } from "../../icons";
 import { useCookies } from "react-cookie";
 import Login from "../../screens/Login/login";
@@ -78,8 +78,11 @@ function RenderCard({
   setNewAnnouncementsData,
 }) {
   const [tabsType, setTabsType] = useState("student");
+  const { id } = useParams();
   const [dropdownActive, setDropdownActive] = useState();
-  const [dropdownName, setDropdownName] = useState("Sınıf Seçiniz");
+  const [dropdownName, setDropdownName] = useState(
+    id && id !== "" ? `${id}.Sınıflar` : "Sınıf Seçiniz"
+  );
   const [selectedClass, setSelectedClass] = useState("");
   const dropdownNames = document.getElementById("dropdownName");
   const dropdownIcon = document.getElementById("dropdownIcon");
@@ -320,6 +323,18 @@ const ClassesNameData = [
   },
   {
     name: "8. Sınıflar",
+  },
+  {
+    name: "9. Sınıflar",
+  },
+  {
+    name: "10. Sınıflar",
+  },
+  {
+    name: "11. Sınıflar",
+  },
+  {
+    name: "12. Sınıflar",
   },
 ];
 // function onSearchTextChange(value) {
