@@ -12,7 +12,7 @@ import IsAdmin, {
 import Modal from "../../components/Modal/modal";
 import Input from "../../components/Input/input";
 import Button from "../../components/Button/button";
-import { useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { Down, SearchSolid } from "../../icons";
 import { useCookies } from "react-cookie";
 import Login from "../../screens/Login/login";
@@ -83,6 +83,7 @@ function RenderCard({
   const [selectedClass, setSelectedClass] = useState("");
   const dropdownNames = document.getElementById("dropdownName");
   const dropdownIcon = document.getElementById("dropdownIcon");
+  const history = useHistory();
   console.log("umarim degismiyor", announcementsData);
   window.onclick = function (e) {
     if (e.target !== dropdownNames && e.target !== dropdownIcon) {
@@ -235,7 +236,7 @@ function RenderCard({
         <Card type={"activity"} tabsType={tabsType} />
       </>
     );
-  } else if (pathname === "/admin/apps") {
+  } else if (pathname === "/admin/apps" || pathname.includes("/admin/apps")) {
     return (
       <>
         <h1>Uygulamalar Yönetimi</h1>
@@ -257,7 +258,13 @@ function RenderCard({
             {ClassesNameData.map((item) => {
               return (
                 <div
-                  onClick={() => setDropdownName(item.name)}
+                  onClick={() => {
+                    history.push(`/admin/apps/${item.name[0]}`);
+                    setTimeout(() => {
+                      window.location.reload();
+                    }, 500);
+                    setDropdownName(item.name);
+                  }}
                   className={styles.dropdownItems}
                 >
                   {item.name}
@@ -304,6 +311,15 @@ const ClassesNameData = [
   },
   {
     name: "5. Sınıflar",
+  },
+  {
+    name: "6. Sınıflar",
+  },
+  {
+    name: "7. Sınıflar",
+  },
+  {
+    name: "8. Sınıflar",
   },
 ];
 // function onSearchTextChange(value) {

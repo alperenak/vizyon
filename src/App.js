@@ -74,6 +74,15 @@ function App() {
                 return <Apps />;
               } else return <Apps />;
             }}
+          />{" "}
+          <Route
+            exact={true}
+            path="/admin/apps/:id"
+            component={() => {
+              if (!auth) {
+                return <Admin />;
+              } else return <Admin />;
+            }}
           />
           <Route
             exact={true}

@@ -9,12 +9,24 @@ import Morpa from "../../../../assets/images/morpa.png";
 import Okuvaryum from "../../../../assets/images/okvaryum.png";
 import RazKids from "../../../../assets/images/razkids.png";
 import Udemy from "../../../../assets/images/udemy.png";
+import RazPlus from "../../../../assets/images/razPlus.svg";
+import ScienceAz from "../../../../assets/images/ScienceAz.svg";
+import WritingAz from "../../../../assets/images/writingAz.svg";
+import VocabularyAz from "../../../../assets/images/vocabulary.png";
 import { CheckSolid } from "../../../../icons";
 import Button from "../../../Button/button";
-import Apps from "../../../Apps/apps";
+import AppsRender from "../../../Apps/apps";
+import {
+  GetSpecifiApps,
+  GetToken,
+  SaveSpecificApps,
+} from "../../../../actions/action";
+import { useLocation, useParams } from "react-router-dom";
 
 export default function AppManagement({ dropdownValue }) {
-  const [changeValue, setChangeValue] = useState({});
+  const [changeValue, setChangeValue] = useState([]);
+  const [appData, setAppData] = useState([]);
+  const { id } = useParams();
   const [fakeAppsData, setFakeAppsData] = useState([
     { isSelected: true, appName: "Office 365", icon: "office365" },
     { isSelected: false, appName: "Khan Academy", icon: "khanAcademy" },
@@ -34,12 +46,14 @@ export default function AppManagement({ dropdownValue }) {
     { isSelected: false, appName: "Brain Pop", icon: "brainpop" },
     { isSelected: false, appName: "Activelulearn", icon: "activelylearn" },
   ]);
+  const token = GetToken();
+  console.log(id);
   useEffect(() => {
-    if (changeValue.index)
-      fakeAppsData[changeValue.index].isSelected = !fakeAppsData[
-        changeValue.index
-      ].isSelected;
-  });
+    GetSpecifiApps(token, id ? id : "1").then((item) => {
+      setAppData(item);
+    });
+  }, [id]);
+  console.log("hadi insallah", appData);
   return (
     <>
       <div className={styles.apps}>
@@ -51,18 +65,42 @@ export default function AppManagement({ dropdownValue }) {
             <span></span>
           </div>
           <div className={styles.appsGrid}>
-            {fakeAppsData.map((item, index) => {
+            {appData.data?.data[0].Apps.map((item, index) => {
               return (
-                <Apps
-                  iconName={item.icon}
-                  appName={item.appName}
-                  onClick={(e) => console.log("isselected", e)}
-                />
+                <div
+                  onClick={() => {
+                    let arr = appData;
+                    arr.data.data[0].Apps[index].isSet = !item.isSet;
+                    console.log(arr);
+                    setAppData(arr);
+                  }}
+                >
+                  <AppsRender
+                    iconName={item.app.name}
+                    appName={item.app.title}
+                    isSelected={item.isSet}
+                    onClick={(e) => {
+                      if (sArray.length > 1) {
+                        if (sArray[sArray.length - 2] !== e) sArray.push(e);
+                      } else {
+                        sArray.push(e);
+                      }
+                    }}
+                  />
+                </div>
               );
             })}
           </div>
         </div>
-        <Button type={"primary"} title={"kaydet"} />
+        <Button
+          onClick={() => {
+            SaveSpecificApps(token, appData.data.data).then((item) => {
+              window.location.reload();
+            });
+          }}
+          type={"primary"}
+          title={"kaydet"}
+        />
       </div>
     </>
   );
@@ -110,3 +148,5 @@ function RenderIcon(props) {
     return <img src={Actively} {...props} className={styles.actively} />;
   } else return "none";
 }
+
+const sArray = [];

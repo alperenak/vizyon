@@ -378,3 +378,17 @@ export async function GetAllApps(token) {
   const response = await axios.get(`${uri}/apps`, config);
   return response;
 }
+export async function GetSpecifiApps(token, grade) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = await axios.get(`${uri}/apps?grade=${grade}`, config);
+  return response;
+}
+export async function SaveSpecificApps(token, data) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = await axios.post(`${uri}/apps/usage`, data[0], config);
+  return response;
+}

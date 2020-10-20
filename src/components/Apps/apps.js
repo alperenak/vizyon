@@ -6,11 +6,21 @@ import BrainPop from "../../assets/images/brainpop.png";
 import KhanAcademy from "../../assets/images/khan.png";
 import Morpa from "../../assets/images/morpa.png";
 import Okuvaryum from "../../assets/images/okvaryum.png";
+import RazPlus from "../../assets/images/razPlus.svg";
+import ScienceAz from "../../assets/images/ScienceAz.svg";
+import WritingAz from "../../assets/images/writingAz.svg";
+import VocabularyAz from "../../assets/images/vocabulary.png";
+
 import RazKids from "../../assets/images/razkids.png";
 import { CheckSolid } from "../../icons";
 import Udemy from "../../assets/images/udemy.png";
-export default function Apps({ iconName, appName, onClick }) {
-  const [isActive, setIsActive] = useState(false);
+export default function Apps({
+  iconName,
+  appName,
+  onClick,
+  isSelected = false,
+}) {
+  const [isActive, setIsActive] = useState(isSelected);
   return (
     <div
       onClick={
@@ -57,5 +67,13 @@ export function RenderIcon(props) {
     return <img src={BrainPop} {...props} className={styles.brain} />;
   } else if (iconName === "activelylearn") {
     return <img src={Actively} {...props} className={styles.actively} />;
+  } else if (iconName === "vocabularyaz") {
+    return <img src={VocabularyAz} {...props} className={styles.actively} />;
+  } else if (iconName === "scienceaz") {
+    return <img src={ScienceAz} {...props} className={styles.actively} />;
+  } else if (iconName === "writingaz") {
+    return <img src={WritingAz} {...props} className={styles.actively} />;
+  } else if (iconName === "razplus") {
+    return <img src={RazPlus} {...props} className={styles.actively} />;
   } else return "none";
 }
