@@ -3,7 +3,7 @@ import { Dosyalar, Kampus, Odev, Uygulamalar } from "../../../icons";
 import { useLocation, useHistory } from "react-router-dom";
 import styles from "./subBar.module.scss";
 
-export default function SubBar({ isActive }) {
+export default function SubBar({ isActive, userRole }) {
   const pathname = useLocation().pathname;
   const history = useHistory();
   console.log(pathname);
@@ -22,16 +22,21 @@ export default function SubBar({ isActive }) {
         <Kampus className={styles.kampusIcon} />
         <div className={styles.subBarButtonTitle}> Anasayfa</div>
       </div>
-      <div
-        onClick={() => history.push("/apps")}
-        id="subBarButton"
-        className={`${isActive ? styles.subBarButtons : styles.displayNone}  ${
-          pathname === "/apps" ? styles.backgroundWhite : ""
-        }`}
-      >
-        <Uygulamalar className={styles.appsIcon} />
-        <div className={styles.subBarButtonTitle}> Uygulamalar</div>
-      </div>
+      {userRole === "instructor" ? (
+        ""
+      ) : (
+        <div
+          onClick={() => history.push("/apps")}
+          id="subBarButton"
+          className={`${
+            isActive ? styles.subBarButtons : styles.displayNone
+          }  ${pathname === "/apps" ? styles.backgroundWhite : ""}`}
+        >
+          <Uygulamalar className={styles.appsIcon} />
+          <div className={styles.subBarButtonTitle}> Uygulamalar</div>
+        </div>
+      )}
+
       <div
         id="subBarButton"
         onClick={() => history.push("/docs")}

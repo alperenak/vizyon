@@ -9,10 +9,11 @@ import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
 import { GetToken, GetUser } from "../../actions/action";
 export default function TopBar() {
-  const [userData, setUserData] = useContext(UserContext);
+  const [userData, setUserData] = useState(false);
   const subBar = document.getElementById("subBar");
   const [subBarActive, setSubBarctive] = useState(false);
   const [dropdownActive, setDropdownActive] = useState(false);
+  const [userRole, setUserRole] = useState("");
   const [coookies, setCookies, removeCookies] = useCookies(["token"]);
   const history = useHistory();
   window.document.body.addEventListener("click", () => {
@@ -20,10 +21,12 @@ export default function TopBar() {
   });
   const token = GetToken();
   useEffect(() => {
-    GetUser(token).then((item) => {
-      setUserData(item);
-    });
-    console.log("data", userData);
+    if (!userData) {
+      GetUser(token).then((item) => {
+        setUserData(item);
+        setUserRole(item.data.data.role);
+      });
+    }
   }, [userData]);
   function setSubBar() {
     setSubBarctive(!subBarActive);
@@ -93,7 +96,7 @@ export default function TopBar() {
           </div>
         </div>
       </div>
-      <SubBar isActive={subBarActive} />
+      <SubBar userRole={userRole} isActive={subBarActive} />
     </>
   );
 }

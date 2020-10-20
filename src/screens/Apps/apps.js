@@ -53,7 +53,7 @@ export default function Apps() {
               });
           })
           .then(() => setLoading(false))
-          .catch((e) => window.location.reload());
+          .catch((e) => alert(e));
       }
     } else window.location.replace("/");
   }, []);

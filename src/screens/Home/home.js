@@ -51,7 +51,7 @@ export default function Home() {
           .catch((e) => console.error(e));
       }
     } else window.location.replace("/");
-  }, [userData, announcementsData]);
+  }, [userData]);
   return (
     <>
       {announcementsData && userData ? (
