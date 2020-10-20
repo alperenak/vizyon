@@ -128,11 +128,11 @@ export function IsAuth(token) {
   }
 }
 
-export async function GetSSO(token, appName) {
+export async function GetSSO(token, appId) {
   const config = {
     headers: { authorization: `Bearer ${token}` },
   };
-  const response = axios.get(`${uri}/gelisim-sso/${appName}`, config);
+  const response = axios.get(`${uri}/gelisim-sso/app/${appId}`, config);
   return response;
 }
 

@@ -11,6 +11,7 @@ import {
 } from "../../icons/";
 import { UserContext } from "../../context/userContext";
 import IsAdmin, {
+  GetSpecifiApps,
   GetSSO,
   GetToken,
   GetUser,
@@ -25,10 +26,14 @@ import Morpa from "../../assets/images/morpa.png";
 import Okuvaryum from "../../assets/images/okvaryum.png";
 import RazKids from "../../assets/images/razkids.png";
 import Udemy from "../../assets/images/udemy.png";
-
+import RazPlus from "../../assets/images/razPlus.svg";
+import ScienceAz from "../../assets/images/ScienceAz.svg";
+import WritingAz from "../../assets/images/writingAz.svg";
+import VocabularyAz from "../../assets/images/vocabulary.png";
 export default function Apps() {
   const [count, setCount] = useState(fakeAppsData.length);
   const [loading, setLoading] = useState(false);
+  const [AppsData, setAppsData] = useState();
   const [userData, setUserData] = useContext(UserContext);
   const token = GetToken();
   useEffect(() => {
@@ -39,6 +44,13 @@ export default function Apps() {
           .then((data) => {
             setUserData(data);
             IsAdmin(data);
+            GetSpecifiApps(token, data.data.data.studentInfo.class.grade)
+              .then((item) => {
+                setAppsData(item);
+              })
+              .then(() => {
+                setLoading(false);
+              });
           })
           .then(() => setLoading(false))
           .catch((e) => window.location.reload());
@@ -54,15 +66,17 @@ export default function Apps() {
           <div className={styles.appsContainer}>
             <div className={styles.title}>Uygulamalar</div>
             <div className={styles.appsGrid}>
-              {userData &&
-              userData !== null &&
-              userData.data.data.platforms !== null &&
-              userData.data.data.platforms.length !== 0 ? (
-                userData.data.data.platforms.map((item) => {
+              {AppsData &&
+              AppsData !== null &&
+              AppsData.data.data[0].Apps !== null &&
+              AppsData.data.data[0].Apps.length !== 0 ? (
+                AppsData.data.data[0].Apps.filter((item) => {
+                  return item.isSet === true;
+                }).map((item) => {
                   return (
                     <div
                       onClick={() => {
-                        GetSSO(token, item.name).then((data) => {
+                        GetSSO(token, item.app._id).then((data) => {
                           window.open(data.data.data);
                         });
                       }}
@@ -70,11 +84,11 @@ export default function Apps() {
                     >
                       <div className={styles.appAvatar}>
                         <RenderIcon
-                          iconName={geIconName(item)}
+                          iconName={item.app.name}
                           className={styles.icon}
                         />
                       </div>
-                      <div className={styles.appName}>{getAppName(item)}</div>
+                      <div className={styles.appName}>{item.app.title}</div>
                     </div>
                   );
                 })
@@ -107,7 +121,7 @@ function getAppName(item) {
   } else return "none";
 }
 
-function RenderIcon(props) {
+export function RenderIcon(props) {
   let { iconName } = props;
   console.log(iconName);
   if (iconName === "office365") {
@@ -128,6 +142,14 @@ function RenderIcon(props) {
     return <img src={BrainPop} {...props} className={styles.brain} />;
   } else if (iconName === "activelylearn") {
     return <img src={Actively} {...props} className={styles.actively} />;
+  } else if (iconName === "vocabularyaz") {
+    return <img src={VocabularyAz} {...props} className={styles.actively} />;
+  } else if (iconName === "scienceaz") {
+    return <img src={ScienceAz} {...props} className={styles.actively} />;
+  } else if (iconName === "writingaz") {
+    return <img src={WritingAz} {...props} className={styles.actively} />;
+  } else if (iconName === "razplus") {
+    return <img src={RazPlus} {...props} className={styles.actively} />;
   } else return "none";
 }
 const fakeAppsData = [
