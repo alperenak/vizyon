@@ -28,6 +28,9 @@ import RazKids from "../../assets/images/razkids.png";
 import Udemy from "../../assets/images/udemy.png";
 import RazPlus from "../../assets/images/razPlus.svg";
 import ScienceAz from "../../assets/images/ScienceAz.svg";
+import Eba from "../../assets/images/eba.png";
+import Cambridge from "../../assets/images/cambridge.png";
+import Meb from "../../assets/images/meb.jpg";
 import WritingAz from "../../assets/images/writingAz.svg";
 import VocabularyAz from "../../assets/images/vocabulary.png";
 export default function Apps() {
@@ -159,6 +162,12 @@ export function RenderIcon(props) {
     return <img src={WritingAz} {...props} className={styles.actively} />;
   } else if (iconName === "razplus") {
     return <img src={RazPlus} {...props} className={styles.actively} />;
+  } else if (iconName === "eba") {
+    return <img src={Eba} {...props} className={styles.actively} />;
+  } else if (iconName === "k12") {
+    return <img src={Meb} {...props} className={styles.actively} />;
+  } else if (iconName === "cambridge") {
+    return <img src={Cambridge} {...props} className={styles.actively} />;
   } else return "none";
 }
 const fakeAppsData = [

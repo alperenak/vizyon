@@ -12,6 +12,7 @@ import Udemy from "../../../../assets/images/udemy.png";
 import RazPlus from "../../../../assets/images/razPlus.svg";
 import ScienceAz from "../../../../assets/images/ScienceAz.svg";
 import WritingAz from "../../../../assets/images/writingAz.svg";
+
 import VocabularyAz from "../../../../assets/images/vocabulary.png";
 import { CheckSolid } from "../../../../icons";
 import Button from "../../../Button/button";
@@ -26,6 +27,7 @@ import { useLocation, useParams } from "react-router-dom";
 export default function AppManagement({ dropdownValue }) {
   const [changeValue, setChangeValue] = useState([]);
   const [appData, setAppData] = useState([]);
+
   const { id } = useParams();
   const [fakeAppsData, setFakeAppsData] = useState([
     { isSelected: true, appName: "Office 365", icon: "office365" },
@@ -125,28 +127,34 @@ let fakeAppsData = [
   { isSelected: false, appName: "Activelulearn", icon: "activelylearn" },
 ];
 
-function RenderIcon(props) {
-  let { iconName } = props;
-  console.log(iconName);
-  if (iconName === "office365") {
-    return <img src={Office} {...props} className={styles.office} />;
-  } else if (iconName === "khanAcademy") {
-    return <img src={KhanAcademy} {...props} />;
-  } else if (iconName === "udemy") {
-    return <img src={Udemy} {...props} />;
-  } else if (iconName === "razkids") {
-    return <img src={RazKids} {...props} />;
-  } else if (iconName === "morpa") {
-    return <img src={Morpa} {...props} className={styles.morpa} />;
-  } else if (iconName === "okuvaryumstudent") {
-    return <img src={Okuvaryum} {...props} />;
-  } else if (iconName === "okuvaryumteacher") {
-    return <img src={Okuvaryum} {...props} />;
-  } else if (iconName === "brainpop") {
-    return <img src={BrainPop} {...props} className={styles.brain} />;
-  } else if (iconName === "activelylearn") {
-    return <img src={Actively} {...props} className={styles.actively} />;
-  } else return "none";
-}
+// function RenderIcon(props) {
+//   let { iconName } = props;
+//   console.log(iconName);
+//   if (iconName === "office365") {
+//     return <img src={Office} {...props} className={styles.office} />;
+//   } else if (iconName === "khanAcademy") {
+//     return <img src={KhanAcademy} {...props} />;
+//   } else if (iconName === "udemy") {
+//     return <img src={Udemy} {...props} />;
+//   } else if (iconName === "razkids") {
+//     return <img src={RazKids} {...props} />;
+//   } else if (iconName === "morpa") {
+//     return <img src={Morpa} {...props} className={styles.morpa} />;
+//   } else if (iconName === "okuvaryumstudent") {
+//     return <img src={Okuvaryum} {...props} />;
+//   } else if (iconName === "okuvaryumteacher") {
+//     return <img src={Okuvaryum} {...props} />;
+//   } else if (iconName === "brainpop") {
+//     return <img src={BrainPop} {...props} className={styles.brain} />;
+//   } else if (iconName === "activelylearn") {
+//     return <img src={Actively} {...props} className={styles.actively} />;
+//   } else if (iconName === "eba") {
+//     return <img src={Eba} {...props} className={styles.actively} />;
+//   } else if (iconName === "k12") {
+//     return <img src={Meb} {...props} className={styles.actively} />;
+//   } else if (iconName === "cambridge") {
+//     return <img src={Cambridge} {...props} className={styles.actively} />;
+//   } else return "none";
+// }
 
 const sArray = [];
