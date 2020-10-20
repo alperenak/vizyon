@@ -1,59 +1,64 @@
 .messageContainer {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  margin: 16px 0;
-
-  &.isMine {
-    justify-content: flex-end;
-  }
-  & .time {
-    color: #909ab2;
-  }
-
-  & .avatar {
-    width: 40px;
-    height: 40px;
-    border-radius: 100%;
-    margin-right: 15px;
-
-    & img {
-      width: 40px;
-      height: 40px;
-      border-radius: 100%;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	margin: 16px 0;
+	&__isMine {
+		justify-content: flex-end;
+	}
+	&__notMine {
+		justify-self: flex-start;
+		justify-content: flex-start;
+	}
+	&__avatar {
+		width: 40px;
+		height: 40px;
+		border-radius: 100%;
+		margin-right: 15px;
+		& img {
+			width: 40px;
+			height: 40px;
+			border-radius: 100%;
+		}
     }
-  }
+	&__time {
+		color: #909ab2;
+	}
+	&__messageBody {
+		width: 50%!important;
+		border-radius: 15px;
 
-  .messageBody {
-    width: 60%;
-    border-radius: 15px;
+		&__isMine {
+			background-color: #1a5aff;
+			justify-self: end;
+			color: white;
+			padding: 20px;
+			justify-content: space-between;
+			display: flex;
+			&__time {
+				position: relative;
+				left: calc(100% - 40px);
+				top: 20px;
+			}
+		}
 
-    &.isMine {
-      background-color: #1a5aff;
-      justify-self: end;
-      color: white;
+		&__notMine {
+			padding: 20px;
+			background-color: #f6f9ff;
+			justify-self: flex-start;
+			color: #061b52;
+			justify-content: space-between;
+			display: flex;
+			&__time {
+				position: relative;
+				top: 20px;
+			}
+		}
 
-      & .time {
-        position: relative;
-        left: calc(100% - 40px);
-        top: 20px;
-      }
-    }
-
-    &.notMine {
-      background-color: #f6f9ff;
-      justify-self: flex-start;
-      color: #061b52;
-      & .time {
-        position: relative;
-        top: 20px;
-      }
-    }
-
-    & .message {
-      padding: 5px 0;
-      width: 90%;
-      margin: auto auto;
-    }
-  }
+		&__message {
+			padding: 5px 0;
+			width: 90%;
+			margin: auto auto;
+		}
+	}
 }

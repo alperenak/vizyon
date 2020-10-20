@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 /*** Styles ***/
-import styles from "./message.scss";
+import "./message.scss";
 
 const Message = ({ image, title, content, time, id, unread }) => {
 	const [unreadMessages, setUnreadMessages] = useState("bold");

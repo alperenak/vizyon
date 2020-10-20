@@ -54,8 +54,7 @@ class Messages extends Component {
     const path = this.props.location.pathname.split("/messages/");
     this.setState({ path: path[1] });
     let res = await GetConversations(getCookie('token'));
-    //this.setState({ messages: res.data.data });
-	this.setState({ messages: [] });
+    this.setState({ messages: res.data.data });
   };
 
   onChange = (e) => {
@@ -78,13 +77,13 @@ class Messages extends Component {
   };
 
   renderNoQuestion = () => {
-    return (
-      <div className={styles.noQuestionContainer}>
-        <img src={noQuestionIllustration} alt="" />
-        <div className={styles.title}> There is no question.</div>
-        <button>Ask questions now!</button>
-      </div>
-    );
+	return (
+		<div className={styles.noQuestionContainer}>
+			<img src={noQuestionIllustration} alt="" />
+			<div className={styles.title}> There is no question.</div>
+			<button>Ask questions now!</button>
+		</div>
+	);
   };
 
   renderNewQuestion = () => {};
@@ -115,22 +114,25 @@ class Messages extends Component {
         )}
 
         <div className={styles.messagesSection}>
-          <div className={styles.header}>Messages</div>
-          <div className={styles.messageContainer}>
-            {messages.map((message, i) => {
-              return (
-                <Message
-                  image={message?.contact.avatar}
-                  title={message?.contact.name}
-                  content={message?.lastMessage.body}
-                  time={message?.lastMessage.createdAt}
-                  key={i}
-                  id={message.id}
-                  unread={message.unread}
-                />
-              );
-            })}
-          </div>
+			<div className={styles.messagesSectionInner}>
+				<div className={styles.header}>Messages</div>
+				<div className={styles.messageContainer}>
+				  {messages.map((message, i) => {
+					return (
+					  <Message
+						image={message?.contact.avatar}
+						title={message?.contact.name}
+						content={message?.lastMessage.body}
+						time={message?.lastMessage.createdAt}
+						key={i}
+						id={message.id}
+						unread={message.unread}
+					  />
+					);
+				  })}
+				</div>
+			</div>
+
         </div>
       </div>
     );

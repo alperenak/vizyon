@@ -19,7 +19,6 @@
 			width: 60px;
 			height: 60px;
 		}
-
 		&__unread {
 			position: relative;
 			right: -65%;
@@ -37,7 +36,6 @@
 			font-weight: bold;
 		}
 	}
-
 	&__content {
 		width: 70%;
 		&__name {
@@ -54,7 +52,6 @@
 			-ms-text-overflow: ellipsis;
 			-o-text-overflow: ellipsis;
 			font-size: 12px;
-
 			&.bold {
 				font-weight: bold;
 				color: #061b52;
