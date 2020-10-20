@@ -40,7 +40,7 @@ export default function Home() {
               !announcementsData &&
               data.data.data.role === "instructor"
             ) {
-              GetAnnouncements(token, data.data.data.studentInfo?.class._id)
+              GetAnnouncements(100, 1, token)
                 .then((data) => setAnnouncementsData(data))
                 .catch((e) => console.error(e));
             }
@@ -62,12 +62,17 @@ export default function Home() {
                   announcementsData={
                     announcementsData ? announcementsData.data.data : ""
                   }
-                  isRoleTeacher={userData.data?.data.role === "intructor"}
+                  isRoleTeacher={userData.data?.data.role === "instructor"}
                 />
                 <Card
                   type={"syllabus"}
                   syllabusData={getSyllabusData(userData.data.data)}
-                  classInfo={userData.data.data?.studentInfo.class}
+                  classInfo={
+                    userData.data.data?.studentInfo &&
+                    userData.data.data?.studentInfo
+                      ? userData.data.data?.studentInfo.class
+                      : []
+                  }
                 />
                 <Card
                   type={"schedule"}
@@ -83,7 +88,12 @@ export default function Home() {
                       ? userData.data.data.studentInfo.class.courses
                       : []
                   }
-                  classInfo={userData.data.data?.studentInfo.class}
+                  classInfo={
+                    userData.data.data?.studentInfo &&
+                    userData.data.data?.studentInfo
+                      ? userData.data.data?.studentInfo.class
+                      : []
+                  }
                 />
               </div>
             </div>
