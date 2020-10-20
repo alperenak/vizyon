@@ -44,7 +44,12 @@ export default function Apps() {
           .then((data) => {
             setUserData(data);
             IsAdmin(data);
-            GetSpecifiApps(token, data.data.data.studentInfo.class.grade)
+            GetSpecifiApps(
+              token,
+              data.data.data.role === "instructor"
+                ? 2
+                : data.data.data.studentInfo.class.grade
+            )
               .then((item) => {
                 setAppsData(item);
               })

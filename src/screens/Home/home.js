@@ -115,20 +115,16 @@ export default function Home() {
                 )}`}
                 avatar={userData.data.data.profile_photo}
               />
-              {userRole === "instructor" ? (
-                ""
-              ) : (
-                <Card
-                  type={"teachers"}
-                  teachersData={
-                    userData.data.data.studentInfo &&
-                    userData.data.data.studentInfo.class
-                      ? userData.data.data.studentInfo.class.courses
-                      : []
-                  }
-                  userRole={userRole !== "" ? userRole : false}
-                />
-              )}
+              <Card
+                type={"teachers"}
+                teachersData={
+                  userData.data.data.studentInfo &&
+                  userData.data.data.studentInfo.class
+                    ? userData.data.data.studentInfo.class.courses
+                    : []
+                }
+                userRole={userRole !== "" ? userRole : false}
+              />
             </div>
           </div>
         </div>

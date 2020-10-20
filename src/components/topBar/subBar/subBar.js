@@ -22,20 +22,17 @@ export default function SubBar({ isActive, userRole }) {
         <Kampus className={styles.kampusIcon} />
         <div className={styles.subBarButtonTitle}> Anasayfa</div>
       </div>
-      {userRole === "instructor" ? (
-        ""
-      ) : (
-        <div
-          onClick={() => history.push("/apps")}
-          id="subBarButton"
-          className={`${
-            isActive ? styles.subBarButtons : styles.displayNone
-          }  ${pathname === "/apps" ? styles.backgroundWhite : ""}`}
-        >
-          <Uygulamalar className={styles.appsIcon} />
-          <div className={styles.subBarButtonTitle}> Uygulamalar</div>
-        </div>
-      )}
+
+      <div
+        onClick={() => history.push("/apps")}
+        id="subBarButton"
+        className={`${isActive ? styles.subBarButtons : styles.displayNone}  ${
+          pathname === "/apps" ? styles.backgroundWhite : ""
+        }`}
+      >
+        <Uygulamalar className={styles.appsIcon} />
+        <div className={styles.subBarButtonTitle}> Uygulamalar</div>
+      </div>
 
       <div
         id="subBarButton"
