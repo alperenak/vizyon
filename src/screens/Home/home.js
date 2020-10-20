@@ -16,6 +16,7 @@ import Loading from "../../components/Loading/loading";
 export default function Home() {
   const [userData, setUserData] = useState(false);
   const [announcementsData, setAnnouncementsData] = useState(false);
+  const [userRole, setUserRole] = useState("");
   const [loading, setLoading] = useState(false);
   const token = GetToken();
 
@@ -29,6 +30,7 @@ export default function Home() {
             setLoading(false);
             IsAdmin(data);
             setUserData(data);
+            setUserRole(data.data.data.role);
             if (!announcementsData && data.data.data.role === "student") {
               GetAnnouncementsStudent(
                 token,
@@ -113,15 +115,20 @@ export default function Home() {
                 )}`}
                 avatar={userData.data.data.profile_photo}
               />
-              <Card
-                type={"teachers"}
-                teachersData={
-                  userData.data.data.studentInfo &&
-                  userData.data.data.studentInfo.class
-                    ? userData.data.data.studentInfo.class.courses
-                    : []
-                }
-              />
+              {userRole === "instructor" ? (
+                ""
+              ) : (
+                <Card
+                  type={"teachers"}
+                  teachersData={
+                    userData.data.data.studentInfo &&
+                    userData.data.data.studentInfo.class
+                      ? userData.data.data.studentInfo.class.courses
+                      : []
+                  }
+                  userRole={userRole !== "" ? userRole : false}
+                />
+              )}
             </div>
           </div>
         </div>

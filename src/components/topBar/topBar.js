@@ -7,6 +7,7 @@ import SubBar from "./subBar/subBar";
 import { UserContext } from "../../context/userContext";
 import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
+import { GetToken, GetUser } from "../../actions/action";
 export default function TopBar() {
   const [userData, setUserData] = useContext(UserContext);
   const subBar = document.getElementById("subBar");
@@ -17,7 +18,11 @@ export default function TopBar() {
   window.document.body.addEventListener("click", () => {
     setDropdownActive(false);
   });
+  const token = GetToken();
   useEffect(() => {
+    GetUser(token).then((item) => {
+      setUserData(item);
+    });
     console.log("data", userData);
   }, [userData]);
   function setSubBar() {
