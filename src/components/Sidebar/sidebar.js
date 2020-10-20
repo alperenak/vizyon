@@ -16,7 +16,7 @@ export default function SideBar() {
     { title: "Ders Programı", icon: <Clock />, path: getPath("syllabus") },
     { title: "Sınav Yönetimi", icon: <Clock />, path: getPath("exams") },
     { title: "Uygulama Yönetimi", icon: <Clock />, path: getPath("apps") },
-    { title: "Aktivite Yönetimi", icon: <Clock />, path: getPath("activity") },
+    { title: "Raporlar", icon: <Clock />, path: getPath("activity") },
   ];
   return (
     <div className={styles.sidebarContainer}>
