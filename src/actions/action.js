@@ -430,7 +430,7 @@ export async function GetNewMessages(token) {
   return await axios.get(`${uri}/chat/new`, config);
 }
 
-export async function GetMessageDetails({ conversationID, token }) {
+export async function GetMessageDetails(conversationID, token ) {
   // let baseUrl = config.baseUrl;
   // let tokenCookieName = "token";
   // let path = `/chat/conversation/${conversationID}`;

@@ -14,6 +14,7 @@ import { UserContext } from "./context/userContext";
 import ActivityDetail from "./screens/Admin/ActivityDetail/activityDetail";
 import SideBar from "./components/Sidebar/sidebar";
 import Messages from "./screens/Messages/Messages";
+import MessageDetails from "./screens/Messages/MessageDetails";
 function App() {
   const token = GetToken();
   const [auth, setAuth] = useState(false);
@@ -113,6 +114,8 @@ function App() {
           <Route exact={true} path="/admin/apps" component={Admin} />
           <Route exact={true} path="/admin/exams" component={Admin} />
           <Route exact={true} path="/messages" component={Messages} />
+		  <Route exact={true} path="/messages/details/:id" component={MessageDetails} />
+
           <Route
             exact={true}
             path="/admin/activity/:id"

@@ -1,73 +1,66 @@
-.message_container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  align-items: center;
-  margin: 5px 0;
-  padding: 5px 0;
-  height: fit-content;
+.messageContainer {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	align-items: center;
+	margin: 5px 0;
+	padding: 5px 0;
+	height: fit-content;
 
-  &:hover {
-    cursor: pointer;
-  }
+	&:hover {
+		cursor: pointer;
+	}
 
-  .avatar {
-    width: 60px;
-    height: 60px;
-    img {
-      border-radius: 100%;
-      width: 60px;
-      height: 60px;
-    }
+	&__avatar {
+		width: 60px;
+		height: 60px;
+		img {
+			border-radius: 100%;
+			width: 60px;
+			height: 60px;
+		}
+		&__unread {
+			position: relative;
+			right: -65%;
+			bottom: 25px;
+			width: 24px;
+			height: 24px;
+			background-color: #1a5aff;
+			border: 3px solid white;
+			font-size: 16px;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			border-radius: 100%;
+			color: white;
+			font-weight: bold;
+		}
+	}
+	&__content {
+		width: 70%;
+		&__name {
+			color: #061b52;
+			font-weight: 700;
+			font-size: 16px;
+		}
+		&__message {
+			color: #061b52;
+			font-weight: light;
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			-ms-text-overflow: ellipsis;
+			-o-text-overflow: ellipsis;
+			font-size: 12px;
+			&.bold {
+				font-weight: bold;
+				color: #061b52;
+			}
+		}
+	}
 
-    & .unread {
-      position: relative;
-      right: -65%;
-      bottom: 25px;
-      width: 24px;
-      height: 24px;
-      background-color: #1a5aff
-    ;
-      border: 3px solid white;
-      font-size: 16px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 100%;
-      color: white;
-      font-weight: bold;
-    }
-  }
-
-  .content {
-    width: 70%;
-
-    .name {
-      color: #061b52
-    ;
-      font-weight: 700;
-      font-size: 16px;
-    }
-    .message {
-      color: #061b52
-    ;
-      font-weight: light;
-      overflow: hidden;
-      white-space: nowrap;
-      text-overflow: ellipsis;
-      -ms-text-overflow: ellipsis;
-      -o-text-overflow: ellipsis;
-      font-size: 12px;
-
-      &.bold {
-        font-weight: bold;
-        color: #061b52;
-      }
-    }
-  }
-
-  .time {
-    color: #b0b7c8;
-    align-self: flex-start;
-  }
+	&__time {
+		color: #b0b7c8;
+		align-self: flex-start;
+	}
 }
