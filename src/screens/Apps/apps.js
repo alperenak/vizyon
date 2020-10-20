@@ -76,9 +76,13 @@ export default function Apps() {
                   return (
                     <div
                       onClick={() => {
-                        GetSSO(token, item.app._id).then((data) => {
-                          window.open(data.data.data);
-                        });
+                        GetSSO(token, item.app._id)
+                          .then((data) => {
+                            window.open(data.data.data);
+                          })
+                          .catch((e) =>
+                            alert("Kullanıcı bu platforma kayıtlı değil")
+                          );
                       }}
                       className={styles.renderApps}
                     >
