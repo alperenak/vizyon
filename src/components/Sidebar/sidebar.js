@@ -10,13 +10,13 @@ export default function SideBar() {
   const [cookies, setCookies, removeCookies] = useCookies(["token"]);
   const pt = "/admin/";
   const buttons = [
-    { title: "Duyurular", icon: <Clock />, path: getPath("announcements") },
-    { title: "Sınıf Yönetimi", icon: <Clock />, path: getPath("class") },
     { title: "Kullanıcı Yönetimi", icon: <Clock />, path: getPath("user") },
+    { title: "Sınıf Yönetimi", icon: <Clock />, path: getPath("class") },
+    { title: "Duyurular", icon: <Clock />, path: getPath("announcements") },
     { title: "Ders Programı", icon: <Clock />, path: getPath("syllabus") },
     { title: "Sınav Yönetimi", icon: <Clock />, path: getPath("exams") },
-    { title: "Aktivite Yönetimi", icon: <Clock />, path: getPath("activity") },
     { title: "Uygulama Yönetimi", icon: <Clock />, path: getPath("apps") },
+    { title: "Aktivite Yönetimi", icon: <Clock />, path: getPath("activity") },
   ];
   return (
     <div className={styles.sidebarContainer}>
