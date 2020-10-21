@@ -1,4 +1,4 @@
-import React, { Component,useCookies } from "react";
+import React, { Component, useCookies } from "react";
 
 /*** Styles ***/
 import styles from "./Messages.module.scss";
@@ -19,8 +19,8 @@ import sendButton from "../../assets/icons/send-button.svg";
 import mailIcon from "../../assets/icons/mail_blue.png";
 import DragDrop from "../../components/Card/DragDrop/dragDrop";
 import MessageSingle from "../../components/MessageSingle/MessageSingle";
-import { withCookies, Cookies } from 'react-cookie';
-import { instanceOf } from 'prop-types';
+import { withCookies, Cookies } from "react-cookie";
+import { instanceOf } from "prop-types";
 import {
   CreateNewChat,
   GetConversations,
@@ -30,30 +30,29 @@ import {
   SendMessage,
 } from "../../actions/action";
 class Messages extends Component {
-	constructor(props) {
-    	super(props);
-    	this.state = {
-			search: "",
-			messages: [],
-			dentists: [],
-			files: [],
-			path: null,
-			conversationId: null,
-			sender: {
-				name: "Erhan Koca",
-				clinic: "Medicana Hospitals Group",
-				avatar: "https://picsum.photos/200",
-				onlineStatus: false,
-			},
-			messageToSend: "",
-    	};
+  constructor(props) {
+    super(props);
+    this.state = {
+      search: "",
+      messages: [],
+      dentists: [],
+      files: [],
+      path: null,
+      conversationId: null,
+      sender: {
+        name: "Erhan Koca",
+        clinic: "Medicana Hospitals Group",
+        avatar: "https://picsum.photos/200",
+        onlineStatus: false,
+      },
+      messageToSend: "",
+    };
   }
-
 
   componentDidMount = async () => {
     const path = this.props.location.pathname.split("/messages/");
     this.setState({ path: path[1] });
-    let res = await GetConversations(getCookie('token'));
+    let res = await GetConversations(getCookie("token"));
     this.setState({ messages: res.data.data });
   };
 
@@ -77,13 +76,13 @@ class Messages extends Component {
   };
 
   renderNoQuestion = () => {
-	return (
-		<div className={styles.noQuestionContainer}>
-			<img src={noQuestionIllustration} alt="" />
-			<div className={styles.title}> There is no question.</div>
-			<button>Ask questions now!</button>
-		</div>
-	);
+    return (
+      <div className={styles.noQuestionContainer}>
+        <img src={noQuestionIllustration} alt="" />
+        <div className={styles.title}> There is no question.</div>
+        <button>Ask questions now!</button>
+      </div>
+    );
   };
 
   renderNewQuestion = () => {};
@@ -93,13 +92,14 @@ class Messages extends Component {
 
     return (
       <div className={styles.container}>
+        <h1>Mesajlar</h1>
         <div className={styles.searchSection}>
           <input
             type="text"
             name="search"
             value={search}
             onChange={this.onChange}
-            placeholder="Search messages or user"
+            placeholder="Kullanıcı ara"
           />
         </div>
 
@@ -114,25 +114,24 @@ class Messages extends Component {
         )}
 
         <div className={styles.messagesSection}>
-			<div className={styles.messagesSectionInner}>
-				<div className={styles.header}>Messages</div>
-				<div className={styles.messageContainer}>
-				  {messages.map((message, i) => {
-					return (
-					  <Message
-						image={message?.contact.avatar}
-						title={message?.contact.name}
-						content={message?.lastMessage.body}
-						time={message?.lastMessage.createdAt}
-						key={i}
-						id={message.id}
-						unread={message.unread}
-					  />
-					);
-				  })}
-				</div>
-			</div>
-
+          <div className={styles.messagesSectionInner}>
+            <div className={styles.header}>Mesajlar</div>
+            <div className={styles.messageContainer}>
+              {messages.map((message, i) => {
+                return (
+                  <Message
+                    image={message?.contact.avatar}
+                    title={message?.contact.name}
+                    content={message?.lastMessage.body}
+                    time={message?.lastMessage.createdAt}
+                    key={i}
+                    id={message.id}
+                    unread={message.unread}
+                  />
+                );
+              })}
+            </div>
+          </div>
         </div>
       </div>
     );
