@@ -8,6 +8,7 @@ import { UserContext } from "../../context/userContext";
 import IsAdmin, {
   GetAnnouncements,
   GetAnnouncementsStudent,
+  GetNewMessages,
   GetToken,
   GetUser,
   IsAuth,
@@ -17,6 +18,7 @@ export default function Home() {
   const [userData, setUserData] = useState(false);
   const [announcementsData, setAnnouncementsData] = useState(false);
   const [userRole, setUserRole] = useState("");
+  const [newMessagesData, setNewMessagesData] = useState([]);
   const [loading, setLoading] = useState(false);
   const token = GetToken();
 
@@ -46,6 +48,9 @@ export default function Home() {
                 .then((data) => setAnnouncementsData(data))
                 .catch((e) => console.error(e));
             }
+            GetNewMessages(token).then((data) => {
+              setNewMessagesData(data);
+            });
           })
           .then(() => {})
           .catch((e) => console.error(e));
@@ -124,7 +129,8 @@ export default function Home() {
                     : []
                 }
                 userRole={userRole !== "" ? userRole : false}
-              />
+              />{" "}
+              <Card type={"newMessages"} newMessagesData={newMessagesData} />
             </div>
           </div>
         </div>

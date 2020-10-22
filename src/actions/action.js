@@ -414,23 +414,13 @@ export async function GetConversations(token) {
   return await axios.get(`${uri}/chat/conversation`, config);
 }
 export async function GetNewMessages(token) {
-  // let baseUrl = config.baseUrl;
-  // let tokenCookieName = "token";
-  // let path = `/chat/new`;
-
-  // return await http.makeGetRequest(
-  //   path,
-  //   baseUrl,
-  //   tokenCookieName,
-  //   errorMessageBuilder
-  // );
   const config = {
     headers: { authorization: `Bearer ${token}` },
   };
   return await axios.get(`${uri}/chat/new`, config);
 }
 
-export async function GetMessageDetails(conversationID, token ) {
+export async function GetMessageDetails(conversationID, token) {
   // let baseUrl = config.baseUrl;
   // let tokenCookieName = "token";
   // let path = `/chat/conversation/${conversationID}`;
