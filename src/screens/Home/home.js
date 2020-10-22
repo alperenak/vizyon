@@ -8,14 +8,17 @@ import { UserContext } from "../../context/userContext";
 import IsAdmin, {
   GetAnnouncements,
   GetAnnouncementsStudent,
+  GetNewMessages,
   GetToken,
   GetUser,
   IsAuth,
 } from "../../actions/action";
 import Loading from "../../components/Loading/loading";
 export default function Home() {
-  const [userData, setUserData] = useContext(UserContext);
+  const [userData, setUserData] = useState(false);
   const [announcementsData, setAnnouncementsData] = useState(false);
+  const [userRole, setUserRole] = useState("");
+  const [newMessagesData, setNewMessagesData] = useState([]);
   const [loading, setLoading] = useState(false);
   const token = GetToken();
 
@@ -29,20 +32,31 @@ export default function Home() {
             setLoading(false);
             IsAdmin(data);
             setUserData(data);
-            if (!announcementsData) {
+            setUserRole(data.data.data.role);
+            if (!announcementsData && data.data.data.role === "student") {
               GetAnnouncementsStudent(
                 token,
                 data.data.data.studentInfo?.class._id
               )
                 .then((data) => setAnnouncementsData(data))
                 .catch((e) => console.error(e));
+            } else if (
+              !announcementsData &&
+              data.data.data.role === "instructor"
+            ) {
+              GetAnnouncements(100, 1, token)
+                .then((data) => setAnnouncementsData(data))
+                .catch((e) => console.error(e));
             }
+            GetNewMessages(token).then((data) => {
+              setNewMessagesData(data);
+            });
           })
           .then(() => {})
           .catch((e) => console.error(e));
       }
     } else window.location.replace("/");
-  }, []);
+  }, [userData]);
   return (
     <>
       {announcementsData && userData ? (
@@ -55,11 +69,17 @@ export default function Home() {
                   announcementsData={
                     announcementsData ? announcementsData.data.data : ""
                   }
+                  isRoleTeacher={userData.data?.data.role === "instructor"}
                 />
                 <Card
                   type={"syllabus"}
                   syllabusData={getSyllabusData(userData.data.data)}
-                  classInfo={userData.data.data?.studentInfo.class}
+                  classInfo={
+                    userData.data.data?.studentInfo &&
+                    userData.data.data?.studentInfo
+                      ? userData.data.data?.studentInfo.class
+                      : []
+                  }
                 />
                 <Card
                   type={"schedule"}
@@ -75,7 +95,12 @@ export default function Home() {
                       ? userData.data.data.studentInfo.class.courses
                       : []
                   }
-                  classInfo={userData.data.data?.studentInfo.class}
+                  classInfo={
+                    userData.data.data?.studentInfo &&
+                    userData.data.data?.studentInfo
+                      ? userData.data.data?.studentInfo.class
+                      : []
+                  }
                 />
               </div>
             </div>
@@ -103,7 +128,9 @@ export default function Home() {
                     ? userData.data.data.studentInfo.class.courses
                     : []
                 }
-              />
+                userRole={userRole !== "" ? userRole : false}
+              />{" "}
+              <Card type={"newMessages"} newMessagesData={newMessagesData} />
             </div>
           </div>
         </div>

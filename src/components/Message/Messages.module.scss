@@ -1,0 +1,430 @@
+.Wrapper {
+  display: flex;
+  flex-direction: column;
+
+  & .newMessageBtn {
+    margin: 25px 0;
+    display: flex;
+    flex-direction: row;
+    width: 150px;
+    margin-left: auto;
+    cursor: pointer;
+    & div {
+      color: #1a5aff;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+  }
+}
+.messagesSection{
+	display: flex;
+	justify-content: center;
+}
+.messagesSectionInner{
+	width: 80%;
+}
+.container {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  & .header {
+    color: #061b52;
+    font-weight: bold;
+    margin: 15px 0 30px;
+  }
+
+  & .searchSection {
+    align-self: center;
+    width: 100%;
+    height: 44px;
+    border: 1px solid #e7eeff;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 16px;
+
+    & input {
+      width: 100%;
+      height: 40px;
+      border: none;
+      outline: none;
+      font-family: "SofiaRegular";
+      font-size: 14px;
+      font-weight: normal;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: 1.57;
+      letter-spacing: normal;
+      text-align: left;
+      color: #919bb2;
+      &::placeholder {
+        color: #e7eeff;
+        text-align: center;
+      }
+    }
+  }
+
+  & .favDentistSection {
+    ::-webkit-scrollbar {
+      height: 5px;
+      width: 3px;
+    }
+
+    /* Track */
+    ::-webkit-scrollbar-track {
+      //-webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.3);
+      /*  -webkit-border-radius: 10px;
+      border-radius: 10px; */
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
+      -webkit-border-radius: 10px;
+      border-radius: 10px;
+      background: #bdbdbe;
+      // -webkit-box-shadow: inset 0 0 3px rgba(0, 0, 0, 0.5);
+    }
+    ::-webkit-scrollbar-thumb:window-inactive {
+      background: #bdbdbe;
+    }
+    & .dentistContainer {
+      -webkit-overflow-scrolling: touch;
+      -ms-overflow-style: -ms-autohiding-scrollbar;
+      overflow-x: auto;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      max-width: 100%;
+
+      & .dentist {
+        position: relative;
+        flex: 0 0 auto;
+        margin: 0;
+        height: 100px;
+        width: 100px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        align-items: center;
+        font-family: "SofiaRegular";
+        font-size: 12px;
+        font-weight: 500;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 1.83;
+        letter-spacing: normal;
+        text-align: left;
+        color: #061b52;
+
+        & .imageContainer {
+          width: 46px;
+          height: 46px;
+          border-radius: 100%;
+          overflow: hidden;
+          & img {
+            height: 100%;
+            width: 100%;
+          }
+        }
+        & .online {
+          position: absolute;
+          bottom: 42px;
+          right: 22px;
+          border-radius: 100%;
+          width: 20px;
+          height: 20px;
+          border: 3px solid white;
+          background-color: #00ebc7;
+        }
+        & .offline {
+          position: absolute;
+          bottom: 42px;
+          right: 22px;
+          border-radius: 100%;
+          width: 20px;
+          height: 20px;
+          border: 3px solid white;
+          background-color: #474e5d;
+        }
+      }
+    }
+  }
+}
+
+.noQuestionContainer {
+	overflow: hidden;
+	height: 500px;
+	margin-top: 50px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-around;
+	background-color: #fbfcff;
+	& img {
+		transform: scale(1.5);
+	}
+
+	.title {
+		font-size: 20px;
+		font-weight: bolder;
+	}
+
+	button {
+		width: 80%;
+		height: 50px;
+		border-radius: 10px;
+		border: 2px solid #1a5aff;
+		background-color: transparent;
+		color: #1a5aff;
+		font-size: 18px;
+		font-weight: bolder;
+		outline: transparent;
+		transition: 0.3s ease;
+		cursor: pointer;
+		&:hover {
+			background-color: #1a5aff;
+			color: white;
+		}
+	}
+}
+
+.newQuestionContainer {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+
+  & .headerSection {
+    text-align: center;
+
+    & .icon img {
+      width: 60px;
+      height: auto;
+    }
+
+    & div {
+      margin: 25px 0;
+    }
+
+    & .header {
+      color: #061b52;
+      font-weight: bold;
+      font-size: 20px;
+    }
+
+    & .content {
+      font-weight: normal;
+      color: #061b52;
+    }
+  }
+
+  & .mainSection {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center;
+
+    & .inputWrapper {
+      display: flex;
+      flex-direction: column;
+      width: 90%;
+      margin: 25px 0;
+      input,
+      textarea {
+        margin: auto;
+        width: 100%;
+        border: 1px #e7eeff solid;
+        border-radius: 10px;
+        height: 50px;
+        resize: none;
+        outline: none;
+        color: #061b52;
+        line-height: 20px;
+        font-weight: bold;
+      }
+      textarea {
+        height: 100px;
+      }
+    }
+
+    & .photoUploadWrapper {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      align-items: center;
+      & .photoUpload {
+        width: 90%;
+        height: 150px;
+        border-radius: 10px;
+        border: 1px dashed #e1e7f4;
+
+        input {
+          border: none;
+          background-color: transparent;
+        }
+      }
+    }
+
+    & .sendMessageButton {
+      margin: 25px 0;
+      width: 90%;
+      height: 50px;
+      border: none;
+      outline: none;
+      background-color: #1a5aff;
+      color: white;
+      font-weight: bold;
+      border-radius: 10px;
+    }
+  }
+}
+
+.messageDetailsContainer {
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+
+  & .header {
+    margin: 25px 0;
+    height: 70px;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+
+    & .avatar {
+      width: 60px;
+      margin-right: 35px;
+      & .online {
+        position: relative;
+        bottom: 30%;
+        left: 70%;
+        width: 20px;
+        height: 20px;
+        border-radius: 100%;
+        background-color: #00ebc7;
+        border: 3px solid #ffffff;
+      }
+      & .offline {
+        position: relative;
+        bottom: 30%;
+        left: 70%;
+        width: 20px;
+        height: 20px;
+        border-radius: 100%;
+        background-color: #474e5d;
+        border: 3px solid #ffffff;
+      }
+      & img {
+        width: 60px;
+        border-radius: 100%;
+      }
+    }
+
+    & .senderInfo {
+      flex: 1;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+
+      & name {
+        width: 118px;
+        height: 16px;
+        font-family: SofiaPro;
+        font-size: 16px;
+        font-weight: bold;
+        font-stretch: normal;
+        font-style: normal;
+        line-height: 0.75;
+        letter-spacing: normal;
+        text-align: left;
+        color: #061b52;
+      }
+    }
+
+    & .rightButtons {
+      flex: 1;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+
+      & .backButton {
+        display: flex;
+        flex-direction: row;
+
+        &:hover {
+          cursor: pointer;
+        }
+        & img {
+          width: 24px;
+          height: 24px;
+          margin-right: 25px;
+        }
+      }
+      & .detailsButton img {
+        margin-left: 25px;
+        width: 24px;
+        height: 24px;
+      }
+    }
+  }
+
+  & .messagesContainer {
+    overflow-y: visible;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 400px;
+    align-items: center;
+  }
+
+  & .sendMessageContainer {
+    margin-top: 16px;
+    padding: 8px 0;
+    position: relative;
+    bottom: 100%;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    justify-content: space-between;
+
+    & .inputContainer {
+      width: 80%;
+      height: 50px;
+      border-radius: 15px;
+      background-color: #f6f9ff;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      & input {
+        width: 95%;
+        height: 90%;
+        background-color: transparent;
+        border: none;
+        outline: none;
+        margin-left: auto;
+        margin-right: auto;
+      }
+    }
+    & .icon {
+      height: 50px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 15px;
+      :hover {
+        cursor: pointer;
+      }
+
+      & img {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  }
+}

@@ -10,6 +10,7 @@ export default function Input(props) {
     onChange,
     value,
     method,
+    ref,
   } = props;
   return (
     <div className={`${styles.inputContainer} ${styles[method]}`}>
@@ -20,6 +21,7 @@ export default function Input(props) {
         className={styles[inputStyle]}
         onChange={onChange}
         value={value}
+        ref={ref}
       />
     </div>
   );

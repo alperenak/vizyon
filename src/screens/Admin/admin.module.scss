@@ -11,7 +11,7 @@
         align-items: center;
         flex-direction: column;
         padding-top: 50px;
-        flex: 3;
+        flex: 4;
 
         & .topSide {
             display: flex;
@@ -19,12 +19,7 @@
             justify-content: space-between;
             align-items: center;
 
-            & .searchIcon {
-                position: absolute;
-                right: 10px;
-                color: $darkBlue;
-                cursor: pointer;
-            }
+
 
             & .dropdown {
                 position: relative;
@@ -186,4 +181,11 @@ h1 {
     color: $darkBlue;
     font-family: SofiaBold;
     padding: 30px;
+}
+
+.searchIcon {
+    position: absolute;
+    right: 10px;
+    color: $darkBlue;
+    cursor: pointer;
 }

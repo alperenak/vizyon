@@ -1,11 +1,12 @@
-import React, { useMemo, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import styles from "./dragDrop.module.scss";
 import { useDropzone } from "react-dropzone";
-import { GetToken, uploadFile } from "../../../actions/action";
+import { GetToken, importSchedule, uploadFile } from "../../../actions/action";
 import Button from "../../Button/button";
 import axios from "axios";
-export default function DropzoneField(props) {
-  const [file, setFile] = useState();
+import { FileContext } from "../../../context/fileContext";
+export default function DropzoneField({ isActive, setIsActive }) {
+  const [fileData, setFileData] = useContext(FileContext);
   const {
     acceptedFiles,
     getRootProps,
@@ -17,7 +18,6 @@ export default function DropzoneField(props) {
   } = useDropzone({ noClick: true });
 
   const files = acceptedFiles.map((file) => {
-    // console.log(file);
     return <li key={file.path}>{file.path}</li>;
   });
   const baseStyle = {
@@ -32,6 +32,7 @@ export default function DropzoneField(props) {
     borderStyle: "dashed",
     backgroundColor: "#fafafa",
     color: "#6e2af5",
+    width: 400,
     outline: "none",
     transition: "border .24s ease-in-out",
   };
@@ -58,30 +59,38 @@ export default function DropzoneField(props) {
     }),
     [isDragActive, isDragReject, isDragAccept]
   );
+  console.log("filedata", fileData);
+  useEffect(() => {
+    let formData = new FormData();
+    formData.append("file", files[0]);
+    setFileData(formData);
+  }, [acceptedFiles]);
   return (
-    <section className="container">
-      <div {...getRootProps({ style })}>
-        <input {...getInputProps()} />
-        <p>Drag 'n' drop some files here, or click to select files</p>
-        <Button title={"Choose"} type={"outlined"} onClick={open} />
-      </div>
-      <aside className={styles.Aside}>
-        <div className={styles.fileName}>{files}</div>
-      </aside>
-    </section>
+    <div style={{ display: "flex", flexDirection: "column" }}>
+      <section className="container">
+        <div {...getRootProps({ style })}>
+          <input {...getInputProps()} />
+          <p>Dosyaları buraya sürükleyin</p>
+          <Button title={"Dosya Seçin"} type={"outlined"} onClick={open} />
+        </div>
+        <aside className={styles.Aside}>
+          <div className={styles.fileName}>{files}</div>
+        </aside>
+      </section>
+      <Button
+        type={"primary"}
+        title={"Yükle"}
+        onClick={() => {
+          setIsActive(false);
+          let file = files[0];
+          console.log(file);
+          let formdata = new FormData();
+          formdata.append("file", acceptedFiles[0]);
+          console.log("dsadsa", formdata);
+          importSchedule(token, formdata).then((data) => console.log(data));
+          setIsActive(false);
+        }}
+      />
+    </div>
   );
-}
-
-function getRequest(file) {
-  const token = GetToken();
-  const formdata = new FormData();
-  formdata.append("text", file);
-  formdata.append("name", "Alperen Karaguzel");
-  console.log(formdata);
-
-  uploadFile(token, file)
-    .then((data) => {
-      console.log(data);
-    })
-    .catch((e) => alert(e));
 }

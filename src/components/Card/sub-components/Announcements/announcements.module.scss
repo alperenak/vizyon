@@ -1,16 +1,19 @@
-@import "../../../../helpers/variableBreakpoints.scss";
+@import '../../../../helpers/variableBreakpoints.scss';
 
 .announcementsCard {
   display: flex;
   flex-direction: column;
   border-radius: 12px;
   height: 430px;
+  max-height: 600px;
   width: 770px;
   background-color: #fefdff;
   position: relative;
   margin-top: 40px;
+  padding-bottom: 10px;
   transition: height 1s;
   box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+
 
   & .topSide {
     display: flex;
@@ -51,10 +54,32 @@
   }
 
   & .announcementsSection {
+    overflow-y: scroll;
     display: flex;
     flex-direction: column;
     margin-top: 20px;
     width: 100%;
+
+    & .homeworkTitles {
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      padding: 10px 0;
+
+      & .homeworkTitleHomework {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: $darkBlue;
+        font-family: SofiaBold;
+        width: 250px;
+      }
+
+      & .homeworkTitle {
+        color: $darkBlue;
+        font-family: SofiaBold;
+      }
+    }
 
     & .announcements {
       display: flex;
@@ -75,11 +100,28 @@
         }
       }
 
-      & .announcementsTitle {
-        font-family: SofiaMedium;
-        color: $darkBlue;
-        font-size: 14px;
-        margin-left: 20px;
+      & .announcementsTitles {
+        display: flex;
+        width: 70%;
+        justify-content: space-around;
+
+        & .announcementsTitle {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-family: SofiaMedium;
+          color: $darkBlue;
+          font-size: 14px;
+        }
+
+        & .width {
+          width: 200px;
+          text-align: center;
+        }
+
+        & .class {
+          width: 100px;
+        }
       }
 
       & .announcementsAdminIcon {
@@ -142,4 +184,88 @@
 .activeSee {
   height: max-content;
   padding-bottom: 20px;
+}
+
+.deleteQuestion {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: 20px 20px 10px 20px;
+
+  & .deleteQuestionTitle {
+    font-family: SofiaBold;
+    font-size: 16px;
+  }
+
+  & .deleteQuestionButtons {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+    align-items: center;
+  }
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  z-index: 2;
+
+  & .dropdownName {
+    display: flex;
+    align-items: center;
+    color: $darkBlue;
+    width: 200px;
+    height: 30px;
+    cursor: pointer;
+    font-family: SofiaBold;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+    padding: 10px 20px;
+    padding-right: 40px;
+    position: relative;
+
+    & .downIcon {
+      position: absolute;
+      right: 10px;
+      color: black;
+    }
+  }
+
+  & .dropdownContent {
+    display: none;
+    position: absolute;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    width: calc(100% - 18px);
+    left: 13px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+    overflow: hidden;
+    font-size: 14px;
+    color: $darkBlue;
+    font-family: SofiaBold;
+    z-index: 1;
+
+    & .dropdownItems {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      height: 50px;
+      background-color: white;
+      box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+      cursor: pointer;
+
+      &:hover {
+        background-color: rgb(243, 243, 243);
+      }
+    }
+  }
+
+  & .active {
+    display: flex;
+  }
 }

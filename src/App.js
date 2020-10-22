@@ -13,6 +13,8 @@ import { useCookies } from "react-cookie";
 import { UserContext } from "./context/userContext";
 import ActivityDetail from "./screens/Admin/ActivityDetail/activityDetail";
 import SideBar from "./components/Sidebar/sidebar";
+import Messages from "./screens/Messages/Messages";
+import MessageDetails from "./screens/Messages/MessageDetails";
 function App() {
   const token = GetToken();
   const [auth, setAuth] = useState(false);
@@ -74,6 +76,15 @@ function App() {
                 return <Apps />;
               } else return <Apps />;
             }}
+          />{" "}
+          <Route
+            exact={true}
+            path="/admin/apps/:id"
+            component={() => {
+              if (!auth) {
+                return <Admin />;
+              } else return <Admin />;
+            }}
           />
           <Route
             exact={true}
@@ -101,6 +112,10 @@ function App() {
           <Route exact={true} path="/admin/syllabus" component={Admin} />
           <Route exact={true} path="/admin/activity" component={Admin} />
           <Route exact={true} path="/admin/apps" component={Admin} />
+          <Route exact={true} path="/admin/exams" component={Admin} />
+          <Route exact={true} path="/messages" component={Messages} />
+		  <Route exact={true} path="/messages/details/:id" component={MessageDetails} />
+
           <Route
             exact={true}
             path="/admin/activity/:id"

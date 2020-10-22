@@ -1,4 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext, useEffect, useRef } from "react";
 import SideBar from "../../components/Sidebar/sidebar";
 import styles from "./admin.module.scss";
 import Card from "../../components/Card/card";
@@ -12,12 +12,13 @@ import IsAdmin, {
 import Modal from "../../components/Modal/modal";
 import Input from "../../components/Input/input";
 import Button from "../../components/Button/button";
-import { useLocation } from "react-router-dom";
+import { useHistory, useLocation, useParams } from "react-router-dom";
 import { Down, SearchSolid } from "../../icons";
 import { useCookies } from "react-cookie";
 import Login from "../../screens/Login/login";
 export default function Admin() {
   const [announcementsData, setAnnouncementsData] = useState(false);
+  const [newAnnouncementsData, setNewAnnouncementsData] = useState([]);
   const [userData, setUserData] = useContext(UserContext);
   const [loading, setLoading] = useState(false);
   const [cookies, setCookies] = useCookies(false);
@@ -37,7 +38,7 @@ export default function Admin() {
             .catch((e) => console.error(e));
         }
         if (!announcementsData) {
-          GetAnnouncements(5, 1, token)
+          GetAnnouncements(100, 1, token)
             .then((data) => {
               setAnnouncementsData(data);
             })
@@ -45,7 +46,7 @@ export default function Admin() {
         }
       }
     } else window.location.replace("/");
-  }, []);
+  }, [token]);
   return (
     <div className={styles.adminContainer}>
       <SideBar />
@@ -57,31 +58,73 @@ export default function Admin() {
           }
           isAdmin={true}
         /> */}
-        <RenderCard pathname={pathname} announcementsData={announcementsData} />
+        <RenderCard
+          pathname={pathname}
+          announcementsData={announcementsData}
+          setAnnouncementsData={setAnnouncementsData}
+          newAnnouncementsData={newAnnouncementsData}
+          setNewAnnouncementsData={setNewAnnouncementsData}
+        />
       </div>
     </div>
   );
 }
 
-function RenderCard({ pathname, announcementsData }) {
+function RenderCard({
+  pathname,
+  announcementsData,
+  setAnnouncementsData,
+  newAnnouncementsData,
+  setNewAnnouncementsData,
+}) {
   const [tabsType, setTabsType] = useState("student");
+  const { id } = useParams();
   const [dropdownActive, setDropdownActive] = useState();
-  const [dropdownName, setDropdownName] = useState("Sınıf Seçiniz");
+  const [dropdownName, setDropdownName] = useState(
+    id && id !== "" ? `${id}.Sınıflar` : "Sınıf Seçiniz"
+  );
+  const [selectedClass, setSelectedClass] = useState("");
   const dropdownNames = document.getElementById("dropdownName");
   const dropdownIcon = document.getElementById("dropdownIcon");
+  const history = useHistory();
+  console.log("umarim degismiyor", announcementsData);
   window.onclick = function (e) {
     if (e.target !== dropdownNames && e.target !== dropdownIcon) {
       setDropdownActive(false);
     }
   };
+  function onChangeText(evt) {
+    const value = evt.target.value;
+    let arr = announcementsData;
+    let b = announcementsData.data.data;
+    if (evt.target.value) {
+      arr.data.data = b.filter((item) => {
+        return item.title.includes(evt.target.value);
+      });
+      console.log(arr);
+      setNewAnnouncementsData(arr);
+    }
+    document.addEventListener("keydown", (e) => {
+      if (e.keyCode === 8) {
+        setNewAnnouncementsData(announcementsData);
+      }
+    });
+  }
   if (pathname === "/admin/announcements")
     return (
       <>
         <h1>Duyurular Yönetimi</h1>
+        <Input placeholder="Ara" inputStyle={"search"} onChange={onChangeText}>
+          <SearchSolid className={styles.searchIcon} />
+        </Input>
         <Card
           type={"announcements"}
           announcementsData={
-            announcementsData ? announcementsData.data.data : []
+            newAnnouncementsData.length !== 0
+              ? newAnnouncementsData.data?.data
+              : announcementsData
+              ? announcementsData.data?.data
+              : []
           }
           isAdmin={true}
         />
@@ -113,7 +156,10 @@ function RenderCard({ pathname, announcementsData }) {
               {ClassesNameData.map((item) => {
                 return (
                   <div
-                    onClick={() => setDropdownName(item.name)}
+                    onClick={() => {
+                      setSelectedClass(item.name);
+                      setDropdownName(item.name);
+                    }}
                     className={styles.dropdownItems}
                   >
                     {item.name}
@@ -123,7 +169,7 @@ function RenderCard({ pathname, announcementsData }) {
             </div>
           </div>
         </div>
-        <Card type={"classManagement"} />
+        <Card filterClass={selectedClass[0]} type={"classManagement"} />
       </>
     );
   } else if (pathname === "/admin/user") {
@@ -193,7 +239,7 @@ function RenderCard({ pathname, announcementsData }) {
         <Card type={"activity"} tabsType={tabsType} />
       </>
     );
-  } else if (pathname === "/admin/apps") {
+  } else if (pathname === "/admin/apps" || pathname.includes("/admin/apps")) {
     return (
       <>
         <h1>Uygulamalar Yönetimi</h1>
@@ -215,7 +261,18 @@ function RenderCard({ pathname, announcementsData }) {
             {ClassesNameData.map((item) => {
               return (
                 <div
-                  onClick={() => setDropdownName(item.name)}
+                  onClick={() => {
+                    history.push(
+                      `/admin/apps/${item.name.slice(
+                        0,
+                        item.name.indexOf(".")
+                      )}`
+                    );
+                    setTimeout(() => {
+                      window.location.reload();
+                    }, 500);
+                    setDropdownName(item.name);
+                  }}
                   className={styles.dropdownItems}
                 >
                   {item.name}
@@ -237,6 +294,13 @@ function RenderCard({ pathname, announcementsData }) {
         <Login />
       </>
     );
+  } else if (pathname === "/admin/exams") {
+    return (
+      <>
+        <h1>Sınav Yönetimi</h1>
+        <Card type={"exams"} />
+      </>
+    );
   } else return <></>;
 }
 
@@ -256,4 +320,41 @@ const ClassesNameData = [
   {
     name: "5. Sınıflar",
   },
+  {
+    name: "6. Sınıflar",
+  },
+  {
+    name: "7. Sınıflar",
+  },
+  {
+    name: "8. Sınıflar",
+  },
+  {
+    name: "9. Sınıflar",
+  },
+  {
+    name: "10. Sınıflar",
+  },
+  {
+    name: "11. Sınıflar",
+  },
+  {
+    name: "12. Sınıflar",
+  },
 ];
+// function onSearchTextChange(value) {
+//   this.setState((state) => {
+//     if (value) {
+//       state.filteredStaticData = staticData.filter((el) =>
+//         `${el.name} ${el.title}`.includes(value)
+//       );
+//     } else {
+//       if (state.searchText) {
+//         state.filteredStaticData = staticData;
+//       }
+//     }
+
+//     state.searchText = value;
+//     return state;
+//   });
+// }

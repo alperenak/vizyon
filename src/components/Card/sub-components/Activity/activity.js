@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./activity.module.scss";
 import {
   Ders,
@@ -31,6 +31,7 @@ import {
   updateUser,
 } from "../../../../actions/action";
 import { useHistory } from "react-router-dom";
+import { SingleUserContext } from "../../../../context/singleUserContext";
 // import teacherAvatar from "../../../../assets/images/teacherAvatar.png";
 export default function ActivityManagement({ tabsType }) {
   const [classData, setClassData] = useState([
@@ -42,6 +43,7 @@ export default function ActivityManagement({ tabsType }) {
   ]);
   const [isActive, setIsActive] = useState(false);
   const [modalType, setModalType] = useState(false);
+  const [singleUser, setSingleUser] = useContext(SingleUserContext);
   const [classId, setClassId] = useState(false);
   const [teachersData, setTeachersData] = useState([]);
   const [studentsData, setStudentsData] = useState([]);
@@ -51,7 +53,7 @@ export default function ActivityManagement({ tabsType }) {
     tabsType === "student" ? studentsData : teachersData
   );
   const token = GetToken();
-  console.log("general", studentsData);
+  console.log("general", teachersData);
 
   useEffect(() => {
     // getAllClass(token).then((data) => {
@@ -68,7 +70,7 @@ export default function ActivityManagement({ tabsType }) {
   return (
     <div className={styles.schedule}>
       <div className={styles.topSide}>
-        <div className={styles.title}>Aktivite Yönetimi</div>
+        <div className={styles.title}>Raporlar</div>
       </div>
       <div className={styles.scheduleTitlesSection}>
         <table>
@@ -77,10 +79,14 @@ export default function ActivityManagement({ tabsType }) {
               <User className={`${styles.scheduleTitlesIcon} ${styles.user}`} />
               <td className={styles.ogretmen}>Ad Soyad</td>
             </div>
-            <div className={styles.scheduleTitles}>
-              <Ders className={`${styles.scheduleTitlesIcon}`} />
-              <td>Sınıf</td>
-            </div>
+            {tabsType === "student" ? (
+              <div className={styles.scheduleTitles}>
+                <Ders className={`${styles.scheduleTitlesIcon}`} />
+                <td>Sınıf</td>
+              </div>
+            ) : (
+              ""
+            )}
           </tr>
         </table>
       </div>
@@ -92,6 +98,10 @@ export default function ActivityManagement({ tabsType }) {
                   <tr
                     onClick={() => {
                       setClassId(item._id);
+                      setSingleUser({
+                        name: `${item.first_name} ${item.last_name}`,
+                        profile: item.profile_photo,
+                      });
                       history.push(`/admin/activity/${item._id}`);
                     }}
                   >
@@ -107,11 +117,9 @@ export default function ActivityManagement({ tabsType }) {
                       <td>{`${item.first_name} ${item.last_name}`}</td>
                     </div>
                     <td>
-                      {item.teacher
-                        ? item.teacher
-                        : fakeClasses[
-                            Math.floor(Math.random() * (fakeClasses.length - 1))
-                          ]}
+                      {item.studentInfo
+                        ? item.studentInfo.class?.name
+                        : "sınıf bilgisi yok"}
                     </td>
                     <td className={styles.space}>
                       {/* <PlusCircleSolid className={styles.addExamIcon} /> */}
@@ -125,6 +133,11 @@ export default function ActivityManagement({ tabsType }) {
                   <tr
                     onClick={() => {
                       setClassId(item._id);
+                      setSingleUser({
+                        name: `${item.first_name} ${item.last_name}`,
+                        profile: item.profile_photo,
+                      });
+                      history.push(`/admin/activity/${item._id}`);
                     }}
                   >
                     <div className={styles.scheduleTeacher}>
@@ -133,13 +146,13 @@ export default function ActivityManagement({ tabsType }) {
                       </div>
                       <td>{`${item.first_name} ${item.last_name}`}</td>
                     </div>
-                    <td>
+                    {/* <td>
                       {item.teacher
                         ? item.teacher
                         : fakeClasses[
                             Math.floor(Math.random() * (fakeClasses.length - 1))
                           ]}
-                    </td>
+                    </td> */}
                     <td className={styles.space}></td>
                     <td className={styles.space}></td>
                   </tr>

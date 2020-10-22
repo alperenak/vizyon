@@ -245,6 +245,7 @@
 
           & td {
             margin-left: 10px;
+
           }
 
           & .avatar {
@@ -258,6 +259,10 @@
               width: 100%;
             }
           }
+        }
+
+        & .instructorName {
+          width: 130px;
         }
 
         & td {

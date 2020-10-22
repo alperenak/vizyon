@@ -1,8 +1,13 @@
 import axios from "axios";
 import { useContext } from "react";
 import { useCookies } from "react-cookie";
+import http from "../helpers/httpHelper";
+import config from "../appConfig";
 const uri = "https://gelisim.herokuapp.com/api/v1";
 const location = window.location;
+const errorMessageBuilder = (response) => {
+  return (response.errorData && response.errorData.code) || "0";
+};
 export async function GetAuthentication(username, password) {
   // axios
   //   .post("https://gelisim-okullari.herokuapp.com/api/v1/auth/login", {
@@ -28,15 +33,29 @@ export async function GetAuthentication(username, password) {
   });
   return response.json();
 }
-export async function UpdateAnnouncements(id, title, token) {
-  console.log(id);
+export async function UpdateAnnouncements(
+  id,
+  title,
+  detail,
+  to,
+  isPublic,
+  token
+) {
+  console.log("id", to);
   const config = {
     headers: { authorization: `Bearer ${token}` },
   };
+  let arr = [];
+  to.map((item) => {
+    arr.push(item._id);
+  });
   const response = await axios.put(
     `${uri}/announcements/${id}`,
     {
       title: title,
+      detail: detail,
+      public: arr.length === 0 ? true : false,
+      to: arr,
     },
     config
   );
@@ -50,7 +69,7 @@ export async function DeleteAnnouncements(id, token) {
   return response;
 }
 
-export async function AddAnnouncements(title, detail, token) {
+export async function AddAnnouncements(title, detail, ispublic, to, token) {
   const config = {
     headers: { authorization: `Bearer ${token}` },
   };
@@ -59,6 +78,8 @@ export async function AddAnnouncements(title, detail, token) {
     {
       title: title,
       detail: detail,
+      public: ispublic,
+      to: to,
     },
     config
   );
@@ -112,11 +133,11 @@ export function IsAuth(token) {
   }
 }
 
-export async function GetSSO(token, appName) {
+export async function GetSSO(token, appId) {
   const config = {
     headers: { authorization: `Bearer ${token}` },
   };
-  const response = axios.get(`${uri}/gelisim-sso/${appName}`, config);
+  const response = axios.get(`${uri}/gelisim-sso/app/${appId}`, config);
   return response;
 }
 
@@ -240,15 +261,16 @@ export async function deleteUser(token, userId) {
   const response = await axios.delete(`${uri}/users/${userId}`, config);
   return response;
 }
-export async function uploadFile(token, file) {
+export async function importSchedule(token, file) {
   const config = {
-    headers: { authorization: `Bearer ${token}` },
+    headers: {
+      authorization: `Bearer ${token}`,
+      "content-type": "multipart/form-data",
+    },
   };
-  const response = await axios.post(
-    `${uri}/storage/files/upload`,
-    file,
-    config
-  );
+  console.log("gelen", file);
+
+  const response = await axios.put(`${uri}/classes/import`, file, config);
   return response;
 }
 export async function getAppsLog(
@@ -289,4 +311,191 @@ export async function GetSchedulesDownloadLink(token, classId) {
     config
   );
   return response;
+}
+export async function GetAllExams(token) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = await axios.get(`${uri}/classes/exams`, config);
+  return response;
+}
+export async function UpdateExam(
+  token,
+  classId,
+  examId,
+  date,
+  duration,
+  courseId
+) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = await axios.put(
+    `${uri}/classes/${classId}/exams/${examId}`,
+    {
+      course: courseId,
+      date: date,
+      duration: duration,
+    },
+    config
+  );
+  return response;
+}
+export async function CreateExam(token, classId, date, duration, courseId) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = await axios.post(
+    `${uri}/classes/${classId}/exams`,
+    {
+      course: courseId,
+      date: date,
+      duration: duration,
+    },
+    config
+  );
+  return response;
+}
+export async function DeleteExam(token, classId, examId) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = await axios.delete(
+    `${uri}/classes/${classId}/exams/${examId}`,
+    config
+  );
+  return response;
+}
+export async function GetAllCourses(token) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = await axios.get(
+    `${uri}/courses?page=${1}&limit=${100}`,
+    config
+  );
+  return response;
+}
+export async function GetAllApps(token) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = await axios.get(`${uri}/apps`, config);
+  return response;
+}
+export async function GetSpecifiApps(token, grade) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = await axios.get(`${uri}/apps?grade=${grade}`, config);
+  return response;
+}
+export async function SaveSpecificApps(token, data) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = await axios.post(`${uri}/apps/usage`, data[0], config);
+  return response;
+}
+export async function GetConversations(token) {
+  // let baseUrl = config.baseUrl;
+  // let tokenCookieName = "token";
+  // let path = `/chat/conversation`;
+
+  // return await http.makeGetRequest(
+  //   path,
+  //   baseUrl,
+  //   tokenCookieName,
+  //   errorMessageBuilder
+  // );
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  return await axios.get(`${uri}/chat/conversation`, config);
+}
+export async function GetNewMessages(token) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  return await axios.get(`${uri}/chat/new`, config);
+}
+
+export async function GetMessageDetails(conversationID, token) {
+  // let baseUrl = config.baseUrl;
+  // let tokenCookieName = "token";
+  // let path = `/chat/conversation/${conversationID}`;
+
+  // return await http.makeGetRequest(
+  //   path,
+  //   baseUrl,
+  //   tokenCookieName,
+  //   errorMessageBuilder
+  // );
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  return await axios.get(`${uri}/chat/conversation/${conversationID}`, config);
+}
+export async function SendMessage({
+  conversationID,
+  receiver,
+  body,
+  attachements,
+  token,
+}) {
+  // let baseUrl = config.baseUrl;
+  // let tokenCookieName = "token";
+  // let path = `/chat/conversation/${conversationID}`;
+  // let payload = { receiver, body, attachements };
+
+  // return await http.makePostRequest(
+  //   path,
+  //   baseUrl,
+  //   tokenCookieName,
+  //   payload,
+  //   errorMessageBuilder
+  // );
+  let payload = { receiver, body, attachements };
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = await axios.post(
+    `${uri}/chat/conversation/${conversationID}`,
+    payload,
+    config
+  );
+  return response;
+}
+export async function CreateNewChat(payload, token) {
+  // let baseUrl = config.baseUrl;
+  // let tokenCookieName = "token";
+  // let path = `/chat/conversation`;
+
+  // return await http.makePostRequest(
+  //   path,
+  //   baseUrl,
+  //   tokenCookieName,
+  //   payload,
+  //   errorMessageBuilder
+  // );
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  return await axios.post(`${uri}/chat/conversation/`, payload, config);
+}
+export async function SearchChat({ keyword, token }) {
+  // let baseUrl = config.baseUrl;
+  // let tokenCookieName = "token";
+  // let path = `/chat/search?keyword=${keyword}`;
+
+  // return await http.makeGetRequest(
+  //   path,
+  //   baseUrl,
+  //   tokenCookieName,
+  //   errorMessageBuilder
+  // );
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  return await axios.get(`${uri}/chat/search?keyword=${keyword}/`, config);
 }

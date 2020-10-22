@@ -17,7 +17,6 @@ export default function Homework({ title = "Duyurular", isAdmin }) {
   const [mapCount, setMapCount] = useState(5);
   const [seeAll, setSeeAll] = useState(false);
   const [modalType, setModalType] = useState("updateAnnouncements");
-
   const [id, setId] = useState(false);
   const token = GetToken();
   const isRoledAdmin = IsRoleAdmin();
