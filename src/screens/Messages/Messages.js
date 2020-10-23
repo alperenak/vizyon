@@ -26,6 +26,7 @@ import {
   GetConversations,
   GetMessageDetails,
   GetToken,
+  GetUser,
   SearchChat,
   SendMessage,
 } from "../../actions/action";
@@ -34,7 +35,9 @@ class Messages extends Component {
     super(props);
     this.state = {
       search: "",
+      tabsType: "student",
       messages: [],
+      role: "loading",
       dentists: [],
       files: [],
       path: null,
@@ -54,6 +57,9 @@ class Messages extends Component {
     this.setState({ path: path[1] });
     let res = await GetConversations(getCookie("token"));
     this.setState({ messages: res.data.data });
+    GetUser(getCookie("token")).then((data) => {
+      this.setState({ role: data.data.data.role });
+    });
   };
 
   onChange = (e) => {
@@ -91,49 +97,73 @@ class Messages extends Component {
     let { search, messages } = this.state;
 
     return (
-      <div className={styles.container}>
-        <h1>Mesajlar</h1>
-        <div className={styles.searchSection}>
-          <input
-            type="text"
-            name="search"
-            value={search}
-            onChange={this.onChange}
-            placeholder="Kullanıcı ara"
-          />
-        </div>
-
-        {getCookie("user_type") === "user" && (
+      <>
+        <div className={styles.tabs}>
           <div
-            className={styles.newMessageBtn}
-            onClick={() => (window.location = "/messages/new")}
+            className={`${styles.tabsButton} ${
+              this.state.tabsType === "student" ? styles.tabsButtonActive : ""
+            }`}
+            onClick={() => this.setState({ tabsType: "student" })}
           >
-            <img src={addCircle} alt="" />
-            <div>Yeni Mesaj</div>
+            {this.state.role === "loading"
+              ? ""
+              : this.state.role === "instructor"
+              ? "Öğretmenler"
+              : "Öğrenciler"}
           </div>
-        )}
+          <div
+            className={`${styles.tabsButton} ${
+              this.state.tabsType === "messages" ? styles.tabsButtonActive : ""
+            }`}
+            onClick={() => this.setState({ tabsType: "messages" })}
+          >
+            Mesajlarım
+          </div>
+        </div>
+        <div className={styles.container}>
+          <h1>Mesajlar</h1>
+          <div className={styles.searchSection}>
+            <input
+              type="text"
+              name="search"
+              value={search}
+              onChange={this.onChange}
+              placeholder="Kullanıcı ara"
+            />
+          </div>
 
-        <div className={styles.messagesSection}>
-          <div className={styles.messagesSectionInner}>
-            <div className={styles.header}>Mesajlar</div>
-            <div className={styles.messageContainer}>
-              {messages.map((message, i) => {
-                return (
-                  <Message
-                    image={message?.contact.avatar}
-                    title={message?.contact.name}
-                    content={message?.lastMessage.body}
-                    time={message?.lastMessage.createdAt}
-                    key={i}
-                    id={message.id}
-                    unread={message.unread}
-                  />
-                );
-              })}
+          {getCookie("user_type") === "user" && (
+            <div
+              className={styles.newMessageBtn}
+              onClick={() => (window.location = "/messages/new")}
+            >
+              <img src={addCircle} alt="" />
+              <div>Yeni Mesaj</div>
+            </div>
+          )}
+
+          <div className={styles.messagesSection}>
+            <div className={styles.messagesSectionInner}>
+              <div className={styles.header}>Mesajlar</div>
+              <div className={styles.messageContainer}>
+                {messages.map((message, i) => {
+                  return (
+                    <Message
+                      image={message?.contact.avatar}
+                      title={message?.contact.name}
+                      content={message?.lastMessage.body}
+                      time={message?.lastMessage.createdAt}
+                      key={i}
+                      id={message.id}
+                      unread={message.unread}
+                    />
+                  );
+                })}
+              </div>
             </div>
           </div>
         </div>
-      </div>
+      </>
     );
   };
 
