@@ -10,6 +10,7 @@ import IsAdmin, {
   GetAnnouncements,
   getAllUser,
   getAllClass,
+  IsRoleAdmin,
 } from "../../actions/action";
 import Modal from "../../components/Modal/modal";
 import Input from "../../components/Input/input";
@@ -101,6 +102,7 @@ function RenderCard({
   const token = GetToken();
   const [teachersData, setTeachersData] = useState([]);
   const [classData, setClassData] = useState([]);
+  const [filteredClass, setFilteredClass] = useState(false);
   const history = useHistory();
   console.log("umarim degismiyor", announcementsData);
   window.onclick = function (e) {
@@ -148,6 +150,8 @@ function RenderCard({
     if (e.target.value === "") setDisplayClass("");
     else setDisplayClass(res);
   }
+
+  function handleDropdown() {}
 
   console.log(display);
   useEffect(() => {
@@ -212,7 +216,10 @@ function RenderCard({
                 return (
                   <div
                     onClick={() => {
-                      setSelectedClass(item.name);
+                      const res = classData.filter((item1) => {
+                        return item1.name.slice(0, 2).includes(item.name[0]);
+                      });
+                      setFilteredClass(res);
                       setDropdownName(item.name);
                     }}
                     className={styles.dropdownItems}
@@ -225,7 +232,13 @@ function RenderCard({
           </div>
         </div>
         <Card
-          classData={displayClass === "" ? classData : displayClass}
+          classData={
+            filteredClass
+              ? filteredClass
+              : displayClass === ""
+              ? classData
+              : displayClass
+          }
           filterClass={selectedClass[0]}
           type={"classManagement"}
         />
@@ -282,7 +295,11 @@ function RenderCard({
       <>
         <h1>Aktivite Yönetimi</h1>
         <div className={styles.topSide}>
-          <Input placeholder="Ara" inputStyle={"search"}>
+          <Input
+            placeholder="Ara"
+            inputStyle={"search"}
+            onChange={onChangeUserManagementSearch}
+          >
             <SearchSolid className={styles.searchIcon} />
           </Input>
           <div className={styles.tabs}>
@@ -304,7 +321,12 @@ function RenderCard({
             </div>
           </div>
         </div>
-        <Card type={"activity"} tabsType={tabsType} />
+        <Card
+          teachersData={displayTeacher === "" ? teachersData : displayTeacher}
+          studentsData={displayStudent === "" ? studentsData : displayStudent}
+          type={"activity"}
+          tabsType={tabsType}
+        />
       </>
     );
   } else if (pathname === "/admin/apps" || pathname.includes("/admin/apps")) {

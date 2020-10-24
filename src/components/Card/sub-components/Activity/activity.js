@@ -33,7 +33,11 @@ import {
 import { useHistory } from "react-router-dom";
 import { SingleUserContext } from "../../../../context/singleUserContext";
 // import teacherAvatar from "../../../../assets/images/teacherAvatar.png";
-export default function ActivityManagement({ tabsType }) {
+export default function ActivityManagement({
+  tabsType,
+  teachersData,
+  studentsData,
+}) {
   const [classData, setClassData] = useState([
     { name: "5 A", teacher: "Alperen Karaguzel" },
     { name: "5 B", teacher: "Alperen Karaguzel" },
@@ -45,8 +49,6 @@ export default function ActivityManagement({ tabsType }) {
   const [modalType, setModalType] = useState(false);
   const [singleUser, setSingleUser] = useContext(SingleUserContext);
   const [classId, setClassId] = useState(false);
-  const [teachersData, setTeachersData] = useState([]);
-  const [studentsData, setStudentsData] = useState([]);
   const fakeClasses = ["5A", "6B", "4A", "5B", "5C", "6D", "6C"];
   const history = useHistory();
   const [generalData, setGeneralData] = useState(
@@ -55,18 +57,6 @@ export default function ActivityManagement({ tabsType }) {
   const token = GetToken();
   console.log("general", teachersData);
 
-  useEffect(() => {
-    // getAllClass(token).then((data) => {
-    //   setClassData(data.data.data);
-    //   console.log(data);
-    // });
-    getAllUser(token).then((data) => {
-      setTeachersData(
-        data.data.data.filter((item) => item.role === "instructor")
-      );
-      setStudentsData(data.data.data.filter((item) => item.role === "student"));
-    });
-  }, []);
   return (
     <div className={styles.schedule}>
       <div className={styles.topSide}>
