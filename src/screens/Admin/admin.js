@@ -40,7 +40,7 @@ export default function Admin() {
         if (!announcementsData) {
           GetAnnouncements(100, 1, token)
             .then((data) => {
-              setAnnouncementsData(data);
+              setAnnouncementsData(data.data.data);
             })
             .catch((e) => console.error(e));
         }
@@ -60,6 +60,8 @@ export default function Admin() {
         /> */}
         <RenderCard
           pathname={pathname}
+          userData={userData}
+          setUserData={setUserData}
           announcementsData={announcementsData}
           setAnnouncementsData={setAnnouncementsData}
           newAnnouncementsData={newAnnouncementsData}
@@ -74,6 +76,8 @@ function RenderCard({
   pathname,
   announcementsData,
   setAnnouncementsData,
+  userData,
+  setUserData,
   newAnnouncementsData,
   setNewAnnouncementsData,
 }) {
@@ -83,6 +87,8 @@ function RenderCard({
   const [dropdownName, setDropdownName] = useState(
     id && id !== "" ? `${id}.Sınıflar` : "Sınıf Seçiniz"
   );
+  const [searchText, setSearchText] = useState("");
+  const [display, setDisplay] = useState("");
   const [selectedClass, setSelectedClass] = useState("");
   const dropdownNames = document.getElementById("dropdownName");
   const dropdownIcon = document.getElementById("dropdownIcon");
@@ -93,23 +99,16 @@ function RenderCard({
       setDropdownActive(false);
     }
   };
-  function onChangeText(evt) {
-    const value = evt.target.value;
-    let arr = announcementsData;
-    let b = announcementsData.data.data;
-    if (evt.target.value) {
-      arr.data.data = b.filter((item) => {
-        return item.title.includes(evt.target.value);
-      });
-      console.log(arr);
-      setNewAnnouncementsData(arr);
-    }
-    document.addEventListener("keydown", (e) => {
-      if (e.keyCode === 8) {
-        setNewAnnouncementsData(announcementsData);
-      }
-    });
+  function onChangeText(e) {
+    const res = announcementsData.filter((state) =>
+      e.target.value
+        ? state.title.toLowerCase().includes(e.target.value.toLowerCase())
+        : ""
+    );
+    if (e.target.value === "") setDisplay("");
+    else setDisplay(res);
   }
+  console.log(display);
   if (pathname === "/admin/announcements")
     return (
       <>
@@ -120,11 +119,11 @@ function RenderCard({
         <Card
           type={"announcements"}
           announcementsData={
-            newAnnouncementsData.length !== 0
-              ? newAnnouncementsData.data?.data
-              : announcementsData
-              ? announcementsData.data?.data
-              : []
+            display === ""
+              ? announcementsData
+                ? announcementsData
+                : []
+              : display
           }
           isAdmin={true}
         />
