@@ -12,11 +12,24 @@ export default function DropzoneField({ isActive, setIsActive }) {
     getRootProps,
     getInputProps,
     isDragActive,
+    fileRejections,
     isDragAccept,
     open,
     isDragReject,
-  } = useDropzone({ noClick: true });
+  } = useDropzone({ noClick: true, accept: ".xlsx" });
 
+  const fileRejectionItems = fileRejections.map(({ file, errors }) => (
+    <li key={file.path}>
+      {file.path} - {file.size} bytes
+      <ul>
+        {errors.map((e) => (
+          <li style={{ color: "red" }} key={e.code}>
+            Reddedildi:{e.message}
+          </li>
+        ))}
+      </ul>
+    </li>
+  ));
   const files = acceptedFiles.map((file) => {
     return <li key={file.path}>{file.path}</li>;
   });
@@ -77,6 +90,7 @@ export default function DropzoneField({ isActive, setIsActive }) {
           <div className={styles.fileName}>{files}</div>
         </aside>
       </section>
+      <div style={{ color: "red" }}>{fileRejectionItems}</div>
       <Button
         type={"primary"}
         title={"Yükle"}
@@ -85,6 +99,7 @@ export default function DropzoneField({ isActive, setIsActive }) {
           let file = files[0];
           console.log(file);
           let formdata = new FormData();
+          console.log(acceptedFiles[0]);
           formdata.append("file", acceptedFiles[0]);
           console.log("dsadsa", formdata);
           importSchedule(token, formdata).then((data) => console.log(data));
