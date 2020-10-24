@@ -11,6 +11,8 @@ import IsAdmin, {
   getAllUser,
   getAllClass,
   IsRoleAdmin,
+  GetAllExams,
+  GetSpecifiApps,
 } from "../../actions/action";
 import Modal from "../../components/Modal/modal";
 import Input from "../../components/Input/input";
@@ -104,7 +106,9 @@ function RenderCard({
   const token = GetToken();
   const [teachersData, setTeachersData] = useState([]);
   const [classData, setClassData] = useState([]);
+  const [allExams, setAllExams] = useState([]);
   const [filteredClass, setFilteredClass] = useState(false);
+  const [appData, setAppData] = useState([]);
   const history = useHistory();
   console.log("umarim degismiyor", announcementsData);
   window.onclick = function (e) {
@@ -180,6 +184,18 @@ function RenderCard({
         setLoading(false);
         alert("Sınıflar Getirilemedi");
       });
+    GetAllExams(token)
+      .then((data) => {
+        setAllExams(data);
+      })
+      .then(() => setLoading(false))
+      .catch(() => alert("Sınavlar getirilemedi"));
+    GetSpecifiApps(token, id ? id : "1")
+      .then((item) => {
+        setAppData(item);
+      })
+      .then(() => setLoading(false))
+      .catch(() => alert("Uygulamalar getirilemedi"));
   }, []);
   if (!loading) {
     if (pathname === "/admin/announcements")
@@ -396,6 +412,8 @@ function RenderCard({
             dropdownValue={dropdownName}
             type={"appManagement"}
             tabsType={tabsType}
+            appData={appData}
+            setAppData={setAppData}
           />
         </>
       );
@@ -409,12 +427,12 @@ function RenderCard({
       return (
         <>
           <h1>Sınav Yönetimi</h1>
-          <Card type={"exams"} />
+          <Card type={"exams"} allExams={allExams} />
         </>
       );
     } else return <></>;
   } else {
-    return <Loading fullscreen={true} />;
+    return <Loading noBackground={true} />;
   }
 }
 
