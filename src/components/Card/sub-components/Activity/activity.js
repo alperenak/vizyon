@@ -32,6 +32,7 @@ import {
 } from "../../../../actions/action";
 import { useHistory } from "react-router-dom";
 import { SingleUserContext } from "../../../../context/singleUserContext";
+import Loading from "../../../Loading/loading";
 // import teacherAvatar from "../../../../assets/images/teacherAvatar.png";
 export default function ActivityManagement({
   tabsType,
@@ -58,109 +59,113 @@ export default function ActivityManagement({
   console.log("general", teachersData);
 
   return (
-    <div className={styles.schedule}>
-      <div className={styles.topSide}>
-        <div className={styles.title}>Raporlar</div>
-      </div>
-      <div className={styles.scheduleTitlesSection}>
-        <table>
-          <tr className={styles.scheduleTitlesRow}>
-            <div className={styles.scheduleTitles}>
-              <User className={`${styles.scheduleTitlesIcon} ${styles.user}`} />
-              <td className={styles.ogretmen}>Ad Soyad</td>
-            </div>
-            {tabsType === "student" ? (
+    <>
+      <div className={styles.schedule}>
+        <div className={styles.topSide}>
+          <div className={styles.title}>Raporlar</div>
+        </div>
+        <div className={styles.scheduleTitlesSection}>
+          <table>
+            <tr className={styles.scheduleTitlesRow}>
               <div className={styles.scheduleTitles}>
-                <Ders className={`${styles.scheduleTitlesIcon}`} />
-                <td>Sınıf</td>
+                <User
+                  className={`${styles.scheduleTitlesIcon} ${styles.user}`}
+                />
+                <td className={styles.ogretmen}>Ad Soyad</td>
               </div>
-            ) : (
-              ""
-            )}
-          </tr>
-        </table>
-      </div>
-      <div className={styles.scheduleSection}>
-        <table>
-          {studentsData && studentsData !== null && tabsType === "student"
-            ? studentsData.map((item, index) => {
-                return (
-                  <tr
-                    onClick={() => {
-                      setClassId(item._id);
-                      setSingleUser({
-                        name: `${item.first_name} ${item.last_name}`,
-                        profile: item.profile_photo,
-                      });
-                      history.push(`/admin/activity/${item._id}`);
-                    }}
-                  >
-                    <div className={styles.scheduleTeacher}>
-                      <div className={styles.avatar}>
-                        <img
-                          // src={String(
-                          //   getTeacherAvatar(teachersData, item.course.code)
-                          // ).replace(/,/gi, "")}\
-                          src={item.profile_photo}
-                        />
+              {tabsType === "student" ? (
+                <div className={styles.scheduleTitles}>
+                  <Ders className={`${styles.scheduleTitlesIcon}`} />
+                  <td>Sınıf</td>
+                </div>
+              ) : (
+                ""
+              )}
+            </tr>
+          </table>
+        </div>
+        <div className={styles.scheduleSection}>
+          <table>
+            {studentsData && studentsData !== null && tabsType === "student"
+              ? studentsData.map((item, index) => {
+                  return (
+                    <tr
+                      onClick={() => {
+                        setClassId(item._id);
+                        setSingleUser({
+                          name: `${item.first_name} ${item.last_name}`,
+                          profile: item.profile_photo,
+                        });
+                        history.push(`/admin/activity/${item._id}`);
+                      }}
+                    >
+                      <div className={styles.scheduleTeacher}>
+                        <div className={styles.avatar}>
+                          <img
+                            // src={String(
+                            //   getTeacherAvatar(teachersData, item.course.code)
+                            // ).replace(/,/gi, "")}\
+                            src={item.profile_photo}
+                          />
+                        </div>
+                        <td>{`${item.first_name} ${item.last_name}`}</td>
                       </div>
-                      <td>{`${item.first_name} ${item.last_name}`}</td>
-                    </div>
-                    <td>
-                      {item.studentInfo
-                        ? item.studentInfo.class?.name
-                        : "sınıf bilgisi yok"}
-                    </td>
-                    <td className={styles.space}>
-                      {/* <PlusCircleSolid className={styles.addExamIcon} /> */}
-                    </td>
-                    <td className={styles.space}></td>
-                  </tr>
-                );
-              })
-            : teachersData.map((item) => {
-                return (
-                  <tr
-                    onClick={() => {
-                      setClassId(item._id);
-                      setSingleUser({
-                        name: `${item.first_name} ${item.last_name}`,
-                        profile: item.profile_photo,
-                      });
-                      history.push(`/admin/activity/${item._id}`);
-                    }}
-                  >
-                    <div className={styles.scheduleTeacher}>
-                      <div className={styles.avatar}>
-                        <img src={item.profile_photo} />
+                      <td>
+                        {item.studentInfo
+                          ? item.studentInfo.class?.name
+                          : "sınıf bilgisi yok"}
+                      </td>
+                      <td className={styles.space}>
+                        {/* <PlusCircleSolid className={styles.addExamIcon} /> */}
+                      </td>
+                      <td className={styles.space}></td>
+                    </tr>
+                  );
+                })
+              : teachersData.map((item) => {
+                  return (
+                    <tr
+                      onClick={() => {
+                        setClassId(item._id);
+                        setSingleUser({
+                          name: `${item.first_name} ${item.last_name}`,
+                          profile: item.profile_photo,
+                        });
+                        history.push(`/admin/activity/${item._id}`);
+                      }}
+                    >
+                      <div className={styles.scheduleTeacher}>
+                        <div className={styles.avatar}>
+                          <img src={item.profile_photo} />
+                        </div>
+                        <td>{`${item.first_name} ${item.last_name}`}</td>
                       </div>
-                      <td>{`${item.first_name} ${item.last_name}`}</td>
-                    </div>
-                    {/* <td>
+                      {/* <td>
                       {item.teacher
                         ? item.teacher
                         : fakeClasses[
                             Math.floor(Math.random() * (fakeClasses.length - 1))
                           ]}
                     </td> */}
-                    <td className={styles.space}></td>
-                    <td className={styles.space}></td>
-                  </tr>
-                );
-              })}
-        </table>
-      </div>
+                      <td className={styles.space}></td>
+                      <td className={styles.space}></td>
+                    </tr>
+                  );
+                })}
+          </table>
+        </div>
 
-      <Modal isActive={isActive} setIsActive={setIsActive}>
-        <RenderModalContent
-          isActive={isActive}
-          setIsActive={setIsActive}
-          type={modalType}
-          classId={classId}
-          teachersData={teachersData}
-        />
-      </Modal>
-    </div>
+        <Modal isActive={isActive} setIsActive={setIsActive}>
+          <RenderModalContent
+            isActive={isActive}
+            setIsActive={setIsActive}
+            type={modalType}
+            classId={classId}
+            teachersData={teachersData}
+          />
+        </Modal>
+      </div>
+    </>
   );
 }
 
