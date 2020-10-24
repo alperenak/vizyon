@@ -8,6 +8,7 @@ import IsAdmin, {
   IsAuth,
   GetUser,
   GetAnnouncements,
+  getAllUser,
 } from "../../actions/action";
 import Modal from "../../components/Modal/modal";
 import Input from "../../components/Input/input";
@@ -89,9 +90,14 @@ function RenderCard({
   );
   const [searchText, setSearchText] = useState("");
   const [display, setDisplay] = useState("");
+  const [displayTeacher, setDisplayTeacher] = useState("");
+  const [displayStudent, setDisplayStudent] = useState("");
   const [selectedClass, setSelectedClass] = useState("");
   const dropdownNames = document.getElementById("dropdownName");
   const dropdownIcon = document.getElementById("dropdownIcon");
+  const [studentsData, setStudentsData] = useState([]);
+  const token = GetToken();
+  const [teachersData, setTeachersData] = useState([]);
   const history = useHistory();
   console.log("umarim degismiyor", announcementsData);
   window.onclick = function (e) {
@@ -108,7 +114,36 @@ function RenderCard({
     if (e.target.value === "") setDisplay("");
     else setDisplay(res);
   }
+  function onChangeUserManagementSearch(e) {
+    if (tabsType === "teacher") {
+      const res = teachersData.filter((state) => {
+        const name = `${state.first_name} ${state.last_name}`;
+        return e.target.value
+          ? name.toLowerCase().includes(e.target.value.toLowerCase())
+          : "";
+      });
+      if (e.target.value === "") setDisplayTeacher("");
+      else setDisplayTeacher(res);
+    } else if (tabsType === "student") {
+      const res = studentsData.filter((state) => {
+        const name = `${state.first_name} ${state.last_name}`;
+        return e.target.value
+          ? name.toLowerCase().includes(e.target.value.toLowerCase())
+          : "";
+      });
+      if (e.target.value === "") setDisplayStudent("");
+      else setDisplayStudent(res);
+    }
+  }
   console.log(display);
+  useEffect(() => {
+    getAllUser(token).then((data) => {
+      setTeachersData(
+        data.data.data.filter((item) => item.role === "instructor")
+      );
+      setStudentsData(data.data.data.filter((item) => item.role === "student"));
+    });
+  }, []);
   if (pathname === "/admin/announcements")
     return (
       <>
@@ -176,7 +211,11 @@ function RenderCard({
       <>
         <h1>Kullanıcı Yönetimi</h1>
         <div className={styles.topSide}>
-          <Input placeholder="Ara" inputStyle={"search"}>
+          <Input
+            placeholder="Ara"
+            inputStyle={"search"}
+            onChange={onChangeUserManagementSearch}
+          >
             <SearchSolid className={styles.searchIcon} />
           </Input>
           <div className={styles.tabs}>
@@ -198,7 +237,12 @@ function RenderCard({
             </div>
           </div>
         </div>
-        <Card type={"userManagement"} tabsType={tabsType} />
+        <Card
+          teachersData={displayTeacher === "" ? teachersData : displayTeacher}
+          studentsData={displayStudent === "" ? studentsData : displayStudent}
+          type={"userManagement"}
+          tabsType={tabsType}
+        />
       </>
     );
   } else if (pathname === "/admin/syllabus") {
