@@ -280,13 +280,14 @@ export async function getAppsLog(
   endAt = "",
   limit = 99,
   userId = "",
+  specialDate = "thisMonth",
   classId = ""
 ) {
   const config = {
     headers: { authorization: `Bearer ${token}` },
   };
   const response = await axios.get(
-    `${uri}/logs/app-logs?from=${startAt}&until=${endAt}&limit=${limit}&start=${start}&order=asc&user=${userId}&role=student&class=${classId}
+    `${uri}/logs/app-logs?from=${startAt}&until=${endAt}&limit=${limit}&start=${start}&order=asc&user=${userId}&specialDate=${specialDate}&role=student&class=${classId}
     `,
     config
   );
