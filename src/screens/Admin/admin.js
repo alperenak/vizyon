@@ -9,6 +9,7 @@ import IsAdmin, {
   GetUser,
   GetAnnouncements,
   getAllUser,
+  getAllClass,
 } from "../../actions/action";
 import Modal from "../../components/Modal/modal";
 import Input from "../../components/Input/input";
@@ -92,12 +93,14 @@ function RenderCard({
   const [display, setDisplay] = useState("");
   const [displayTeacher, setDisplayTeacher] = useState("");
   const [displayStudent, setDisplayStudent] = useState("");
+  const [displayClass, setDisplayClass] = useState("");
   const [selectedClass, setSelectedClass] = useState("");
   const dropdownNames = document.getElementById("dropdownName");
   const dropdownIcon = document.getElementById("dropdownIcon");
   const [studentsData, setStudentsData] = useState([]);
   const token = GetToken();
   const [teachersData, setTeachersData] = useState([]);
+  const [classData, setClassData] = useState([]);
   const history = useHistory();
   console.log("umarim degismiyor", announcementsData);
   window.onclick = function (e) {
@@ -135,6 +138,17 @@ function RenderCard({
       else setDisplayStudent(res);
     }
   }
+
+  function onChangeClassSearch(e) {
+    const res = classData.filter((state) =>
+      e.target.value
+        ? state.name.toLowerCase().includes(e.target.value.toLowerCase())
+        : ""
+    );
+    if (e.target.value === "") setDisplayClass("");
+    else setDisplayClass(res);
+  }
+
   console.log(display);
   useEffect(() => {
     getAllUser(token).then((data) => {
@@ -142,6 +156,9 @@ function RenderCard({
         data.data.data.filter((item) => item.role === "instructor")
       );
       setStudentsData(data.data.data.filter((item) => item.role === "student"));
+    });
+    getAllClass(token).then((data) => {
+      setClassData(data.data.data);
     });
   }, []);
   if (pathname === "/admin/announcements")
@@ -169,7 +186,11 @@ function RenderCard({
       <>
         <h1>Sınıf Yönetimi</h1>
         <div className={styles.topSide}>
-          <Input placeholder="Ara" inputStyle={"search"}>
+          <Input
+            placeholder="Ara"
+            inputStyle={"search"}
+            onChange={onChangeClassSearch}
+          >
             <SearchSolid className={styles.searchIcon} />
           </Input>
           <div
@@ -203,7 +224,11 @@ function RenderCard({
             </div>
           </div>
         </div>
-        <Card filterClass={selectedClass[0]} type={"classManagement"} />
+        <Card
+          classData={displayClass === "" ? classData : displayClass}
+          filterClass={selectedClass[0]}
+          type={"classManagement"}
+        />
       </>
     );
   } else if (pathname === "/admin/user") {
