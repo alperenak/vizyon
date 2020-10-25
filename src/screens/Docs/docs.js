@@ -1,11 +1,9 @@
 import React, { Component } from "react";
-import styles from "./docs.module.scss";
 import { Text } from "office-ui-fabric-react";
 import { GraphFileBrowser } from "@microsoft/file-browser";
 import { UserAgentApplication } from "msal";
-import Button from "../../components/Button/button";
 
-const CLIENT_ID = "f054b515-d62a-44dd-b760-ea4ec9c24c65";
+const CLIENT_ID = "651eda9b-1822-424d-b1b7-269b1e476f7b";
 const SCOPES = ["files.readwrite.all", "user.read"];
 
 class App extends Component {
@@ -27,8 +25,8 @@ class App extends Component {
     const { token } = this.state;
 
     return (
-      <div className={styles.docs}>
-        <div className={styles.title}>Dosyalar</div>
+      <div className="App">
+        <Text variant="xxLarge">File Browser Demo</Text>
         {token ? (
           <GraphFileBrowser
             getAuthenticationToken={() => Promise.resolve(token)}
@@ -37,11 +35,9 @@ class App extends Component {
             onRenderSuccessButton={() => null}
           />
         ) : (
-          <Button
-            title={"Microsoft hesabına giriş yap"}
-            onClick={this._getMsalToken}
-            type={"primary"}
-          />
+          <Text block onClick={this._getMsalToken}>
+            [log in]
+          </Text>
         )}
       </div>
     );

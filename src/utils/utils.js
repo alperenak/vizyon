@@ -1,3 +1,4 @@
+import jwt_decode from "jwt-decode";
 export const months = [
   "Ocak",
   "Şubat",
@@ -103,4 +104,11 @@ export function createBySpaceNumberArray(first, second) {
     arr.push(i);
   }
   return arr;
+}
+
+export function GetUserId(token) {
+  let data = jwt_decode(token);
+  if (data.id) return data.id;
+  if (data._id) return data._id;
+  else return "hata";
 }

@@ -500,3 +500,12 @@ export async function SearchChat({ keyword, token }) {
   };
   return await axios.get(`${uri}/chat/search?keyword=${keyword}/`, config);
 }
+export async function GetNewMessageDetail(contactID, userId, token) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  return await axios.get(
+    `${uri}/chat/conversation?userId=${userId}&contactId=${contactID}`,
+    config
+  );
+}

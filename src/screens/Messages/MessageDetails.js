@@ -10,11 +10,13 @@ import sendButton from "../../assets/icons/send-button.svg";
 import {
   CreateNewChat,
   GetMessageDetails,
+  GetNewMessageDetail,
   SendMessage,
 } from "../../actions/action";
 
 import MessageSingle from "../../components/MessageSingle/MessageSingle";
 import { getCookie } from "../../utils/cookie";
+import { GetUserId } from "../../utils/utils";
 
 class MessageDetails extends Component {
   constructor(props) {
@@ -45,6 +47,16 @@ class MessageDetails extends Component {
         sender: res.data.data.contact,
       });
     } else if (pathname.includes("new")) {
+      let gettedUserId = GetUserId(getCookie("token"));
+      let res = await GetNewMessageDetail(
+        conversationID,
+        gettedUserId,
+        getCookie("token")
+      );
+      this.setState({
+        // singleMessages: res.data.data.messages,
+        // sender: res.data.data.contact,
+      });
     }
   };
 
@@ -55,14 +67,13 @@ class MessageDetails extends Component {
 
     if (pathname.includes("new")) {
       let payload = {
-        receiver: {
-          id: conversationID,
-          userType: "dentist",
-        },
+        receiver: conversationID,
         body: messageToSend,
         attachements: [],
       };
       await CreateNewChat(payload, getCookie("token"));
+      await this.getMessageDetails();
+      this.setState({ messageToSend: "" });
     } else {
       await SendMessage({
         conversationID,
@@ -110,9 +121,9 @@ class MessageDetails extends Component {
                 <img src={backButton} alt="" />
                 <div className={styles.text}> Geri </div>
               </div>
-              <div className={styles.detailsButton}>
+              {/* <div className={styles.detailsButton}>
                 <img src={detailsIcon} alt="" />
-              </div>
+              </div> */}
             </div>
           </div>
           <div className={styles.messagesContainer} id="list">
