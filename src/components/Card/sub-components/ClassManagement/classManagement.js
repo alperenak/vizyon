@@ -28,8 +28,7 @@ import {
   updateClass,
 } from "../../../../actions/action";
 import teacherAvatar from "../../../../assets/images/teacherAvatar.png";
-export default function ClassManagement({ filterClass }) {
-  const [classData, setClassData] = useState([{ name: "yükleniyor" }]);
+export default function ClassManagement({ filterClass, classData }) {
   const [isActive, setIsActive] = useState(false);
   const [modalType, setModalType] = useState(false);
   const [classId, setClassId] = useState(false);
@@ -37,17 +36,17 @@ export default function ClassManagement({ filterClass }) {
   const token = GetToken();
   console.log(filterClass);
   useEffect(() => {
-    if (filterClass !== "" && classData) {
-      let arr = [];
-      arr = classData.filter((item) => {
-        return item.name.includes(filterClass);
-      });
-      setClassData(arr);
-    }
-    getAllClass(token).then((data) => {
-      setClassData(data.data.data);
-      console.log(data);
-    });
+    // if (filterClass !== "" && classData) {
+    //   let arr = [];
+    //   arr = classData.filter((item) => {
+    //     return item.name.includes(filterClass);
+    //   });
+    //   setClassData(arr);
+    // }
+    // getAllClass(token).then((data) => {
+    //   setClassData(data.data.data);
+    //   console.log(data);
+    // });
     getAllUser(token).then((data) => {
       setTeachersData(
         data.data.data.filter((item) => item.role === "instructor")
@@ -210,36 +209,36 @@ function RenderModalContent({
   else if (type === "add") {
     return (
       <>
-        {/* <div
-            id={"teacherDropdown"}
-            onClick={() => setDropdownActive(!dropdownActive)}
-            className={styles.dropdown}
+        <div
+          id={"teacherDropdown"}
+          onClick={() => setDropdownActive(!dropdownActive)}
+          className={styles.dropdown}
+        >
+          <div id={"dropdownName"} className={styles.dropdownName}>
+            <Down id={"dropdownIcon"} className={styles.downIcon} />
+            {dropdownName}
+          </div>
+          <div
+            className={`${styles.dropdownContent}  ${
+              dropdownActive ? styles.active : ""
+            }`}
+            onClick={() => {}}
           >
-            <div id={"dropdownName"} className={styles.dropdownName}>
-              <Down id={"dropdownIcon"} className={styles.downIcon} />
-              {dropdownName}
-            </div>
-            <div
-              className={`${styles.dropdownContent}  ${
-                dropdownActive ? styles.active : ""
-              }`}
-              onClick={() => {}}
-            >
-              {teachersData.map((item) => {
-                return (
-                  <div
-                    onClick={() => {
-                      setDropdownName(`${item.first_name} ${item.last_name}`);
-                      setInstructorId(item.id);
-                    }}
-                    className={styles.dropdownItems}
-                  >
-                    {`${item.first_name} ${item.last_name}`}
-                  </div>
-                );
-              })}
-            </div>
-          </div> */}
+            {teachersData.map((item) => {
+              return (
+                <div
+                  onClick={() => {
+                    setDropdownName(`${item.first_name} ${item.last_name}`);
+                    setInstructorId(item.id);
+                  }}
+                  className={styles.dropdownItems}
+                >
+                  {`${item.first_name} ${item.last_name}`}
+                </div>
+              );
+            })}
+          </div>
+        </div>
         <Input
           // value={addAnnouncementsTitle}
           placeholder="Sınıfın adını giriniz"

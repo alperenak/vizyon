@@ -280,13 +280,14 @@ export async function getAppsLog(
   endAt = "",
   limit = 99,
   userId = "",
+  specialDate = "thisMonth",
   classId = ""
 ) {
   const config = {
     headers: { authorization: `Bearer ${token}` },
   };
   const response = await axios.get(
-    `${uri}/logs/app-logs?from=${startAt}&until=${endAt}&limit=${limit}&start=${start}&order=asc&user=${userId}&role=student&class=${classId}
+    `${uri}/logs/app-logs?from=${startAt}&until=${endAt}&limit=${limit}&start=${start}&order=asc&user=${userId}&specialDate=${specialDate}&role=student&class=${classId}
     `,
     config
   );
@@ -498,4 +499,13 @@ export async function SearchChat({ keyword, token }) {
     headers: { authorization: `Bearer ${token}` },
   };
   return await axios.get(`${uri}/chat/search?keyword=${keyword}/`, config);
+}
+export async function GetNewMessageDetail(contactID, userId, token) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  return await axios.get(
+    `${uri}/chat/conversation?userId=${userId}&contactId=${contactID}`,
+    config
+  );
 }

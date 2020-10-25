@@ -37,18 +37,18 @@ import {
 import Modal from "../../../Modal/modal";
 import Input from "../../../Input/input";
 import Button from "../../../Button/button";
-export default function Schedule({ scheduleData, teachersData, classInfo }) {
+export default function Schedule({
+  scheduleData,
+  teachersData,
+  classInfo,
+  allExams,
+}) {
   const token = GetToken();
-  const [allExams, setAllExams] = useState([]);
   const [modalType, setModalType] = useState("");
   const [isActive, setIsActive] = useState("");
   const [classId, setClassId] = useState("");
   const [examId, setExamId] = useState("");
-  useEffect(() => {
-    GetAllExams(token).then((data) => {
-      setAllExams(data);
-    });
-  }, []);
+  useEffect(() => {}, []);
   return (
     <div className={styles.schedule}>
       <div className={styles.topSide}>

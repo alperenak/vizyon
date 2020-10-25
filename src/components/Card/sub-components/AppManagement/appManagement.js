@@ -24,9 +24,8 @@ import {
 } from "../../../../actions/action";
 import { useLocation, useParams } from "react-router-dom";
 
-export default function AppManagement({ dropdownValue }) {
+export default function AppManagement({ dropdownValue, appData, setAppData }) {
   const [changeValue, setChangeValue] = useState([]);
-  const [appData, setAppData] = useState([]);
 
   const { id } = useParams();
   const [fakeAppsData, setFakeAppsData] = useState([
@@ -50,11 +49,7 @@ export default function AppManagement({ dropdownValue }) {
   ]);
   const token = GetToken();
   console.log(id);
-  useEffect(() => {
-    GetSpecifiApps(token, id ? id : "1").then((item) => {
-      setAppData(item);
-    });
-  }, [id]);
+
   console.log("hadi insallah", appData);
   return (
     <>

@@ -7,10 +7,16 @@ import detailsIcon from "../../assets/icons/three-dots-more-indicator.svg";
 import addFile from "../../assets/icons/add-file.svg";
 import sendButton from "../../assets/icons/send-button.svg";
 
-import { GetMessageDetails, SendMessage } from "../../actions/action";
+import {
+  CreateNewChat,
+  GetMessageDetails,
+  GetNewMessageDetail,
+  SendMessage,
+} from "../../actions/action";
 
 import MessageSingle from "../../components/MessageSingle/MessageSingle";
 import { getCookie } from "../../utils/cookie";
+import { GetUserId } from "../../utils/utils";
 
 class MessageDetails extends Component {
   constructor(props) {
@@ -33,29 +39,52 @@ class MessageDetails extends Component {
 
   getMessageDetails = async () => {
     let conversationID = this.props.match.params.id;
-
-    let res = await GetMessageDetails(conversationID, getCookie("token"));
-    this.setState({
-      singleMessages: res.data.data.messages,
-      sender: res.data.data.contact,
-    });
+    let pathname = window.location.pathname;
+    if (!pathname.includes("new")) {
+      let res = await GetMessageDetails(conversationID, getCookie("token"));
+      this.setState({
+        singleMessages: res.data.data.messages,
+        sender: res.data.data.contact,
+      });
+    } else if (pathname.includes("new")) {
+      let gettedUserId = GetUserId(getCookie("token"));
+      let res = await GetNewMessageDetail(
+        conversationID,
+        gettedUserId,
+        getCookie("token")
+      );
+      this.setState({
+        // singleMessages: res.data.data.messages,
+        // sender: res.data.data.contact,
+      });
+    }
   };
 
   onSendMessage = async () => {
     let { conversationID, messageToSend, sender } = this.state;
     let receiver = { id: sender.id, userType: sender.userType };
+    let pathname = window.location.pathname;
 
-    await SendMessage({
-      conversationID,
-      receiver,
-      body: messageToSend,
-      attachements: [],
-      token: getCookie("token"),
-    });
-
-    await this.getMessageDetails();
-    this.setState({ messageToSend: "" });
-
+    if (pathname.includes("new")) {
+      let payload = {
+        receiver: conversationID,
+        body: messageToSend,
+        attachements: [],
+      };
+      await CreateNewChat(payload, getCookie("token"));
+      await this.getMessageDetails();
+      this.setState({ messageToSend: "" });
+    } else {
+      await SendMessage({
+        conversationID,
+        receiver,
+        body: messageToSend,
+        attachements: [],
+        token: getCookie("token"),
+      });
+      await this.getMessageDetails();
+      this.setState({ messageToSend: "" });
+    }
     var list = document.getElementById("list");
     list.scrollTop = list.offsetHeight;
   };
@@ -92,9 +121,9 @@ class MessageDetails extends Component {
                 <img src={backButton} alt="" />
                 <div className={styles.text}> Geri </div>
               </div>
-              <div className={styles.detailsButton}>
+              {/* <div className={styles.detailsButton}>
                 <img src={detailsIcon} alt="" />
-              </div>
+              </div> */}
             </div>
           </div>
           <div className={styles.messagesContainer} id="list">

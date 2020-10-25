@@ -31,7 +31,11 @@ import {
   updateUser,
 } from "../../../../actions/action";
 // import teacherAvatar from "../../../../assets/images/teacherAvatar.png";
-export default function UserManagement({ tabsType }) {
+export default function UserManagement({
+  tabsType,
+  studentsData,
+  teachersData,
+}) {
   const [classData, setClassData] = useState([
     { name: "5 A", teacher: "Alperen Karaguzel" },
     { name: "5 B", teacher: "Alperen Karaguzel" },
@@ -42,26 +46,12 @@ export default function UserManagement({ tabsType }) {
   const [isActive, setIsActive] = useState(false);
   const [modalType, setModalType] = useState(false);
   const [classId, setClassId] = useState(false);
-  const [teachersData, setTeachersData] = useState([]);
-  const [studentsData, setStudentsData] = useState([]);
   const [generalData, setGeneralData] = useState(
     tabsType === "student" ? studentsData : teachersData
   );
   const token = GetToken();
   console.log("general", studentsData);
 
-  useEffect(() => {
-    // getAllClass(token).then((data) => {
-    //   setClassData(data.data.data);
-    //   console.log(data);
-    // });
-    getAllUser(token).then((data) => {
-      setTeachersData(
-        data.data.data.filter((item) => item.role === "instructor")
-      );
-      setStudentsData(data.data.data.filter((item) => item.role === "student"));
-    });
-  }, []);
   return (
     <div className={styles.schedule}>
       <div className={styles.topSide}>

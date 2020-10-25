@@ -1,3 +1,80 @@
+@import '../../helpers/variableBreakpoints.scss';
+.usersContainer{
+  display: flex;
+  overflow: auto;
+  flex-direction: column;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+  padding-bottom: 24px;
+  max-height: 300px;
+  margin-top: 24px;
+}
+.teachersLabel {
+  display: flex;
+  align-items: center;
+  height: 50px;
+  width: 330px;
+  margin: 10px 0;
+  border-radius: 12px;
+  padding: 5px;
+  cursor: pointer;
+  &:hover{
+    background-color: #ececec;
+  }
+
+  & .avatar {
+      width: 40px;
+      margin-left: 60px;
+      height: 40px;
+      border-radius: 50%;
+      overflow: hidden;
+
+      & img {
+          width: 100%;
+      }
+
+
+  }
+
+  & .teacherInfo {
+      display: flex;
+      flex-direction: column;
+      height: 50px;
+      align-items: center;
+      justify-content: center;
+
+      & .name {
+          font-family: SofiaBold;
+          font-size: 16px;
+          margin-left: 10px;
+          color: $darkBlue
+      }
+
+      & .branch {
+          font-size: 14px;
+          color: $lightPurple
+      }
+  }
+
+  & .icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: absolute;
+      right: 20px;
+      border-radius: 8px;
+      width: 32px;
+      height: 30px;
+      box-shadow: 0 2px 5px 0 rgba(110, 42, 245, 0.15);
+      background-color: white;
+
+      & .moreIcon {
+          width: 100px;
+          height: 13px;
+          color: $darkBlue
+      }
+  }
+}
 .Wrapper {
   display: flex;
   flex-direction: column;
@@ -448,4 +525,28 @@
     }
   }
 }
+}
+.tabs {
+  display: flex;
+  width: 400px;
+  box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+  border-radius: 8px;
+  height: 40px;
+
+  & .tabsButton {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: SofiaBold;
+      width: 200px;
+      box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+      border-radius: 8px;
+      transition: 0.3s;
+      cursor: pointer;
+  }
+
+  & .tabsButtonActive {
+      background-color: $darkPurple;
+      color: white;
+  }
 }
