@@ -3,7 +3,7 @@ import { Text } from "office-ui-fabric-react";
 import { GraphFileBrowser } from "@microsoft/file-browser";
 import { UserAgentApplication } from "msal";
 
-const CLIENT_ID = "651eda9b-1822-424d-b1b7-269b1e476f7b";
+const CLIENT_ID = "45385ff8-daba-4f16-bcf5-ec8e125da3ae";
 const SCOPES = ["files.readwrite.all", "user.read"];
 
 class App extends Component {
