@@ -510,3 +510,13 @@ export async function GetMicrosoftAssigments(token) {
   };
   return await axios.get(`${uri}/teams/assignments`, config);
 }
+export async function GetUsersbyClassesName(assignedClass, token) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = axios.get(
+    `${uri}/users?assignedClass=${assignedClass}`,
+    config
+  );
+  return response;
+}
