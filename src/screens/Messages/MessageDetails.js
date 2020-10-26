@@ -54,32 +54,41 @@ class MessageDetails extends Component {
         getCookie("token")
       );
       this.setState({
-        // singleMessages: res.data.data.messages,
-        // sender: res.data.data.contact,
+        singleMessages: res.data.data.messages,
+        sender: res.data.data.contact,
       });
     }
   };
 
   onSendMessage = async () => {
-    let { conversationID, messageToSend, sender } = this.state;
-    let receiver = { id: sender.id, userType: sender.userType };
+    let { messageToSend, sender } = this.state;
+    let conversationID = this.props.match.params.id;
+    let receiver = sender.id;
     let pathname = window.location.pathname;
 
     if (pathname.includes("new")) {
+      alert("hasyen");
       let payload = {
         receiver: conversationID,
         body: messageToSend,
         attachements: [],
       };
-      await CreateNewChat(payload, getCookie("token"));
+      let postNew = await CreateNewChat(payload, getCookie("token"));
+      this.setState({
+        singleMessages: postNew.data.data.messages,
+        sender: postNew.data.data.contact,
+      });
       await this.getMessageDetails();
       this.setState({ messageToSend: "" });
     } else {
-      await SendMessage({
-        conversationID,
-        receiver,
+      let payload = {
+        conversationID: conversationID,
+        receiver: receiver,
         body: messageToSend,
         attachements: [],
+      };
+      await SendMessage({
+        payload: payload,
         token: getCookie("token"),
       });
       await this.getMessageDetails();
@@ -102,7 +111,12 @@ class MessageDetails extends Component {
         <div className={styles.messageDetailsContainer}>
           <div className={styles.header}>
             <div className={styles.avatar}>
-              <img src={sender?.avatar} alt="" />
+              <img
+                src={
+                  sender?.profile_photo ? sender?.profile_photo : sender.avatar
+                }
+                alt=""
+              />
               <div
                 className={
                   sender?.onlineStatus ? styles.online : styles.offline
@@ -111,7 +125,9 @@ class MessageDetails extends Component {
             </div>
 
             <div className={styles.senderInfo}>
-              <div className={styles.name}>{sender?.name}</div>
+              <div className={styles.name}>{`${
+                sender.first_name ? sender.first_name : sender.name
+              } ${sender.last_name ? sender.last_name : ""}`}</div>
             </div>
             <div className={styles.rightButtons}>
               <div

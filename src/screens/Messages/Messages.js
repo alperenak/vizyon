@@ -31,7 +31,7 @@ import {
   SearchChat,
   SendMessage,
 } from "../../actions/action";
-import { convertHourMinute } from "../../utils/utils";
+import { convertHourMinute, GetUserId } from "../../utils/utils";
 import { TimesSolid } from "../../icons";
 import Loading from "../../components/Loading/loading";
 class Messages extends Component {
@@ -60,10 +60,11 @@ class Messages extends Component {
 
   componentDidMount = async () => {
     const path = this.props.location.pathname.split("/messages/");
+    let gettedUserId = GetUserId(getCookie("token"));
     const userId = this.props.match.params.id;
     this.setState({ path: path[1], userId: userId });
     console.log(this.state.userId);
-    let res = await GetConversations(getCookie("token"));
+    let res = await GetConversations(gettedUserId, getCookie("token"));
     this.setState({ messages: res.data.data });
     GetUser(getCookie("token")).then((data) => {
       this.setState({ userData: data.data.data.studentInfo.class.courses });
@@ -101,13 +102,113 @@ class Messages extends Component {
   };
 
   renderNoQuestion = () => {
+    let { search, messages, userData } = this.state;
     return (
-      <div className={styles.noQuestionContainer}>
-        <Loading noBackground={true} />
-        {/* <img src={noQuestionIllustration} alt="" />
-        <div className={styles.title}> There is no question.</div>
-        <button>Ask questions now!</button> */}
-      </div>
+      <>
+        <div className={styles.tabs}>
+          <div
+            className={`${styles.tabsButton} ${
+              this.state.tabsType === "student" ? styles.tabsButtonActive : ""
+            }`}
+            onClick={() => this.setState({ tabsType: "student" })}
+          >
+            {this.state.role === "loading"
+              ? ""
+              : this.state.role === "instructor"
+              ? "Öğrenciler"
+              : "Öğretmenler"}
+          </div>
+          <div
+            className={`${styles.tabsButton} ${
+              this.state.tabsType === "messages" ? styles.tabsButtonActive : ""
+            }`}
+            onClick={() => this.setState({ tabsType: "messages" })}
+          >
+            Mesajlarım
+          </div>
+        </div>
+        {this.state.tabsType === "messages" ? (
+          <div className={styles.container}>
+            <h1>Mesajlar</h1>
+            <div className={styles.searchSection}>
+              <input
+                type="text"
+                name="search"
+                value={search}
+                onChange={this.onChange}
+                placeholder="Kullanıcı ara"
+              />
+            </div>
+
+            {getCookie("user_type") === "user" && (
+              <div
+                className={styles.newMessageBtn}
+                onClick={() => (window.location = "/messages/new")}
+              >
+                <img src={addCircle} alt="" />
+                <div>Yeni Mesaj</div>
+              </div>
+            )}
+
+            <div className={styles.messagesSection}>
+              <div className={styles.messagesSectionInner}>
+                <div className={styles.header}>Mesajlar</div>
+                <div className={styles.messageContainer}>
+                  {messages.map((message, i) => {
+                    return (
+                      <Message
+                        image={message?.contact.avatar}
+                        title={message?.contact.name}
+                        content={message?.lastMessage.body}
+                        time={message?.lastMessage.createdAt}
+                        key={i}
+                        id={message.id}
+                        unread={message.unread}
+                      />
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className={styles.usersContainer}>
+            {userData && userData.length !== 0
+              ? userData.map((item) => {
+                  return (
+                    <div className={styles.teachersLabel}>
+                      <div className={styles.avatar}>
+                        <img
+                          src={
+                            item.instructor !== null && item.instructor
+                              ? item.instructor.profile_photo
+                                ? item.instructor.profile_photo.includes("http")
+                                  ? item.instructor.profile_photo
+                                  : teacherAvatar
+                                : teacherAvatar
+                              : teacherAvatar
+                          }
+                        />
+                      </div>
+                      <div className={styles.teacherInfo}>
+                        <div
+                          onClick={() =>
+                            this.props.history.push(
+                              `/messages/new/${item.instructor?._id}`
+                            )
+                          }
+                          className={styles.name}
+                        >
+                          {this.getTeacherName(item.instructor)}
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })
+              : ""}
+          </div>
+        )}
+      </>
     );
   };
 
@@ -170,8 +271,8 @@ class Messages extends Component {
                   {messages.map((message, i) => {
                     return (
                       <Message
-                        image={message?.contact.avatar}
-                        title={message?.contact.name}
+                        image={message?.lastMessage.receiver.profile_photo}
+                        title={`${message?.lastMessage.receiver.first_name} ${message?.lastMessage.receiver.last_name}`}
                         content={message?.lastMessage.body}
                         time={message?.lastMessage.createdAt}
                         key={i}

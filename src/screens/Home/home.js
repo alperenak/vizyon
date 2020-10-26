@@ -38,22 +38,40 @@ export default function Home() {
                 token,
                 data.data.data.studentInfo?.class._id
               )
-                .then((data) => setAnnouncementsData(data))
-                .catch((e) => console.error(e));
+                .then((data) => {
+                  setLoading(false);
+                  setAnnouncementsData(data);
+                })
+                .catch((e) => {
+                  setLoading(false);
+                  console.error(e);
+                });
             } else if (
               !announcementsData &&
               data.data.data.role === "instructor"
             ) {
               GetAnnouncements(100, 1, token)
-                .then((data) => setAnnouncementsData(data))
-                .catch((e) => console.error(e));
+                .then((data) => {
+                  setLoading(false);
+                  setAnnouncementsData(data);
+                })
+                .catch((e) => {
+                  setLoading(false);
+                  console.error(e);
+                });
             }
             GetNewMessages(token).then((data) => {
+              setLoading(false);
               setNewMessagesData(data);
             });
           })
-          .then(() => {})
-          .catch((e) => console.error(e));
+          .then(() => {
+            setLoading(false);
+          })
+          .catch((e) => {
+            setLoading(false);
+            console.error(e);
+          });
       }
     } else window.location.replace("/");
   }, [userData]);
