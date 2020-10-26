@@ -503,3 +503,10 @@ export async function GetConversationList(userId, token) {
   };
   return await axios.get(`${uri}/chat/conversation?userId=${userId}`, config);
 }
+
+export async function GetMicrosoftAssigments(token) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  return await axios.get(`${uri}/teams/assignments`, config);
+}
