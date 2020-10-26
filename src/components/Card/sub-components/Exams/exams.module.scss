@@ -1,0 +1,278 @@
+@import '../../../../helpers/variableBreakpoints.scss';
+
+.schedule {
+    width: 1000px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+    background-color: white;
+    margin-top: 40px;
+    position: relative;
+    margin-bottom: 30px;
+
+
+    & .topSide {
+        display: flex;
+        margin: 0 30px;
+        width: calc(100% -60px);
+        position: relative;
+        justify-content: flex-end;
+        padding-top: 30px;
+
+        & .title {
+            position: absolute;
+            font-size: 18px;
+            font-family: SofiaBold;
+            color: $darkBlue;
+            left: 0;
+        }
+
+
+        & .feedback {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            cursor: pointer;
+            padding: 0 10px;
+            height: 30px;
+            background-color: rgba(225, 238, 253, 0.51);
+            border-radius: 8px;
+            margin-right: -10px;
+
+            & .feedbackIcon {
+                color: $darkBlue;
+            }
+
+            & .feedbackTitle {
+                font-size: 14px;
+                font-family: SofiaSemiBold;
+                color: $darkBlue;
+                margin-left: 10px;
+            }
+        }
+    }
+
+
+
+    & .scheduleTitlesSection {
+        display: flex;
+        margin-top: 34px;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        width: 100%;
+
+        & table {
+            width: 100%;
+
+
+            & .scheduleTitlesRow {
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                padding-left: 30px;
+                width: 100%;
+
+                & .scheduleTitles {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+
+                    & .scheduleTitlesIcon {
+                        width: 30px;
+                        height: 30px;
+                    }
+                }
+
+
+                & .tarih {}
+
+                & .user {}
+
+
+                & td {
+                    width: inherit;
+                    font-size: 14px;
+                    font-family: SofiaMedium;
+                    color: $darkBlue;
+                    margin-left: 10px;
+                    text-align: center;
+                }
+            }
+        }
+    }
+
+    & .scheduleSection {
+        display: flex;
+        width: 100%;
+        margin-top: 10px;
+
+        & table {
+            width: 100%;
+            border-collapse: collapse;
+            border: none;
+
+
+            & tr {
+                cursor: context-menu;
+                height: 60px;
+                width: 100%;
+                border: none;
+                text-align: center;
+                box-shadow: 0 1px 2px 0 rgba(224, 236, 255, 0.95);
+
+                & .scheduleTeacher {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    height: 60px;
+
+                    & td {
+                        margin-left: 15px;
+                    }
+
+                    & .avatar {
+                        width: 24px;
+                        height: 24px;
+                        border-radius: 50%;
+                        margin-left: 30px;
+                        overflow: hidden;
+
+                        & img {
+                            width: 100%;
+                        }
+                    }
+                }
+
+
+                & td {
+                    color: $darkBlue;
+                    font-size: 14px;
+                    font-family: SofiaMedium;
+                }
+
+                & .editIcon {
+                    width: 20px;
+                    height: 20px;
+                    color: rgba(94, 191, 155, 1);
+                    cursor: pointer
+                }
+
+                & .deleteIcon {
+                    width: 20px;
+                    height: 20px;
+                    color: red;
+                    cursor: pointer
+                }
+
+
+                & .space {
+                    margin-left: 40px;
+                    align-items: center;
+                    justify-content: space-around;
+                    display: flex;
+                }
+            }
+
+            & tr:hover {
+                background-color: #f9f7ff;
+                box-shadow: 0 1px 2px 0 rgba(224, 236, 255, 0.95);
+            }
+        }
+    }
+
+    & .greenTip {
+        position: absolute;
+        left: 20px;
+        width: 20px;
+        height: 20px;
+    }
+
+    & .dropdown {
+        position: relative;
+        display: inline-block;
+        z-index: 1;
+        margin: 10px;
+
+        & .dropdownName {
+            display: flex;
+            align-items: center;
+            color: $darkBlue;
+            width: 50px;
+            height: 30px;
+            cursor: pointer;
+            font-family: SofiaBold;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+            padding: 10px 20px;
+            padding-right: 40px;
+            position: relative;
+
+            & .downIcon {
+                position: absolute;
+                right: 10px;
+                color: black;
+            }
+        }
+
+        & .course {
+            width: 200px;
+        }
+
+        & .dropdownContent {
+            display: none;
+            position: absolute;
+            flex-direction: column;
+            align-items: center;
+            background-color: white;
+            width: calc(100% - 18px);
+            left: 13px;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+            overflow-y: scroll;
+            max-height: 200px;
+            font-size: 14px;
+            color: $darkBlue;
+            font-family: SofiaBold;
+            z-index: 1;
+
+            & .dropdownItems {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                min-height: 50px;
+                background-color: white;
+                box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+                cursor: pointer;
+
+                &:hover {
+                    background-color: rgb(243, 243, 243);
+                }
+
+                & .hour {}
+            }
+        }
+
+        & .course {
+            display: flex;
+        }
+
+        & .active {
+            display: flex;
+        }
+    }
+
+    & .classes {
+        z-index: 9999999999999999999;
+    }
+
+    & .hour {
+        z-index: 9999999999999;
+    }
+
+    & .dayzz {
+        z-index: 9999999999999999999;
+    }
+}

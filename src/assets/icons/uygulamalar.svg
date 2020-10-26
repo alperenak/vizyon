@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" viewBox="0 0 50 50">
+    <defs>
+        <filter id="Rectangle_12_Copy_2" width="50" height="50" x="0" y="0" filterUnits="userSpaceOnUse">
+            <feOffset dx="-1" dy="3"/>
+            <feGaussianBlur result="blur" stdDeviation="3"/>
+            <feFlood flood-color="#320390" flood-opacity=".639"/>
+            <feComposite in2="blur" operator="in"/>
+            <feComposite in="SourceGraphic"/>
+        </filter>
+        <filter id="Rectangle_8749" width="13" height="13" x="15.5" y="12.5" filterUnits="userSpaceOnUse">
+            <feOffset dx="1" dy="2"/>
+            <feGaussianBlur result="blur-2" stdDeviation="1"/>
+            <feFlood flood-color="#cc4b62" flood-opacity=".616"/>
+            <feComposite in2="blur-2" operator="in"/>
+            <feComposite in="SourceGraphic"/>
+        </filter>
+        <filter id="Rectangle_8750" width="13" height="13" x="15.5" y="22.5" filterUnits="userSpaceOnUse">
+            <feOffset dx="1" dy="2"/>
+            <feGaussianBlur result="blur-3" stdDeviation="1"/>
+            <feFlood flood-color="#cc4b62" flood-opacity=".616"/>
+            <feComposite in2="blur-3" operator="in"/>
+            <feComposite in="SourceGraphic"/>
+        </filter>
+        <filter id="Rectangle_8751" width="13" height="13" x="25.5" y="12.5" filterUnits="userSpaceOnUse">
+            <feOffset dx="1" dy="2"/>
+            <feGaussianBlur result="blur-4" stdDeviation="1"/>
+            <feFlood flood-color="#cc4b62" flood-opacity=".616"/>
+            <feComposite in2="blur-4" operator="in"/>
+            <feComposite in="SourceGraphic"/>
+        </filter>
+        <filter id="Rectangle_8752" width="13" height="13" x="25.5" y="22.5" filterUnits="userSpaceOnUse">
+            <feOffset dx="1" dy="2"/>
+            <feGaussianBlur result="blur-5" stdDeviation="1"/>
+            <feFlood flood-color="#cc4b62" flood-opacity=".616"/>
+            <feComposite in2="blur-5" operator="in"/>
+            <feComposite in="SourceGraphic"/>
+        </filter>
+        <linearGradient id="linear-gradient" x1=".839" x2=".137" y1=".882" y2=".054" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#ff5bbe"/>
+            <stop offset="1" stop-color="#ffc766"/>
+        </linearGradient>
+        <style>
+            .cls-2{fill:#fff}
+        </style>
+    </defs>
+    <g id="Group_5528">
+        <g filter="url(#Rectangle_12_Copy_2)" transform="translate(-591 -217) translate(591 217)">
+            <rect id="Rectangle_12_Copy_2-2" width="32" height="32" fill="url(#linear-gradient)" rx="10" transform="translate(10 6)"/>
+        </g>
+        <g filter="url(#Rectangle_8749)" transform="translate(-591 -217) translate(591 217)">
+            <rect id="Rectangle_8749-2" width="7" height="7" class="cls-2" rx="3.5" transform="translate(17.5 13.5)"/>
+        </g>
+        <g filter="url(#Rectangle_8750)" transform="translate(-591 -217) translate(591 217)">
+            <rect id="Rectangle_8750-2" width="7" height="7" class="cls-2" rx="2" transform="translate(17.5 23.5)"/>
+        </g>
+        <g filter="url(#Rectangle_8751)" transform="translate(-591 -217) translate(591 217)">
+            <rect id="Rectangle_8751-2" width="7" height="7" class="cls-2" rx="2" transform="translate(27.5 13.5)"/>
+        </g>
+        <g filter="url(#Rectangle_8752)" transform="translate(-591 -217) translate(591 217)">
+            <rect id="Rectangle_8752-2" width="7" height="7" class="cls-2" rx="3.5" transform="translate(27.5 23.5)"/>
+        </g>
+    </g>
+</svg>

@@ -1,0 +1,93 @@
+@import '../../helpers/variableBreakpoints.scss';
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    transition: 0.3s;
+
+    & .dropdownContent {
+        visibility: hidden;
+        width: 378px;
+        height: 86px;
+        border-radius: 12px;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
+        border-radius: 12px;
+        text-align: center;
+        background-color: white;
+        padding: 5px 0;
+        position: absolute;
+        box-shadow: 0 7px 15px 0 rgba(183, 206, 242, 0.36);
+        z-index: 1;
+        top: 100%;
+        left: 50%;
+        margin-left: -60px;
+
+        & .avatar {
+            height: 50px;
+            width: 50px;
+            border-radius: 50%;
+            overflow: hidden;
+
+            & img {
+                width: 100%;
+            }
+        }
+
+        & .lessonInformation {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+
+
+            & .teacher {
+                font-family: SofiaBold;
+                font-size: 16px;
+                color: $darkBlue;
+            }
+
+            & .lessonName {
+                font-size: 14px;
+                font-family: SofiaMedium;
+                color: $lightPurple;
+
+            }
+        }
+
+        & .lessonHours {
+            display: flex;
+            flex-direction: column;
+            font-size: 20px;
+
+            & .first {
+                font-family: SofiaBold;
+                color: $darkBlue
+            }
+
+            & .second {
+                font-family: SofiaBold;
+                color: $darkBlue
+            }
+        }
+
+    }
+
+    & .dropdownContent::after {
+        content: "";
+        position: absolute;
+        bottom: 100%;
+        left: 10%;
+        margin-left: -5px;
+        border-width: 5px;
+        border-style: solid;
+        border-color: transparent transparent white transparent;
+    }
+
+
+}
+
+.dropdown:hover .dropdownContent {
+    visibility: visible;
+}

@@ -1,0 +1,35 @@
+$sm: 576px;
+$md: 768px;
+$lg: 992px;
+$xl: 1200px;
+$xxl: 1250px;
+
+@mixin small {
+    @media only screen and (max-width: $sm) {
+        @content;
+    }
+}
+
+@mixin medium {
+    @media only screen and (max-width: $md) {
+        @content;
+    }
+}
+
+@mixin large {
+    @media only screen and (max-width: $lg) {
+        @content;
+    }
+}
+
+@mixin x-large {
+    @media only screen and (max-width: $xl) {
+        @content;
+    }
+}
+
+@mixin xx-large {
+    @media only screen and (max-width: $xxl) {
+        @content;
+    }
+}

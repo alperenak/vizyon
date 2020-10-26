@@ -1,0 +1,35 @@
+@import '../../helpers/variableBreakpoints.scss';
+
+.checkBoxContainer {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+
+    & .checkBox {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 18px;
+        height: 18px;
+        border-radius: 4px;
+        box-shadow: 0 1px 2px 0 rgba(53, 10, 139, 0.2);
+        transition: 0.3s;
+        background-color: $darkPurple;
+        cursor: pointer;
+
+        & .icon {
+            width: 10px;
+            height: 10px;
+            color: white
+        }
+    }
+
+    & .disable {
+        background-color: #ffffff;
+    }
+
+    & .checkBoxTitle {
+        color: $lightPurple;
+        margin-left: 10px;
+    }
+}

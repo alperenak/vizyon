@@ -1,0 +1,91 @@
+@import '../../helpers/variableBreakpoints.scss';
+
+.docs {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    & .title {
+        display: flex;
+        color: $darkBlue;
+        font-family: SofiaBold;
+        font-size: 18px;
+        margin: 30px;
+    }
+    & .docsContainer {
+        display: flex;
+        width: 1000px;
+        height: 500px;
+        margin-top: 40px;
+        flex-direction: column;
+        background-color: white;
+        border-radius: 12px;
+        box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+
+        & .title {
+            display: flex;
+            color: $darkBlue;
+            font-family: SofiaBold;
+            font-size: 18px;
+            margin: 30px;
+        }
+
+        & .topBar {
+            display: flex;
+            align-items: center;
+
+            & .backIcon {
+                color: $darkBlue;
+                margin-left: 10px;
+                margin-right: 10px;
+                width: 15px;
+                cursor: pointer;
+            }
+
+            & .path {
+                color: $darkBlue;
+                font-family: SofiaBold;
+
+                & .rightIcon {
+                    width: 20px;
+                    height: 10px;
+                }
+            }
+        }
+
+        & .DocsGrid {
+            margin-top: 20px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(190px, 200px));
+
+            & .renderDocs {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+                border-radius: 25px;
+                margin: 20px;
+                cursor: pointer;
+                padding: 20px;
+
+                & .icon {
+                    width: 100px;
+                    height: 100px
+                }
+
+
+                & .DocsName {
+                    color: $darkBlue;
+                    font-family: SofiaBold;
+                    margin-top: 20px;
+                }
+            }
+
+            & .renderDocs:hover {
+                background-color: whitesmoke;
+            }
+
+        }
+    }
+}

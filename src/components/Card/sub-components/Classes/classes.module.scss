@@ -1,0 +1,104 @@
+@import '../../../../helpers/variableBreakpoints.scss';
+
+.classesCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 370px;
+    height: 431px;
+    border-radius: 12px;
+    margin-left: 30px;
+    box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+    position: relative;
+    background-color: white;
+    margin-top: 40px;
+
+    & .classBackground {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 354px;
+        min-height: 110px;
+        border-radius: 12px;
+        overflow: hidden;
+
+        & img {
+            height: 100%;
+        }
+    }
+
+    & .teacherAvatarBackground {
+        display: flex;
+        position: absolute;
+        top: 100px;
+        justify-content: center;
+        align-items: center;
+        width: 120px;
+        height: 120px;
+        background-color: white;
+        border-radius: 50%;
+        box-shadow: 0 4px 10px 0 #eee5fd;
+
+        & .teacherAvatar {
+            width: 110px;
+            height: 110px;
+            position: relative;
+
+            & img {
+                object-fit: cover;
+                width: 110px;
+                height: 110px;
+                border-radius: 50%;
+            }
+
+            & .editIcon {
+                position: absolute;
+                top: 35%;
+                width: 45px;
+                height: 45px;
+                right: -22.5px;
+                z-index: 999999999;
+            }
+        }
+
+    }
+
+    & .name {
+        font-family: SofiaBold;
+        color: $darkBlue;
+        font-size: 16px;
+        margin-top: 120px;
+    }
+
+    & .classroomName {
+        color: $lightPurple;
+        font-size: 16px;
+        margin-top: 5px;
+        margin-bottom: -20px;
+    }
+
+    & .alertboxes {
+        display: flex;
+        flex-direction: column;
+        margin-top: 20px;
+        width: 100%;
+
+        & .MessageCheckIcon {
+            position: absolute;
+            height: 40px;
+            top: 7px;
+            width: 40px;
+            left: 10px;
+        }
+
+        & .ExamIcon {
+            position: absolute;
+            height: 32px;
+            width: 32px;
+            left: 15px;
+        }
+
+        margin-bottom: 15px;
+        ;
+    }
+}

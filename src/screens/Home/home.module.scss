@@ -1,0 +1,24 @@
+.homeWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background-color: #F6F2FF;
+    padding-bottom: 36px;
+
+    & .homeContainer {
+        display: flex;
+        width: 80%;
+        height: 100%;
+
+        & .homeMain {
+            flex: 2;
+        }
+
+        & .rightSide {
+            flex: 1;
+
+        }
+    }
+
+}

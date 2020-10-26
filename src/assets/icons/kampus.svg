@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="35" height="37.451" viewBox="0 0 35 37.451">
+    <defs>
+        <linearGradient id="lanaamlp0a" x1=".839" x2=".137" y1=".882" y2=".054" gradientUnits="objectBoundingBox">
+            <stop offset="0" stop-color="#5bfff2"/>
+            <stop offset="1" stop-color="#66dcff"/>
+        </linearGradient>
+        <filter id="8v32xzou4b" width="35" height="34.951" x="0" y="2.5" filterUnits="userSpaceOnUse">
+            <feOffset dy="4"/>
+            <feGaussianBlur result="blur" stdDeviation="2.5"/>
+            <feFlood flood-color="#09a8ce"/>
+            <feComposite in2="blur" operator="in"/>
+            <feComposite in="SourceGraphic"/>
+        </filter>
+    </defs>
+    <g transform="translate(-599.5 -223)">
+        <rect width="32" height="32" fill="url(#lanaamlp0a)" rx="10" transform="translate(601 223)"/>
+        <g filter="url(#8v32xzou4b)" transform="translate(599.5 223)">
+            <path fill="#fff" d="M9 19.951a10.011 10.011 0 1 1 2 0V14a1 1 0 1 0-2 0v5.95zM10 3.5a6.5 6.5 0 0 1 4.6 11.1.5.5 0 1 0 .707.707A7.5 7.5 0 1 0 4.7 15.3a.5.5 0 0 0 .7-.7A6.5 6.5 0 0 1 10 3.5zm0 3a3.5 3.5 0 0 1 2.475 5.975.5.5 0 1 0 .707.707 4.5 4.5 0 1 0-6.364 0 .5.5 0 0 0 .707-.707A3.5 3.5 0 0 1 10 6.5zm0 2a1.5 1.5 0 1 0 1.5 1.5A1.5 1.5 0 0 0 10 8.5z" transform="translate(7.5 6)"/>
+        </g>
+    </g>
+</svg>

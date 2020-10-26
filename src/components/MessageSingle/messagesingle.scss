@@ -1,0 +1,70 @@
+.messageContainer {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	border-radius: 12px;
+	height: 50px;
+	&:hover{
+		background: #f8f8f8;
+		
+	}
+	&__isMine {
+		justify-content: flex-end;
+	}
+	&__notMine {
+		justify-self: flex-start;
+		margin-left: 20px;
+		justify-content: flex-start;
+	}
+	&__avatar {
+		width: 40px;
+		height: 40px;
+		border-radius: 100%;
+		margin-right: 15px;
+		& img {
+			width: 40px;
+			height: 40px;
+			border-radius: 100%;
+		}
+    }
+	&__time {
+		color: #909ab2;
+	}
+	&__messageBody {
+		width: 300px;
+		border-radius: 15px;
+
+		&__isMine {
+			background-color: #6e2af5;
+			justify-self: end;
+			color: white;
+			padding: 10px;
+			justify-content: space-between;
+			display: flex;
+			&__time {
+				position: relative;
+				left: calc(100% - 40px);
+				top: 20px;
+			}
+		}
+
+		&__notMine {
+			padding: 10px;
+			background-color: #f6f9ff;
+			justify-self: flex-start;
+			color: #061b52;
+			justify-content: space-between;
+			display: flex;
+			&__time {
+				position: relative;
+				top: 20px;
+			}
+		}
+
+		&__message {
+			padding: 5px 0;
+			width: 90%;
+			margin: auto auto;
+		}
+	}
+}

@@ -1,0 +1,191 @@
+@import "../../helpers/variableBreakpoints.scss";
+
+.adminContainer {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+
+    & .adminMain {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        padding-top: 50px;
+        flex: 4;
+
+        & .topSide {
+            display: flex;
+            width: 770px;
+            justify-content: space-between;
+            align-items: center;
+
+
+
+            & .dropdown {
+                position: relative;
+                display: inline-block;
+                z-index: 1;
+
+                & .dropdownName {
+                    display: flex;
+                    align-items: center;
+                    color: $darkBlue;
+                    width: 200px;
+                    height: 30px;
+                    cursor: pointer;
+                    font-family: SofiaBold;
+                    border-radius: 8px;
+                    box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+                    padding: 10px 20px;
+                    padding-right: 40px;
+                    position: relative;
+
+                    & .downIcon {
+                        position: absolute;
+                        right: 10px;
+                        color: black;
+                    }
+                }
+
+                & .dropdownContent {
+                    display: none;
+                    position: absolute;
+                    justify-content: center;
+                    flex-direction: column;
+                    align-items: center;
+                    background-color: white;
+                    width: calc(100% - 18px);
+                    left: 13px;
+                    border-radius: 8px;
+                    box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+                    overflow: hidden;
+                    font-size: 14px;
+                    color: $darkBlue;
+                    font-family: SofiaBold;
+                    z-index: 1;
+
+                    & .dropdownItems {
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        width: 100%;
+                        height: 50px;
+                        background-color: white;
+                        box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+                        cursor: pointer;
+
+                        &:hover {
+                            background-color: rgb(243, 243, 243);
+                        }
+                    }
+                }
+
+                & .active {
+                    display: flex;
+                }
+            }
+
+            & .tabs {
+                display: flex;
+                width: 400px;
+                box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+                border-radius: 8px;
+                height: 40px;
+
+                & .tabsButton {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-family: SofiaBold;
+                    width: 200px;
+                    box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+                    border-radius: 8px;
+                    transition: 0.3s;
+                    cursor: pointer;
+                }
+
+                & .tabsButtonActive {
+                    background-color: $darkPurple;
+                    color: white;
+                }
+            }
+        }
+    }
+}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    z-index: 1;
+
+    & .dropdownName {
+        display: flex;
+        align-items: center;
+        color: $darkBlue;
+        width: 200px;
+        height: 30px;
+        cursor: pointer;
+        font-family: SofiaBold;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+        padding: 10px 20px;
+        padding-right: 40px;
+        position: relative;
+
+        & .downIcon {
+            position: absolute;
+            right: 10px;
+            color: black;
+        }
+    }
+
+    & .dropdownContent {
+        display: none;
+        position: absolute;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        background-color: white;
+        width: calc(100% - 18px);
+        left: 13px;
+        border-radius: 8px;
+        box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+        overflow: hidden;
+        font-size: 14px;
+        color: $darkBlue;
+        font-family: SofiaBold;
+        z-index: 1;
+
+        & .dropdownItems {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            height: 50px;
+            background-color: white;
+            box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+            cursor: pointer;
+
+            &:hover {
+                background-color: rgb(243, 243, 243);
+            }
+        }
+    }
+
+    & .active {
+        display: flex;
+    }
+}
+
+h1 {
+    color: $darkBlue;
+    font-family: SofiaBold;
+    padding: 30px;
+}
+
+.searchIcon {
+    position: absolute;
+    right: 10px;
+    color: $darkBlue;
+    cursor: pointer;
+}
