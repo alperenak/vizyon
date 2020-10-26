@@ -24,12 +24,9 @@
 
         & img {
             object-fit: cover;
-            height: 120vh;
-            margin-left: -200px;
-
+            height: 100vh;
 
             @include xx-large {
-                margin-left: -100px;
             }
 
         }
