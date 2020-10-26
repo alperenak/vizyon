@@ -17,7 +17,7 @@ export default function NewMessages({ newMessagesData }) {
                   (window.location = `/messages/details/${item.lastMessage.conversationId}`)
                 }
               >
-                <div className="messageContainer__avatar">
+                <div className={styles.avatar}>
                   <img src={item.contact.profile_photo} alt="" />
                   {item.unread && item.unread > 0 && (
                     <div className="messageContainer__avatar__unread">
