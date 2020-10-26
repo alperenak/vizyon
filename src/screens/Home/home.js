@@ -146,6 +146,11 @@ export default function Home() {
                     ? userData.data.data.studentInfo.class.courses
                     : []
                 }
+                classesData={
+                  userData.data?.data.instructorInfo
+                    ? userData.data?.data.instructorInfo.classes
+                    : false
+                }
                 userRole={userRole !== "" ? userRole : false}
               />{" "}
               <Card type={"newMessages"} newMessagesData={newMessagesData} />
