@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./homework.module.scss";
 import duyurular from "../../assets/images/announcements.png";
 import { ConvertDate } from "../../utils/utils";
@@ -7,6 +7,7 @@ import {
   AddAnnouncements,
   DeleteAnnouncements,
   GetAnnouncements,
+  GetMicrosoftAssigments,
   GetToken,
   IsRoleAdmin,
   UpdateAnnouncements,
@@ -18,11 +19,16 @@ export default function Homework({ title = "Duyurular", isAdmin }) {
   const [seeAll, setSeeAll] = useState(false);
   const [modalType, setModalType] = useState("updateAnnouncements");
   const [id, setId] = useState(false);
+  const [homeworkData, setHomeworkData] = useState([]);
   const token = GetToken();
   const isRoledAdmin = IsRoleAdmin();
   console.log("anon", homeworkData);
   console.log("is", isRoledAdmin);
-
+  useEffect(() => {
+    GetMicrosoftAssigments(token).then((data) => {
+      setHomeworkData(data.data.data);
+    });
+  }, []);
   return (
     <div className={styles.homeworkContainer}>
       <div
@@ -50,7 +56,7 @@ export default function Homework({ title = "Duyurular", isAdmin }) {
         <div className={styles.announcementsSection}>
           <div className={styles.homeworkTitles}>
             <div className={styles.homeworkTitleHomework}>Ödev Adı</div>
-            <div className={styles.homeworkTitle}>Öğretmen</div>
+            <div className={styles.homeworkTitle}>Geç Teslim</div>
             <div className={styles.homeworkTitle}>Durum</div>
             <div className={styles.homeworkTitle}>Teslim tarihi aralığı</div>
           </div>
@@ -62,9 +68,11 @@ export default function Homework({ title = "Duyurular", isAdmin }) {
                     src={item.icon?.includes("http") ? item.icon : duyurular}
                   />
                 </div>
-                <div className={styles.announcementsTitle}>{item.name}</div>
+                <div className={styles.announcementsTitle}>
+                  {item.displayName}
+                </div>
                 <div className={styles.announcementsTitleTeacher}>
-                  {item.teacher}
+                  {item.allowLateSubmissions ? "edilebilir" : "edilemez"}
                 </div>
                 <div
                   className={`${
@@ -73,7 +81,7 @@ export default function Homework({ title = "Duyurular", isAdmin }) {
                       : styles.announcementsTitleNotComplete
                   }`}
                 >
-                  {item.isCompleted ? "Tamamlandı" : "Tamamlanmadı"}
+                  {item.status === "assigned" ? "Tamamlandı" : "Tamamlanmadı"}
                 </div>
                 <LinkSolid
                   onClick={() =>
@@ -106,7 +114,9 @@ export default function Homework({ title = "Duyurular", isAdmin }) {
                   ""
                 )}
                 <div className={styles.announcementsDate}>
-                  {`${item.startingDate} - ${item.endingDate}`}
+                  {`${ConvertDate(item.assignedDateTime)} - ${ConvertDate(
+                    item.dueDateTime
+                  )}`}
                 </div>
               </div>
             );
@@ -126,7 +136,7 @@ export default function Homework({ title = "Duyurular", isAdmin }) {
     </div>
   );
 }
-const homeworkData = [
+const homeworkDatas = [
   {
     name: "Asal sayıların Tarihsel Gelişimi",
     teacher: "Muhammet Karaca",

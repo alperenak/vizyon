@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Text } from "office-ui-fabric-react";
 import { GraphFileBrowser } from "@microsoft/file-browser";
 import { UserAgentApplication } from "msal";
+import { GetUserId } from "../../utils/utils";
 
 const CLIENT_ID = "45385ff8-daba-4f16-bcf5-ec8e125da3ae";
 const SCOPES = ["files.readwrite.all", "user.read"];
@@ -19,6 +20,7 @@ class App extends Component {
 
   componentDidMount() {
     this._tryGetMsalToken();
+    this._getMsalToken();
   }
 
   render() {
@@ -26,7 +28,6 @@ class App extends Component {
 
     return (
       <div className="App">
-        <Text variant="xxLarge">File Browser Demo</Text>
         {token ? (
           <GraphFileBrowser
             getAuthenticationToken={() => Promise.resolve(token)}
@@ -35,9 +36,7 @@ class App extends Component {
             onRenderSuccessButton={() => null}
           />
         ) : (
-          <Text block onClick={this._getMsalToken}>
-            [log in]
-          </Text>
+          <div>yükleniyor...</div>
         )}
       </div>
     );

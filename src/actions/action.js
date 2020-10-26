@@ -398,7 +398,7 @@ export async function SaveSpecificApps(token, data) {
   const response = await axios.post(`${uri}/apps/usage`, data[0], config);
   return response;
 }
-export async function GetConversations(token) {
+export async function GetConversations(userId, token) {
   // let baseUrl = config.baseUrl;
   // let tokenCookieName = "token";
   // let path = `/chat/conversation`;
@@ -412,7 +412,7 @@ export async function GetConversations(token) {
   const config = {
     headers: { authorization: `Bearer ${token}` },
   };
-  return await axios.get(`${uri}/chat/conversation`, config);
+  return await axios.get(`${uri}/chat/conversation?userId=${userId}`, config);
 }
 export async function GetNewMessages(token) {
   const config = {
@@ -437,13 +437,7 @@ export async function GetMessageDetails(conversationID, token) {
   };
   return await axios.get(`${uri}/chat/conversation/${conversationID}`, config);
 }
-export async function SendMessage({
-  conversationID,
-  receiver,
-  body,
-  attachements,
-  token,
-}) {
+export async function SendMessage({ payload, token }) {
   // let baseUrl = config.baseUrl;
   // let tokenCookieName = "token";
   // let path = `/chat/conversation/${conversationID}`;
@@ -456,16 +450,10 @@ export async function SendMessage({
   //   payload,
   //   errorMessageBuilder
   // );
-  let payload = { receiver, body, attachements };
   const config = {
     headers: { authorization: `Bearer ${token}` },
   };
-  const response = await axios.post(
-    `${uri}/chat/conversation/${conversationID}`,
-    payload,
-    config
-  );
-  return response;
+  return await axios.post(`${uri}/chat/conversation/`, payload, config);
 }
 export async function CreateNewChat(payload, token) {
   // let baseUrl = config.baseUrl;
@@ -508,4 +496,17 @@ export async function GetNewMessageDetail(contactID, userId, token) {
     `${uri}/chat/conversation?userId=${userId}&contactId=${contactID}`,
     config
   );
+}
+export async function GetConversationList(userId, token) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  return await axios.get(`${uri}/chat/conversation?userId=${userId}`, config);
+}
+
+export async function GetMicrosoftAssigments(token) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  return await axios.get(`${uri}/teams/assignments`, config);
 }
