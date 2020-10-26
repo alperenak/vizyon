@@ -393,7 +393,10 @@
 
     & .avatar {
       width: 50px;
-      padding-top: 12px;
+      overflow: hidden;
+      margin-top: 12px;
+      height: 50px;
+      border-radius: 50%;
       margin-right: 35px;
       & .online {
         position: relative;
@@ -416,8 +419,7 @@
         border: 3px solid #ffffff;
       }
       & img {
-        width: 50px;
-        border-radius: 100%;
+        width: 100%;
       }
     }
 

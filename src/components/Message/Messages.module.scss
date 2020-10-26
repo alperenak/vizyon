@@ -290,12 +290,16 @@
   & .header {
     margin: 25px 0;
     height: 70px;
+
     display: flex;
     flex-direction: row;
     width: 100%;
 
     & .avatar {
+      border-radius: 100%;
       width: 60px;
+      height: 60px;
+      overflow: hidden;
       margin-right: 35px;
       & .online {
         position: relative;
@@ -318,8 +322,7 @@
         border: 3px solid #ffffff;
       }
       & img {
-        width: 60px;
-        border-radius: 100%;
+        width: 100%;
       }
     }
 
