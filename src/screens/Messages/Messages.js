@@ -67,7 +67,12 @@ class Messages extends Component {
     let res = await GetConversations(gettedUserId, getCookie("token"));
     this.setState({ messages: res.data.data });
     GetUser(getCookie("token")).then((data) => {
-      this.setState({ userData: data.data.data.studentInfo.class.courses });
+      this.setState({
+        userData:
+          data.data.data.role === "instructor"
+            ? data.data.data.instructorInfo.class
+            : data.data.data.studentInfo.class.courses,
+      });
       this.setState({ role: data.data.data.role });
     });
   };
@@ -157,8 +162,8 @@ class Messages extends Component {
                   {messages.map((message, i) => {
                     return (
                       <Message
-                        image={message?.contact.avatar}
-                        title={message?.contact.name}
+                        image={message?.lastMessage.receiver.profile_photo}
+                        title={`${message?.lastMessage.receiver.first_name} ${message?.lastMessage.receiver.last_name}`}
                         content={message?.lastMessage.body}
                         time={message?.lastMessage.createdAt}
                         key={i}
@@ -199,7 +204,9 @@ class Messages extends Component {
                           }
                           className={styles.name}
                         >
-                          {this.getTeacherName(item.instructor)}
+                          {this.state.role === "instructor"
+                            ? item.name
+                            : this.getTeacherName(item.instructor)}
                         </div>
                       </div>
                     </div>
@@ -328,7 +335,7 @@ class Messages extends Component {
 
   render() {
     let { messages } = this.state;
-
+    console.log(this.state.role);
     return (
       <div className={styles.Wrapper}>
         {messages.length === 0

@@ -5,7 +5,9 @@ export default function NewMessages({ newMessagesData }) {
   return (
     <>
       <div className={styles.teachers}>
-        <div className={styles.title}>Yeni Mesajlar</div>
+        <div className={styles.title}>
+          Yeni Mesajlar ({newMessagesData?.data.data.total})
+        </div>
         <div className={styles.teachersSection}>
           {newMessagesData.data?.data.conversations.map((item) => {
             return (
@@ -16,7 +18,7 @@ export default function NewMessages({ newMessagesData }) {
                 }
               >
                 <div className="messageContainer__avatar">
-                  <img src={item.contact.avatar} alt="" />
+                  <img src={item.contact.profile_photo} alt="" />
                   {item.unread && item.unread > 0 && (
                     <div className="messageContainer__avatar__unread">
                       {item.unread}
@@ -25,7 +27,7 @@ export default function NewMessages({ newMessagesData }) {
                 </div>
                 <div className="messageContainer__content">
                   <div className={"messageContainer__content__name"}>
-                    {item.contact.name}
+                    {`${item.contact.first_name} ${item.contact.last_name}`}
                   </div>
                   <div
                     className={`${"messageContainer__content__message"} ${
