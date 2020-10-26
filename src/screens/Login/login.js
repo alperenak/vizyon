@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import styles from "./login.module.scss";
 import LoginImages from "../../assets/images/loginBackground.png";
-import TeacherLoginImages from "../../assets/images/teacher.jpg";
+import Logo from "../../assets/images/logologin.jpg";
 import AdminLoginImages from "../../assets/images/admin.jpg";
 import Input from "../../components/Input/input";
 import { IconLock, IconUser, LoginLogo } from "../../icons";
@@ -41,7 +41,7 @@ export default function Login({}) {
         <Loading />
       ) : (
         <div className={styles.loginContainer}>
-          <LoginLogo className={styles.logoCircle} />
+          <img src={Logo} className={styles.logoCircle} />
           <div className={styles.loginImages}>
             <img
               src={pathname === "/login/teacher" ? LoginImages : LoginImages}
