@@ -70,7 +70,7 @@ class Messages extends Component {
       this.setState({
         userData:
           data.data.data.role === "instructor"
-            ? data.data.data.instructorInfo.class
+            ? data.data.data.instructorInfo.classes
             : data.data.data.studentInfo.class.courses,
       });
       this.setState({ role: data.data.data.role });
@@ -120,7 +120,7 @@ class Messages extends Component {
             {this.state.role === "loading"
               ? ""
               : this.state.role === "instructor"
-              ? "Öğrenciler"
+              ? "Sınıflar"
               : "Öğretmenler"}
           </div>
           <div
@@ -162,8 +162,8 @@ class Messages extends Component {
                   {messages.map((message, i) => {
                     return (
                       <Message
-                        image={message?.lastMessage.receiver.profile_photo}
-                        title={`${message?.lastMessage.receiver.first_name} ${message?.lastMessage.receiver.last_name}`}
+                        image={message?.contact.profile_photo}
+                        title={`${message?.contact.first_name} ${message?.contact.last_name}`}
                         content={message?.lastMessage.body}
                         time={message?.lastMessage.createdAt}
                         key={i}
@@ -180,6 +180,7 @@ class Messages extends Component {
           <div className={styles.usersContainer}>
             {userData && userData.length !== 0
               ? userData.map((item) => {
+                  console.log(item);
                   return (
                     <div className={styles.teachersLabel}>
                       <div className={styles.avatar}>
@@ -278,8 +279,8 @@ class Messages extends Component {
                   {messages.map((message, i) => {
                     return (
                       <Message
-                        image={message?.lastMessage.receiver.profile_photo}
-                        title={`${message?.lastMessage.receiver.first_name} ${message?.lastMessage.receiver.last_name}`}
+                        image={message?.contact.profile_photo}
+                        title={`${message?.contact.first_name} ${message?.contact.last_name}`}
                         content={message?.lastMessage.body}
                         time={message?.lastMessage.createdAt}
                         key={i}
@@ -315,12 +316,18 @@ class Messages extends Component {
                         <div
                           onClick={() =>
                             this.props.history.push(
-                              `/messages/new/${item.instructor?._id}`
+                              `/messages/new/${
+                                this.state.role === "instructor"
+                                  ? item._id
+                                  : item.instructor?._id
+                              }`
                             )
                           }
                           className={styles.name}
                         >
-                          {this.getTeacherName(item.instructor)}
+                          {this.state.role === "instructor"
+                            ? item.name
+                            : this.getTeacherName(item.instructor)}
                         </div>
                       </div>
                     </div>
@@ -335,7 +342,8 @@ class Messages extends Component {
 
   render() {
     let { messages } = this.state;
-    console.log(this.state.role);
+    console.log(this.state.messages);
+
     return (
       <div className={styles.Wrapper}>
         {messages.length === 0

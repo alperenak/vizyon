@@ -14,8 +14,12 @@ const Message = ({ image, title, content, time, id, unread }) => {
     >
       <div className="messageContainer__avatar">
         <img src={image} alt="" />
-        {unread && unread > 0 && (
-          <div className="messageContainer__avatar__unread">{unread}</div>
+        {unread && unread > 0 ? (
+          <div className="messageContainer__avatar__unread">
+            {unread !== 0 || unread !== "0" ? unread : ""}
+          </div>
+        ) : (
+          ""
         )}
       </div>
       <div className="messageContainer__content">
