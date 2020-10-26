@@ -82,7 +82,19 @@ export default function ActivityDetail({ match }) {
           </div>
         </div>
       </div>
-      <Card type={"activityDetails"} tabsType={tabsType} match={match} />
+      <Card
+        type={"activityDetails"}
+        tabsType={tabsType}
+        match={match}
+        dropdownValue={dropdownName}
+      />
     </div>
   );
+}
+function convertDropdownValue(value) {
+  if (value === "Son 7 gün") {
+    return "thisWeek";
+  } else if (value === "Bu ay") return "thisMonth";
+  else if (value === "Geçen ay") return "lastMonth";
+  else return false;
 }

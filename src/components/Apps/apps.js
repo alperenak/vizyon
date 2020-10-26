@@ -81,7 +81,7 @@ export function RenderIcon(props) {
     return <img src={Eba} {...props} className={styles.actively} />;
   } else if (iconName === "k12") {
     return <img src={Meb} {...props} className={styles.actively} />;
-  } else if (iconName === "cambridge") {
+  } else if (iconName === "unlocklearning") {
     return <img src={Cambridge} {...props} className={styles.actively} />;
   } else return "none";
 }

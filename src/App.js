@@ -114,8 +114,16 @@ function App() {
           <Route exact={true} path="/admin/apps" component={Admin} />
           <Route exact={true} path="/admin/exams" component={Admin} />
           <Route exact={true} path="/messages" component={Messages} />
-		  <Route exact={true} path="/messages/details/:id" component={MessageDetails} />
-
+          <Route
+            exact={true}
+            path="/messages/details/:id"
+            component={MessageDetails}
+          />
+          <Route
+            exact={true}
+            path="/messages/new/:id"
+            component={MessageDetails}
+          />
           <Route
             exact={true}
             path="/admin/activity/:id"

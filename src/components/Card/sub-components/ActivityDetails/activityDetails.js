@@ -30,7 +30,7 @@ import { useParams } from "react-router-dom";
 import Card from "../../card";
 import { SingleUserContext } from "../../../../context/singleUserContext";
 import Apps from "../../../Apps/apps";
-export default function ActivityDetails({ tabsType }) {
+export default function ActivityDetails({ tabsType, dropdownValue }) {
   const [LogData, setLogData] = useState([]);
   const [singleUser, setSingleUser] = useContext(SingleUserContext);
   const location = useLocation();
@@ -66,8 +66,9 @@ export default function ActivityDetails({ tabsType }) {
   ]);
   const token = GetToken();
   const { id } = useParams();
+  console.log(dropdownValue);
   useEffect(() => {
-    getAppsLog(token, 0, "2020-08-08", "2020-10-10", 1000, id)
+    getAppsLog(token, 0, "2020-08-08", "2020-10-10", 1000, id, dropdownValue)
       .then((data) => {
         setLogData(data);
         setAppCountData(
@@ -129,7 +130,7 @@ export default function ActivityDetails({ tabsType }) {
     GetAllApps(token).then((item) => {
       console.log(item);
     });
-  }, []);
+  }, [dropdownValue]);
   return (
     <div className={styles.schedule}>
       <div className={styles.topSide}>

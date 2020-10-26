@@ -8,6 +8,7 @@
     box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
     background-color: white;
     position: relative;
+    overflow-y: scroll;
 
     & .title {
         margin-left: 20px;
@@ -19,7 +20,6 @@
 
     & .teachersSection {
         display: flex;
-        justify-content: center;
         align-items: center;
         height: 325px;
         width: 100%;
