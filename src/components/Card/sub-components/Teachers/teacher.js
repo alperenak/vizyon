@@ -1,8 +1,10 @@
 import React from "react";
 import styles from "./teacher.module.scss";
 import teacherAvatar from "../../../../assets/images/teacherAvatar.png";
-import { More } from "../../../../icons";
+import { EnvelopeSolid, Inbox, More } from "../../../../icons";
+import { useHistory } from "react-router-dom";
 export default function Teachers({ teachersData, classesData, userRole }) {
+  const history = useHistory();
   return (
     <>
       {userRole === "intstructor" || !userRole ? (
@@ -42,7 +44,12 @@ export default function Teachers({ teachersData, classesData, userRole }) {
                       </div>
                     </div>
                     <div className={styles.icon}>
-                      <More className={styles.moreIcon} />
+                      <EnvelopeSolid
+                        onClick={() => {
+                          history.push(`/messages/new/${item.instructor?._id}`);
+                        }}
+                        className={styles.moreIcon}
+                      />
                     </div>
                   </div>
                 );
