@@ -16,6 +16,18 @@ import Meb from "../../assets/images/meb.jpg";
 import RazKids from "../../assets/images/razkids.png";
 import { CheckSolid } from "../../icons";
 import Udemy from "../../assets/images/udemy.png";
+import BrainModify from "../../assets/images/brainModify.png";
+import Compass from "../../assets/images/compass.png";
+import HiglightsLibrary from "../../assets/images/higlightsLibrary.png";
+import LinguAttack from "../../assets/images/linguaAttack.svg";
+import MicrosoftTeams from "../../assets/images/microsoftTeams.png";
+import MyEduClass from "../../assets/images/myEduClass.png";
+import MyOn from "../../assets/images/myOn.jpg";
+import Pearson from "../../assets/images/pearson.svg";
+import sebitVCloud from "../../assets/images/sebitVCloud.png";
+import Rockalingua from "../../assets/images/rockalingualogo.png";
+import Raunt from "../../assets/images/raunt.png";
+
 export default function Apps({
   iconName,
   appName,
@@ -83,5 +95,31 @@ export function RenderIcon(props) {
     return <img src={Meb} {...props} className={styles.actively} />;
   } else if (iconName === "unlocklearning") {
     return <img src={Cambridge} {...props} className={styles.actively} />;
+  } else if (iconName === "brainmodify") {
+    return <img src={BrainModify} {...props} className={styles.actively} />;
+  } else if (iconName === "rockalingua") {
+    return <img src={Rockalingua} {...props} className={styles.actively} />;
+  } else if (iconName === "pearsonenglishportal") {
+    return <img src={Pearson} {...props} className={styles.actively} />;
+  } else if (iconName === "microsoftteams") {
+    return <img src={MicrosoftTeams} {...props} className={styles.actively} />;
+  } else if (iconName === "linguaattack") {
+    return <img src={LinguAttack} {...props} className={styles.actively} />;
+  } else if (iconName === "myeduclass") {
+    return <img src={MyEduClass} {...props} className={styles.actively} />;
+  } else if (iconName === "myon") {
+    return <img src={MyOn} {...props} className={styles.actively} />;
+  } else if (iconName === "myeduclass") {
+    return <img src={MyEduClass} {...props} className={styles.actively} />;
+  } else if (iconName === "vcloud") {
+    return <img src={sebitVCloud} {...props} className={styles.actively} />;
+  } else if (iconName === "raunt") {
+    return <img src={Raunt} {...props} className={styles.actively} />;
+  } else if (iconName === "compass") {
+    return <img src={Compass} {...props} className={styles.actively} />;
+  } else if (iconName === "highlightslibrary") {
+    return (
+      <img src={HiglightsLibrary} {...props} className={styles.actively} />
+    );
   } else return "none";
 }
