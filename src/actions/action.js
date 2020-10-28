@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { useCookies } from "react-cookie";
 import http from "../helpers/httpHelper";
 import config from "../appConfig";
-const uri = "https://gelisim.herokuapp.com/api/v1";
+const uri = "https://vizyon.herokuapp.com/api/v1";
 const location = window.location;
 const errorMessageBuilder = (response) => {
   return (response.errorData && response.errorData.code) || "0";
