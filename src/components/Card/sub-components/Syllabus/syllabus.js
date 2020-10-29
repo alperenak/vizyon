@@ -39,10 +39,12 @@ export default function Syllabus({ syllabusData, classInfo }) {
           </div>
           <div className={styles.downloadTitle}>Ders Programını İndir</div>
         </div>
+        {/*
         <div className={styles.feedback}>
           <Info className={styles.feedbackIcon} />
           <div className={styles.feedbackTitle}>Sorun Bildir</div>
         </div>
+        */}
       </div>
       <div className={styles.weekDaysContainer}>
         {syllabusData && syllabusData !== null ? (

@@ -41,10 +41,13 @@ export default function Schedule({ scheduleData, teachersData, classInfo }) {
           </div>
           <div className={styles.downloadTitle}>Sınav Takvimini İndir</div>
         </div>
+        {/*
         <div className={styles.feedback}>
           <Info className={styles.feedbackIcon} />
           <div className={styles.feedbackTitle}>Sorun Bildir</div>
         </div>
+        */}
+
       </div>
       <div className={styles.scheduleTitlesSection}>
         <table>
