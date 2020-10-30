@@ -46,11 +46,11 @@ export default function Syllabus({ syllabusData, classInfo }) {
       </div>
       <div className={styles.weekDaysContainer}>
         {syllabusData && syllabusData !== null ? (
-          getDayData(weekDays).map((item) => {
+          getDayData().map((item) => {
             return (
               <div className={styles.dayLabel}>
                 <div className={`${styles.dayCircle} ${styles[item.color]}`}>
-                  {fakeGetDay(item.dayName)}
+                  {item.day}
                 </div>
                 <div className={styles.dayName}> {item.dayName}</div>
               </div>
@@ -362,40 +362,18 @@ const fakeData = [
   },
 ];
 
-function getDayData(dayss) {
+function getDayData() {
   let arr = [];
-  dayss.map((item, index) => {
+  days.slice(1, 6).map((item, index) => {
     arr.push({
       dayName: item,
-      day: getDay(item, months[date.getMonth()]),
+      day: findDayNumber(item),
       color: color[index],
     });
   });
   return arr;
 }
-const days = [
-  "Pazar",
-  "Pazartesi",
-  "Salı",
-  "Çarşamba",
-  "Perşembe",
-  "Cuma",
-  "Cumartesi",
-];
-const months = [
-  "Ocak",
-  "Şubat",
-  "Mart",
-  "Nisan",
-  "Mayıs",
-  "Haziran",
-  "Temmuz",
-  "Ağustos",
-  "Eylül",
-  "Ekim",
-  "Kasım",
-  "Aralık",
-];
+
 const date = new Date();
 
 function getDay(day, month) {
@@ -410,7 +388,64 @@ function getDay(day, month) {
   const getDayCount = days.indexOf(day) - todayDay + todayDayCount;
 }
 
-function getMonthNumber(month = "Nisan") {
+const days = [
+  "Pazar",
+  "Pazartesi",
+  "Salı",
+  "Çarşamba",
+  "Perşembe",
+  "Cuma",
+  "Cumartesi",
+];
+const d = new Date();
+
+function findDayNumber(day) {
+  const propDayNumber = days.indexOf(day);
+  const nowDayNumber = d.getDay();
+  const spaceDayNonAbs = nowDayNumber - propDayNumber;
+  const dayCount = d.getDate();
+  console.log(spaceDayNonAbs);
+  if (spaceDayNonAbs > 0) {
+    console.log("burada");
+    return subtractNowDay(spaceDayNonAbs);
+  } else if (spaceDayNonAbs === 0) return dayCount;
+  else if (spaceDayNonAbs < 0) {
+    return sumNowDay(spaceDayNonAbs);
+  }
+}
+
+function subtractNowDay(num) {
+  const lastMonthName = months[d.getMonth() - 1 >= 0 ? d.getMonth() - 1 : 11];
+  const dayCount = d.getDate();
+  const result = dayCount - num;
+  if (result < 0) {
+    return getMonthNumber(lastMonthName) + result;
+  } else return result;
+}
+function sumNowDay(num) {
+  const nowMonthName = months[d.getMonth()];
+  const dayCount = d.getDate();
+  const result = dayCount + num;
+  if (result > getMonthNumber(nowMonthName)) {
+    return result - getMonthNumber(nowMonthName);
+  } else return result;
+}
+const months = [
+  "Ocak",
+  "Şubat",
+  "Mart",
+  "Nísan",
+  "Mayıs",
+  "Haziran",
+  "Temmuz",
+  "Ağustos",
+  "Eylül",
+  "Ekim",
+  "Kasım",
+  "Aralık",
+];
+
+export function getMonthNumber(month = "Nisan") {
   const thirdyOne = [
     "Ocak",
     "Mart",
@@ -420,14 +455,15 @@ function getMonthNumber(month = "Nisan") {
     "Ekim",
     "Aralık",
   ];
-  if (thirdyOne.includes(months)) {
+  if (thirdyOne.includes(month)) {
     return 31;
-  } else if (months === "Şubat") {
+  } else if (month === "Şubat") {
     if (date.getFullYear() % 4 === 0) {
       return 29;
     } else return 28;
   } else return 30;
 }
+
 function fakeGetDay(day) {
   if (day === "Pazartesi") return 5;
   else if (day === "Salı") return 6;
