@@ -330,7 +330,7 @@ function RenderCard({
     } else if (pathname === "/admin/activity") {
       return (
         <>
-          <h1>Aktivite Yönetimi</h1>
+          <h1>Raporlar</h1>
           <div className={styles.topSide}>
             <Input
               placeholder="Ara"
