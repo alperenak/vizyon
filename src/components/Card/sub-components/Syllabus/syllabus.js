@@ -408,10 +408,11 @@ function findDayNumber(day) {
   const dayCount = d.getDate();
   console.log(spaceDayNonAbs);
   if (spaceDayNonAbs > 0) {
-    console.log("burada");
+    console.log("çıkarma kısmında");
     return subtractNowDay(spaceDayNonAbs);
   } else if (spaceDayNonAbs === 0) return dayCount;
   else if (spaceDayNonAbs < 0) {
+    console.log("toplama kisminda");
     return sumNowDay(spaceDayNonAbs);
   }
 }
@@ -427,8 +428,10 @@ function subtractNowDay(num) {
 function sumNowDay(num) {
   const nowMonthName = months[d.getMonth()];
   const dayCount = d.getDate();
-  const result = dayCount + num;
+  const result = dayCount - num;
+  console.log("result", result, getMonthNumber(nowMonthName));
   if (result > getMonthNumber(nowMonthName)) {
+    console.log(result, getMonthNumber(nowMonthName));
     return result - getMonthNumber(nowMonthName);
   } else return result;
 }
