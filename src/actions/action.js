@@ -323,6 +323,16 @@ export async function GetSchedulesDownloadLink(token, classId) {
   );
   return response;
 }
+export async function GetSchedulesPdfDownloadLink(token, classId) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = await axios.get(
+    `${uri}/classes/exams-pdf/${classId}`,
+    config
+  );
+  return response;
+}
 export async function GetAllExams(token) {
   const config = {
     headers: { authorization: `Bearer ${token}` },

@@ -5,7 +5,11 @@ import Dropdown from "../../../Dropdown/dropdown";
 import TeacherAvatar from "../../../../assets/images/teacherAvatar.png";
 import AlertBox from "../../../Alert/alert";
 import { sumTimes } from "../../../../utils/utils";
-import { GetSyllabusDownloadLink, GetToken } from "../../../../actions/action";
+import {
+  GetSyllabusDownloadLink,
+  GetSyllabusPdfDownloadLink,
+  GetToken,
+} from "../../../../actions/action";
 export default function Syllabus({ syllabusData, classInfo }) {
   console.log("syllabu", syllabusData);
   console.log("classInfo", classInfo);
@@ -17,7 +21,14 @@ export default function Syllabus({ syllabusData, classInfo }) {
     <div className={styles.SyllabusCard}>
       <div className={styles.topSide}>
         <div className={styles.title}>Ders Programı</div>
-        <div className={styles.downloadSyllabusPdf}>
+        <div
+          className={styles.downloadSyllabusPdf}
+          onClick={() => {
+            GetSyllabusPdfDownloadLink(token, classInfo._id).then((item) =>
+              window.open(item.data.data[0])
+            );
+          }}
+        >
           <div className={styles.formatXLS}>
             <PdfDownload className={styles.formatIcon} />
             <div className={styles.formatName}>PDF</div>

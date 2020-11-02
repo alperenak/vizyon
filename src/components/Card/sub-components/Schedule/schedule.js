@@ -13,14 +13,25 @@ import {
 import AlertBox from "../../../Alert/alert";
 import { ConvertDate, ConvertTime } from "../../../../utils/utils";
 import teacherAvatar from "../../../../assets/images/teacherAvatar.png";
-import { GetSchedulesDownloadLink, GetToken } from "../../../../actions/action";
+import {
+  GetSchedulesDownloadLink,
+  GetSchedulesPdfDownloadLink,
+  GetToken,
+} from "../../../../actions/action";
 export default function Schedule({ scheduleData, teachersData, classInfo }) {
   const token = GetToken();
   return (
     <div className={styles.schedule}>
       <div className={styles.topSide}>
         <div className={styles.title}>Sınav Takvimi</div>
-        <div className={styles.downloadSyllabusPdf}>
+        <div
+          className={styles.downloadSyllabusPdf}
+          onClick={() =>
+            GetSchedulesPdfDownloadLink(token, classInfo._id).then((item) =>
+              window.open(item.data.data[0])
+            )
+          }
+        >
           <div className={styles.formatXLS}>
             <PdfDownload className={styles.formatIcon} />
             <div className={styles.formatName}>PDF</div>
@@ -47,7 +58,6 @@ export default function Schedule({ scheduleData, teachersData, classInfo }) {
           <div className={styles.feedbackTitle}>Sorun Bildir</div>
         </div>
         */}
-
       </div>
       <div className={styles.scheduleTitlesSection}>
         <table>
