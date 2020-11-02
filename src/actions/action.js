@@ -303,6 +303,16 @@ export async function GetSyllabusDownloadLink(token, classId) {
   );
   return response;
 }
+export async function GetSyllabusPdfDownloadLink(token, classId) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = await axios.get(
+    `${uri}/classes/schedule-pdf/${classId}`,
+    config
+  );
+  return response;
+}
 export async function GetSchedulesDownloadLink(token, classId) {
   const config = {
     headers: { authorization: `Bearer ${token}` },

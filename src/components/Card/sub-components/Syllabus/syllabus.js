@@ -67,7 +67,7 @@ export default function Syllabus({ syllabusData, classInfo }) {
           syllabusData.slice(0, 5).map((item) => {
             return (
               <table>
-                {item.periods.slice(0, 5).map((item, index) => {
+                {item.periods.slice(0, 6).map((item, index) => {
                   return (
                     <tr>
                       <div className={styles.lessonLabelWrapper}>
