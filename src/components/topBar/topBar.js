@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import styles from "./topBar.module.scss";
 import Logo from "../../assets/images/logo.png";
+import ChromeIcon from "../../assets/icons/chrome-brands-purple.svg";
 import { Down, EnvelopeSolid, Menu, Notification } from "../../icons";
 import Avatar from "../../assets/images/avatar.png";
 import SubBar from "./subBar/subBar";
@@ -93,6 +94,17 @@ export default function TopBar() {
               className={styles.downIcon}
               onClick={() => setDropdownActive(!dropdownActive)}
             />
+          </div>
+          <div
+            onClick={() => {
+              window.open(
+                "https://chrome.google.com/webstore/detail/gfkelnilbjflkdjhhfeojhpbjogakifh"
+              );
+            }}
+            className={styles.chromeExtentionsButton}
+          >
+            <img src={ChromeIcon} />
+            <div className={styles.extention}>Eklentiyi indir</div>
           </div>
         </div>
       </div>

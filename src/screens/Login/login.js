@@ -15,7 +15,7 @@ import { UserContext } from "../../context/userContext";
 import Loading from "../../components/Loading/loading";
 import { useLocation, useHistory } from "react-router-dom";
 import jwt_decode from "jwt-decode";
-
+import ChromeIcon from "../../assets/icons/chrome-brands.svg";
 export default function Login({}) {
   const [rememberUser, setRememberUser] = useState(false);
   const [username, setUsername] = useState("");
@@ -25,6 +25,10 @@ export default function Login({}) {
   const [cookies, setCookies] = useCookies(["token"]);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
+
+  // Chrome 1 - 71
+
+  // Blink engine detection
   const { pathname } = useLocation();
   useEffect(() => {
     if (cookies.token || (token !== "" && token)) {
@@ -90,6 +94,8 @@ function RenderLoginMethod({
 }) {
   const { pathname } = useLocation();
   const history = useHistory();
+  const isChrome =
+    !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
   if (
     pathname === "/login/student" ||
     pathname === "/login/teacher" ||
@@ -177,22 +183,59 @@ function RenderLoginMethod({
               });
           }}
         />
+        {isChrome ? (
+          <>
+            <div className={styles.extentionTitle}>
+              Uygulamayı düzgün bir şekilde kullanabilmen için eklentiyi
+              indirmen gerekiyor:
+            </div>
+            <div className={styles.chromeExtentionsButton}>
+              <img src={ChromeIcon} />
+              <div className={styles.extention}>Eklentiyi indir</div>
+            </div>
+          </>
+        ) : (
+          ""
+        )}
       </>
     );
   } else {
     return (
-      <div className={styles.loginMethods}>
-        <Button
-          title={"Öğretmen Girişi"}
-          type={"primary"}
-          onClick={() => history.push("/login/teacher")}
-        />
-        <Button
-          title={"Öğrenci Girişi"}
-          type={"primary"}
-          onClick={() => history.push("/login/student")}
-        />
-      </div>
+      <>
+        <div className={styles.loginMethods}>
+          <Button
+            title={"Öğretmen Girişi"}
+            type={"primary"}
+            onClick={() => history.push("/login/teacher")}
+          />
+          <Button
+            title={"Öğrenci Girişi"}
+            type={"primary"}
+            onClick={() => history.push("/login/student")}
+          />
+        </div>
+        {isChrome ? (
+          <>
+            <div className={styles.extentionTitle}>
+              Uygulamayı düzgün bir şekilde kullanabilmen için eklentiyi
+              indirmen gerekiyor:
+            </div>
+            <div
+              onClick={() => {
+                window.open(
+                  "https://chrome.google.com/webstore/detail/gfkelnilbjflkdjhhfeojhpbjogakifh"
+                );
+              }}
+              className={styles.chromeExtentionsButton}
+            >
+              <img src={ChromeIcon} />
+              <div className={styles.extention}>Eklentiyi indir</div>
+            </div>
+          </>
+        ) : (
+          ""
+        )}
+      </>
     );
   }
 }
