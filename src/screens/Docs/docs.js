@@ -4,7 +4,7 @@ import { GraphFileBrowser } from "@microsoft/file-browser";
 import { UserAgentApplication } from "msal";
 import { GetUserId } from "../../utils/utils";
 
-const CLIENT_ID = "0f8edc6b-22bb-4d6b-8461-78f402f6e641";
+const CLIENT_ID = "87ef2d13-c32b-43fb-bcee-26e04a442680";
 const SCOPES = ["files.readwrite.all", "user.read"];
 
 class App extends Component {
