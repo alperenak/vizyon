@@ -14,16 +14,28 @@ import IsAdmin, {
   IsAuth,
 } from "../../actions/action";
 import Loading from "../../components/Loading/loading";
+import { useCookies } from "react-cookie";
 export default function Home() {
   const [userData, setUserData] = useState(false);
   const [announcementsData, setAnnouncementsData] = useState(false);
   const [userRole, setUserRole] = useState("");
   const [newMessagesData, setNewMessagesData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [cookies, setCookies, removeCookies] = useCookies();
   const token = GetToken();
 
   console.log("userdata: ", userData);
   useEffect(() => {
+    window.addEventListener(
+      "beforeunload",
+      (ev) => {
+        if (!localStorage.getItem("rememberMe")) {
+          removeCookies("token");
+        }
+        return (ev.returnValue = "Are you sure you want to close?");
+      },
+      []
+    );
     if (IsAuth(token)) {
       if (!userData) {
         setLoading(true);

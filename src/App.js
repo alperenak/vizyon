@@ -20,7 +20,7 @@ function App() {
   const [auth, setAuth] = useState(false);
   const location = window.location;
   const pathname = window.location.pathname;
-  //
+
   return (
     <div className="App">
       <Router>

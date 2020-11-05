@@ -31,6 +31,7 @@ export default function Login({}) {
   // Blink engine detection
   const { pathname } = useLocation();
   useEffect(() => {
+    localStorage.setItem("rememberMe", rememberUser);
     if (cookies.token || (token !== "" && token)) {
       if (cookies.admin) {
         window.location.replace("/admin/announcements");
@@ -132,7 +133,9 @@ function RenderLoginMethod({
         <div className={styles.subFormSection}>
           <CheckBox
             title={"Beni Hatırla"}
-            onClick={() => setRememberUser(!rememberUser)}
+            onClick={() => {
+              setRememberUser(!rememberUser);
+            }}
             isActive={rememberUser}
           />
           <Link className={styles.forgotPass}>Şifreni mi Unuttun?</Link>
