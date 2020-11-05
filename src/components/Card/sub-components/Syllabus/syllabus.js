@@ -112,9 +112,9 @@ export default function Syllabus({ syllabusData, classInfo }) {
         )}
       </div>
       <AlertBox
-        title={
-          "Yukarıdaki ders programı **2020 / 2021 Eğitim - Öğretim Yılı**’nın ilk yarısına kadar geçerlidir."
-        }
+        title={`Yukarıdaki ders programı **${d.getFullYear()} / ${
+          d.getFullYear() + 1
+        } Eğitim - Öğretim Yılı**’nın ilk yarısına kadar geçerlidir.`}
         type={"secondary"}
       >
         <YellowTip className={styles.yellowTip} />

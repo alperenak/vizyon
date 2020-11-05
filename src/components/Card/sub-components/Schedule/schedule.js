@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import styles from "./schedule.module.scss";
 import {
   Ders,
@@ -18,8 +18,11 @@ import {
   GetSchedulesPdfDownloadLink,
   GetToken,
 } from "../../../../actions/action";
+import { AlertboxContext } from "../../../../context/alertboxContext";
 export default function Schedule({ scheduleData, teachersData, classInfo }) {
   const token = GetToken();
+  const [alertboxData, setAlertboxData] = useContext(AlertboxContext);
+  const d = new Date();
   return (
     <div className={styles.schedule}>
       <div className={styles.topSide}>
@@ -115,9 +118,9 @@ export default function Schedule({ scheduleData, teachersData, classInfo }) {
         </table>
       </div>
       <AlertBox
-        title={
-          "Yukarıdaki ders programı **2020 / 2021 Eğitim - Öğretim Yılı**’nın ilk yarısına kadar geçerlidir."
-        }
+        title={`Yukarıdaki sınav takvimi **${d.getFullYear()} / ${
+          d.getFullYear() + 1
+        } Eğitim - Öğretim Yılı**’nın ilk yarısına kadar geçerlidir.`}
         type={"primary"}
       >
         <GreenTip className={styles.greenTip} />

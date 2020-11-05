@@ -6,7 +6,7 @@ export default function NewMessages({ newMessagesData }) {
     <>
       <div className={styles.teachers}>
         <div className={styles.title}>
-          Yeni Mesajlar ({newMessagesData?.data.data.total})
+          Yeni Mesajlar ({newMessagesData.data?.data.total})
         </div>
         <div className={styles.teachersSection}>
           {newMessagesData.data?.data.conversations.map((item) => {

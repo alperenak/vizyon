@@ -130,6 +130,15 @@ export default function Home() {
                   " " +
                   userData.data.data.last_name
                 }
+                scheduleDate={
+                  userData.data.data.studentInfo &&
+                  userData.data.data.studentInfo.class
+                    ? userData.data.data.studentInfo.class.exams.map((item) => {
+                        return item.date;
+                      })
+                    : []
+                }
+                newMessagesCount={newMessagesData.data?.data.total}
                 classroomName={`${getClassName(
                   userData.data.data.studentInfo &&
                     userData.data.data.studentInfo.class
