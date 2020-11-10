@@ -78,37 +78,69 @@ export default function Syllabus({ syllabusData, classInfo }) {
           syllabusData.slice(0, 5).map((item) => {
             return (
               <table>
-                {item.periods.slice(0, 6).map((item, index) => {
-                  return (
-                    <tr>
-                      <div className={styles.lessonLabelWrapper}>
-                        <Dropdown
-                          teacher={getTeacherName(item)}
-                          lessonName={getLessonName(item.course)}
-                          startingTime={getLessonTime(item).startingTime}
-                          avatar={getTeacherAvatar(item.instructor)}
-                          endTime={getLessonTime(item).endingTime}
-                        >
-                          <div
-                            className={`${styles.lessonLabel} ${
-                              styles[`lbl${getColor(item.course)}`]
-                            }`}
-                          >
-                            <td className={styles[getColor(item.course)]}>
-                              {getLessonName(item.course).length > 12
-                                ? `${getLessonName(item.course).slice(
-                                    0,
-                                    12
-                                  )}...`
-                                : getLessonName(item.course)}
-                            </td>
-                            <span>{getTeacherName(item)}</span>
+                {item.periods.length !== 0
+                  ? item.periods.slice(0, 6).map((item, index) => {
+                      return (
+                        <tr>
+                          <div className={styles.lessonLabelWrapper}>
+                            <Dropdown
+                              teacher={getTeacherName(item)}
+                              lessonName={getLessonName(item.course)}
+                              startingTime={getLessonTime(item).startingTime}
+                              avatar={getTeacherAvatar(item.instructor)}
+                              endTime={getLessonTime(item).endingTime}
+                            >
+                              <div
+                                className={`${styles.lessonLabel} ${
+                                  styles[`lbl${getColor(item.course)}`]
+                                }`}
+                              >
+                                <td className={styles[getColor(item.course)]}>
+                                  {getLessonName(item.course).length > 12
+                                    ? `${getLessonName(item.course).slice(
+                                        0,
+                                        12
+                                      )}...`
+                                    : getLessonName(item.course)}
+                                </td>
+                                <span>{getTeacherName(item)}</span>
+                              </div>
+                            </Dropdown>
                           </div>
-                        </Dropdown>
-                      </div>
-                    </tr>
-                  );
-                })}
+                        </tr>
+                      );
+                    })
+                  : ["", "", "", "", "", ""].map((item, index) => {
+                      return (
+                        <tr>
+                          <div className={styles.lessonLabelWrapper}>
+                            <Dropdown
+                              teacher={"Bilgi bulunamadı"}
+                              lessonName={""}
+                              startingTime={""}
+                              avatar={getTeacherAvatar(item.instructor)}
+                              endTime={""}
+                            >
+                              <div
+                                className={`${styles.lessonLabel} ${
+                                  styles[`lbl${getColor(item.course)}`]
+                                }`}
+                              >
+                                <td className={styles[getColor(item.course)]}>
+                                  {getLessonName(item.course).length > 12
+                                    ? `${getLessonName(item.course).slice(
+                                        0,
+                                        12
+                                      )}...`
+                                    : getLessonName(item.course)}
+                                </td>
+                                <span>{getTeacherName(item)}</span>
+                              </div>
+                            </Dropdown>
+                          </div>
+                        </tr>
+                      );
+                    })}
               </table>
             );
           })
@@ -189,8 +221,10 @@ function getColor(course) {
       return color[1];
     } else if (course.name.includes("DİLİ")) {
       return color[4];
+    } else if (course.name.includes("KİMYA")) {
+      return color[2];
     } else return color[Math.floor(Math.random() * 4)];
-  } else return "none";
+  } else return "Ders Bilgisi Bulunamadı";
 }
 const color = ["green", "red", "blue", "yellow", "purple"];
 
