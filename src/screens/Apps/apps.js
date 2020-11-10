@@ -106,7 +106,9 @@ export default function Apps() {
                   <div>yükleniyor...</div>
                 )
               ) : (
-                <div style={{ marginLeft: 25 }}>Hata</div>
+                <div style={{ marginLeft: 25 }}>
+                  Uygulama bilgisi bulunamadı
+                </div>
               )}
             </div>
           </div>
