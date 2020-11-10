@@ -91,73 +91,77 @@ export default function Announcements({
           ) : (
             ""
           )}
-          {announcementsData.slice(0, mapCount).map((item) => {
-            return (
-              <div className={styles.announcements}>
-                <div className={styles.imageCircle}>
-                  <img
-                    src={item.icon.includes("http") ? item.icon : duyurular}
-                  />
-                </div>
-                <div className={styles.announcementsTitles}>
-                  <div
-                    className={`${styles.announcementsTitle} ${
-                      isAdmin ? styles.width : ""
-                    }`}
-                  >
-                    {item.title}
+          {announcementsData && announcementsData.length !== 0 ? (
+            announcementsData.slice(0, mapCount).map((item) => {
+              return (
+                <div className={styles.announcements}>
+                  <div className={styles.imageCircle}>
+                    <img
+                      src={item.icon.includes("http") ? item.icon : duyurular}
+                    />
+                  </div>
+                  <div className={styles.announcementsTitles}>
+                    <div
+                      className={`${styles.announcementsTitle} ${
+                        isAdmin ? styles.width : ""
+                      }`}
+                    >
+                      {item.title}
+                    </div>
+                    {isAdmin ? (
+                      <>
+                        <div
+                          className={`${styles.announcementsTitle} ${styles.class}`}
+                        >
+                          {item.public ? "Herkes" : "Seçili Sınıflar"}
+                        </div>
+                        <div className={styles.announcementsTitle}>
+                          {item.to.length !== 0
+                            ? item.to.map((item) => {
+                                return `${item.name},`;
+                              })
+                            : "Bütün sınıflar"}
+                        </div>
+                      </>
+                    ) : (
+                      <></>
+                    )}
                   </div>
                   {isAdmin ? (
-                    <>
-                      <div
-                        className={`${styles.announcementsTitle} ${styles.class}`}
-                      >
-                        {item.public ? "Herkes" : "Seçili Sınıflar"}
-                      </div>
-                      <div className={styles.announcementsTitle}>
-                        {item.to.length !== 0
-                          ? item.to.map((item) => {
-                              return `${item.name},`;
-                            })
-                          : "Bütün sınıflar"}
-                      </div>
-                    </>
+                    <div className={styles.announcementsAdminIcon}>
+                      <EditSolid
+                        className={styles.editIcon}
+                        onClick={() => {
+                          setActive(true);
+                          setId(item._id);
+                          setEditableTitle(item.title);
+                          setDetail(item.detail);
+                          setClassArray(item.to);
+                          setIsPublic(item.public);
+                          setModalType("updateAnnouncements");
+                        }}
+                      />
+                      <TrashSolid
+                        className={styles.trashIcon}
+                        onClick={() => {
+                          setDeletedId(item._id);
+                          setModalType("delete");
+                          setActive(true);
+                        }}
+                      />
+                    </div>
                   ) : (
-                    <></>
+                    ""
                   )}
-                </div>
-                {isAdmin ? (
-                  <div className={styles.announcementsAdminIcon}>
-                    <EditSolid
-                      className={styles.editIcon}
-                      onClick={() => {
-                        setActive(true);
-                        setId(item._id);
-                        setEditableTitle(item.title);
-                        setDetail(item.detail);
-                        setClassArray(item.to);
-                        setIsPublic(item.public);
-                        setModalType("updateAnnouncements");
-                      }}
-                    />
-                    <TrashSolid
-                      className={styles.trashIcon}
-                      onClick={() => {
-                        setDeletedId(item._id);
-                        setModalType("delete");
-                        setActive(true);
-                      }}
-                    />
+                  <div className={styles.announcementsDate}>
+                    {ConvertDate(item.createdAt)}
                   </div>
-                ) : (
-                  ""
-                )}
-                <div className={styles.announcementsDate}>
-                  {ConvertDate(item.createdAt)}
                 </div>
-              </div>
-            );
-          })}
+              );
+            })
+          ) : (
+            <div style={{ marginLeft: 25 }}>Duyuru bigisi bulunamadı</div>
+          )}
         </div>
         <div
           onClick={() => {
@@ -167,7 +171,11 @@ export default function Announcements({
           }}
           className={`${styles.seeAll} `}
         >
-          {seeAll ? "Küçült" : "Tümünü Gör"}
+          {announcementsData && announcementsData.length !== 0
+            ? seeAll
+              ? "Küçült"
+              : "Tümünü Gör"
+            : ""}
         </div>
       </div>
     </>

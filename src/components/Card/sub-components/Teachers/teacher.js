@@ -19,7 +19,7 @@ export default function Teachers({ teachersData, classesData, userRole }) {
             teachersData.length !== 0 &&
             teachersData &&
             teachersData !== null ? (
-              teachersData.slice(0, 4).map((item) => {
+              teachersData.map((item) => {
                 return (
                   <div className={styles.teachersLabel}>
                     <div className={styles.avatar}>
@@ -92,10 +92,10 @@ export default function Teachers({ teachersData, classesData, userRole }) {
 function getTeacherName(instructor) {
   if (instructor && instructor !== null) {
     return `${instructor.first_name} ${instructor.last_name}`;
-  } else return "none";
+  } else return "Öğretmen bilgisi yok";
 }
 function getBranchName(course) {
   if (course && course !== null && course.name && course.name !== null) {
     return course.name;
-  } else return "none";
+  } else return "Branş bilgisi yok";
 }

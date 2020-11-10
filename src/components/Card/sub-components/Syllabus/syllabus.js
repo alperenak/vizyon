@@ -95,7 +95,12 @@ export default function Syllabus({ syllabusData, classInfo }) {
                             }`}
                           >
                             <td className={styles[getColor(item.course)]}>
-                              {getLessonName(item.course)}
+                              {getLessonName(item.course).length > 12
+                                ? `${getLessonName(item.course).slice(
+                                    0,
+                                    12
+                                  )}...`
+                                : getLessonName(item.course)}
                             </td>
                             <span>{getTeacherName(item)}</span>
                           </div>
@@ -126,7 +131,7 @@ export default function Syllabus({ syllabusData, classInfo }) {
 function getLessonName(course) {
   if (course !== null && course && course.name) {
     return course.name;
-  } else return "ingilizce";
+  } else return "Ders Boş";
 }
 function getTeacherName(item) {
   if (
@@ -187,194 +192,6 @@ function getColor(course) {
 }
 const color = ["green", "red", "blue", "yellow", "purple"];
 
-const fakeData = [
-  {
-    day: "Pazartesi",
-    lessons: [
-      {
-        teacher: "Mustafa Ulusoy",
-        color: color[4],
-        lessonName: "Matematik",
-        startingTime: "8.00",
-        avatar: TeacherAvatar,
-        endTime: "10.00",
-      },
-      {
-        teacher: "Fatih Kalender",
-        color: color[0],
-        lessonName: "Fen Bilimleri",
-        startingTime: "10.00",
-        avatar: TeacherAvatar,
-        endTime: "12.00",
-      },
-      {
-        teacher: "Alperen Karagüzel",
-        color: color[1],
-        lessonName: "Beden Eğitimi",
-        startingTime: "12.00",
-        avatar: TeacherAvatar,
-        endTime: "14.00",
-      },
-      {
-        teacher: "Alperen Karagüzel",
-        color: color[0],
-        lessonName: "Fizik",
-        startingTime: "14.00",
-        avatar: TeacherAvatar,
-        endTime: "16.00",
-      },
-    ],
-  },
-  {
-    day: "Salı",
-    lessons: [
-      {
-        teacher: "Alperen Karagüzel",
-        color: color[1],
-        lessonName: "Beden Eğitimi",
-        startingTime: "8.00",
-        avatar: TeacherAvatar,
-        endTime: "10.00",
-      },
-      {
-        teacher: "Alperen Karagüzel",
-        color: color[1],
-        lessonName: "Beden Eğitimi",
-        startingTime: "10.00",
-        avatar: TeacherAvatar,
-        endTime: "12.00",
-      },
-      {
-        teacher: "Fatih Kalender",
-        color: color[0],
-        lessonName: "Fen Bilimleri",
-        startingTime: "12.00",
-        avatar: TeacherAvatar,
-        endTime: "14.00",
-      },
-      {
-        teacher: "Fatih Kalender",
-        color: color[0],
-        lessonName: "Fen Bilimleri",
-        startingTime: "14.00",
-        avatar: TeacherAvatar,
-        endTime: "16.00",
-      },
-    ],
-  },
-  {
-    day: "Çarşamba",
-    lessons: [
-      {
-        teacher: "Fatih Kalender",
-        color: color[0],
-        lessonName: "Fen Bilimleri",
-        startingTime: "8.00",
-        avatar: TeacherAvatar,
-        endTime: "10.00",
-      },
-      {
-        teacher: "Fatih Kalender",
-        color: color[0],
-        lessonName: "Fen Bilimleri",
-        startingTime: "10.00",
-        avatar: TeacherAvatar,
-        endTime: "12.00",
-      },
-      {
-        teacher: "Mustafa Ulusoy",
-        color: color[4],
-        lessonName: "Matematik",
-        startingTime: "12.00",
-        avatar: TeacherAvatar,
-        endTime: "14.00",
-      },
-      {
-        teacher: "Mustafa Ulusoy",
-        color: color[4],
-        lessonName: "Matematik",
-        startingTime: "14.00",
-        avatar: TeacherAvatar,
-        endTime: "16.00",
-      },
-    ],
-  },
-  {
-    day: "Perşembe",
-    lessons: [
-      {
-        teacher: "Alperen Karagüzel",
-        color: color[0],
-        lessonName: "Fizik",
-        startingTime: "8.00",
-        avatar: TeacherAvatar,
-        endTime: "10.00",
-      },
-      {
-        teacher: "Alperen Karagüzel",
-        color: color[0],
-        lessonName: "Fizik",
-        startingTime: "10.00",
-        avatar: TeacherAvatar,
-        endTime: "12.00",
-      },
-      {
-        teacher: "Mustafa Ulusoy",
-        color: color[4],
-        lessonName: "Matematik",
-        startingTime: "12.00",
-        avatar: TeacherAvatar,
-        endTime: "14.00",
-      },
-      {
-        teacher: "Mustafa Ulusoy",
-        color: color[4],
-        lessonName: "Matematik",
-        startingTime: "14.00",
-        avatar: TeacherAvatar,
-        endTime: "16.00",
-      },
-    ],
-  },
-  {
-    day: "Cuma",
-    lessons: [
-      {
-        teacher: "Alperen Karagüzel",
-        color: color[2],
-        lessonName: "Kimya",
-        startingTime: "8.00",
-        avatar: TeacherAvatar,
-        endTime: "10.00",
-      },
-      {
-        teacher: "Alperen Karagüzel",
-        color: color[2],
-        lessonName: "Kimya",
-        startingTime: "10.00",
-        avatar: TeacherAvatar,
-        endTime: "12.00",
-      },
-      {
-        teacher: "Alperen Karagüzel",
-        color: color[0],
-        lessonName: "Görsel Sanatlar",
-        startingTime: "12.00",
-        avatar: TeacherAvatar,
-        endTime: "14.00",
-      },
-      {
-        teacher: "Alperen Karagüzel",
-        color: color[0],
-        lessonName: "Müzik",
-        startingTime: "14.00",
-        avatar: TeacherAvatar,
-        endTime: "16.00",
-      },
-    ],
-  },
-];
-
 function getDayData() {
   let arr = [];
   days.slice(1, 6).map((item, index) => {
@@ -388,18 +205,6 @@ function getDayData() {
 }
 
 const date = new Date();
-
-function getDay(day, month) {
-  let arr = [];
-  const d = new Date();
-  const todayDayName = days[d.getDay()];
-  const todayDay = d.getDay();
-  const todayDayCount = d.getDate();
-  const todayMonth = d.getMonth() + 1;
-  const pastMonth = d.getMonth() !== 0 ? d.getMonth() : 12;
-  const futureMonth = d.getMonth() + 2 !== 13 ? d.getMonth() : 1;
-  const getDayCount = days.indexOf(day) - todayDay + todayDayCount;
-}
 
 const days = [
   "Pazar",
@@ -478,12 +283,4 @@ export function getMonthNumber(month = "Nisan") {
       return 29;
     } else return 28;
   } else return 30;
-}
-
-function fakeGetDay(day) {
-  if (day === "Pazartesi") return 5;
-  else if (day === "Salı") return 6;
-  else if (day === "Çarşamba") return 7;
-  else if (day === "Perşembe") return 8;
-  else if (day === "Cuma") return 9;
 }

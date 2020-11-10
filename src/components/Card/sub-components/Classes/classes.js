@@ -54,7 +54,7 @@ export default function Classes({
               ? `Okunmamış **${newMessagesCount}** mesajınız var`
               : newMessagesCount && newMessagesCount === 0
               ? "Okunmamış mesajınız bulunmamaktadır"
-              : ""
+              : "Mesaj bilgisi bulunamadı"
           }`}
           type={"tertiary"}
           size={"small"}
@@ -62,11 +62,26 @@ export default function Classes({
           <MessageCheck className={styles.MessageCheckIcon} />
         </AlertBox>
         <AlertBox
-          title={`Sonraki sınavın **${
-            firstExamDate ? firstExamDate[0]?.dayCount : ""
-          } ${firstExamDate ? months[firstExamDate[0].monthCount] : ""}  ${
-            firstExamDate ? firstExamDate[0].yearCount : ""
-          }**’de.`}
+          title={`${
+            firstExamDate &&
+            firstExamDate?.dayCount &&
+            firstExamDate?.monthCount &&
+            firstExamDate?.yearCount
+              ? `Sonraki sınavın **${
+                  firstExamDate && firstExamDate[0]?.dayCount
+                    ? firstExamDate[0]?.dayCount
+                    : ""
+                } ${
+                  firstExamDate && firstExamDate[0]?.monthCount
+                    ? months[firstExamDate[0]?.monthCount]
+                    : ""
+                }  ${
+                  firstExamDate && firstExamDate[0]?.yearCount
+                    ? firstExamDate[0]?.yearCount
+                    : ""
+                }**’de.`
+              : "Sınav bilgisi bulunamamaktadır"
+          }`}
           type={"primary"}
           size={"small"}
         >

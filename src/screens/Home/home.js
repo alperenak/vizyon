@@ -1,10 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import styles from "./home.module.scss";
-import TopBar from "../../components/topBar/topBar";
 import Card from "../../components/Card/card";
-import Avatar from "../../assets/images/teacherAvatar.png";
-import AnnouncementImage from "../../assets/images/announcements.png";
-import { UserContext } from "../../context/userContext";
 import IsAdmin, {
   GetAnnouncements,
   GetAnnouncementsStudent,
@@ -186,11 +182,8 @@ export default function Home() {
 }
 function getClassName(name) {
   if (name && name !== null) {
-    return `${name.slice(0, name.length - 1)} / ${name.slice(
-      name.length - 1,
-      name.length
-    )} Sınıfı`;
-  } else return "";
+    return name;
+  } else return "Sınıf bilgisi bulunamadı";
 }
 
 function getSyllabusData(data) {
@@ -202,52 +195,3 @@ function getSyllabusData(data) {
     return data.instructorInfo.schedule;
   } else return [];
 }
-// const announcementsData = [
-//   {
-//     announcementsTitle: "Gelişim okulları 2020-2021 eğitim yılına hazır!",
-//     image: AnnouncementImage,
-//     date: "31 Ağustos 2020",
-//   },
-//   {
-//     announcementsTitle: "Gelişim okulları 2020-2021 eğitim yılına hazır!",
-//     image: AnnouncementImage,
-//     date: "31 Ağustos 2020",
-//   },
-//   {
-//     announcementsTitle: "Gelişim okulları 2020-2021 eğitim yılına hazır!",
-//     image: AnnouncementImage,
-//     date: "31 Ağustos 2020",
-//   },
-//   {
-//     announcementsTitle: "Gelişim okulları 2020-2021 eğitim yılına hazır!",
-//     image: AnnouncementImage,
-//     date: "31 Ağustos 2020",
-//   },
-//   {
-//     announcementsTitle: "Gelişim okulları 2020-2021 eğitim yılına hazır!",
-//     image: AnnouncementImage,
-//     date: "31 Ağustos 2020",
-//   },
-// ];
-const teachersData = [
-  {
-    teacherName: "Alperen Karagüzel",
-    avatar: Avatar,
-    branch: "Sosyal Bilgiler Öğretmeni",
-  },
-  {
-    teacherName: "Kerem Kara",
-    avatar: Avatar,
-    branch: "Beden Eğitimi Öğretmeni",
-  },
-  {
-    teacherName: "Ali Harun",
-    avatar: Avatar,
-    branch: "Fen Bilimleri Öğretmeni",
-  },
-  {
-    teacherName: "Mustafa Ulusoy",
-    avatar: Avatar,
-    branch: "Türkçe Öğretmeni",
-  },
-];

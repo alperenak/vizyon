@@ -83,5 +83,7 @@ export function RenderIcon(props) {
     return <img src={Meb} {...props} className={styles.actively} />;
   } else if (iconName === "unlocklearning") {
     return <img src={Cambridge} {...props} className={styles.actively} />;
+  } else if (iconName === "zoom") {
+    return <img src={Cambridge} {...props} className={styles.actively} />;
   } else return "none";
 }

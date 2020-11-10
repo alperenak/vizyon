@@ -10,6 +10,7 @@
     position: relative;
     overflow-y: scroll;
 
+
     & .title {
         margin-left: 20px;
         margin-top: 30px;
@@ -21,8 +22,9 @@
     & .teachersSection {
         display: flex;
         align-items: center;
-        height: 325px;
+        height: 280px;
         width: 100%;
+        margin-top: 20px;
         flex-direction: column;
         margin-bottom: 0px;
 

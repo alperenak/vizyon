@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import styles from "./login.module.scss";
-import LoginImages from "../../assets/images/loginBackground.png";
+import LoginImages from "../../assets/images/loginBackground.jpg";
 import TeacherLoginImages from "../../assets/images/teacher.jpg";
 import AdminLoginImages from "../../assets/images/admin.jpg";
 import Input from "../../components/Input/input";
