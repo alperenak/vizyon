@@ -14,75 +14,83 @@ export default function Teachers({ teachersData, classesData, userRole }) {
           <div className={styles.title}>
             {userRole === "student" ? "Öğretmenler" : "Sınıflar"}
           </div>
-          <div className={styles.teachersSection}>
-            {userRole === "student" &&
-            teachersData.length !== 0 &&
-            teachersData &&
-            teachersData !== null ? (
-              teachersData.map((item) => {
-                return (
-                  <div className={styles.teachersLabel}>
-                    <div className={styles.avatar}>
-                      <img
-                        src={
-                          item.instructor !== null && item.instructor
-                            ? item.instructor.profile_photo
-                              ? item.instructor.profile_photo.includes("http")
+          <div className={styles.teachersSectionWrapper}>
+            <div className={styles.teachersSection}>
+              {userRole === "student" &&
+              teachersData.length !== 0 &&
+              teachersData &&
+              teachersData !== null ? (
+                teachersData.map((item) => {
+                  return (
+                    <div className={styles.teachersLabel}>
+                      <div className={styles.profileSection}>
+                        <div className={styles.avatar}>
+                          <img
+                            src={
+                              item.instructor !== null && item.instructor
                                 ? item.instructor.profile_photo
+                                  ? item.instructor.profile_photo.includes(
+                                      "http"
+                                    )
+                                    ? item.instructor.profile_photo
+                                    : teacherAvatar
+                                  : teacherAvatar
+                                : teacherAvatar
+                            }
+                          />
+                        </div>
+                        <div className={styles.teacherInfo}>
+                          <div className={styles.name}>
+                            {getTeacherName(item.instructor)}
+                          </div>
+                          <div className={styles.branch}>
+                            {getBranchName(item.course)}
+                          </div>
+                        </div>
+                      </div>
+                      <div className={styles.icon}>
+                        <EnvelopeSolid
+                          onClick={() => {
+                            history.push(
+                              `/messages/new/${item.instructor?._id}`
+                            );
+                          }}
+                          className={styles.moreIcon}
+                        />
+                      </div>
+                    </div>
+                  );
+                })
+              ) : classesData ? (
+                classesData.map((item) => {
+                  return (
+                    <div className={styles.teachersLabel}>
+                      <div className={styles.avatar}>
+                        <img
+                          src={
+                            item.instructor !== null && item.instructor
+                              ? item.instructor.profile_photo
+                                ? item.instructor.profile_photo.includes("http")
+                                  ? item.instructor.profile_photo
+                                  : teacherAvatar
                                 : teacherAvatar
                               : teacherAvatar
-                            : teacherAvatar
-                        }
-                      />
-                    </div>
-                    <div className={styles.teacherInfo}>
-                      <div className={styles.name}>
-                        {getTeacherName(item.instructor)}
+                          }
+                        />
                       </div>
-                      <div className={styles.branch}>
-                        {getBranchName(item.course)}
+                      <div className={styles.teacherInfo}>
+                        <div className={styles.name}>{item.name}</div>
+                      </div>
+                      <div className={styles.icon}>
+                        <More className={styles.moreIcon} />
                       </div>
                     </div>
-                    <div className={styles.icon}>
-                      <EnvelopeSolid
-                        onClick={() => {
-                          history.push(`/messages/new/${item.instructor?._id}`);
-                        }}
-                        className={styles.moreIcon}
-                      />
-                    </div>
-                  </div>
-                );
-              })
-            ) : classesData ? (
-              classesData.map((item) => {
-                return (
-                  <div className={styles.teachersLabel}>
-                    <div className={styles.avatar}>
-                      <img
-                        src={
-                          item.instructor !== null && item.instructor
-                            ? item.instructor.profile_photo
-                              ? item.instructor.profile_photo.includes("http")
-                                ? item.instructor.profile_photo
-                                : teacherAvatar
-                              : teacherAvatar
-                            : teacherAvatar
-                        }
-                      />
-                    </div>
-                    <div className={styles.teacherInfo}>
-                      <div className={styles.name}>{item.name}</div>
-                    </div>
-                    <div className={styles.icon}>
-                      <More className={styles.moreIcon} />
-                    </div>
-                  </div>
-                );
-              })
-            ) : (
-              <div>data yok</div>
-            )}
+                  );
+                })
+              ) : (
+                <div>data yok</div>
+              )}
+            </div>
           </div>
         </div>
       )}

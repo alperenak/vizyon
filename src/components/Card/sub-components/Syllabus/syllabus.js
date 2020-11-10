@@ -175,17 +175,19 @@ function getColor(course) {
       course.name.includes("Fen Bilgisi")
     ) {
       return color[0];
-    } else if (course.name.includes("Beden Eğitimi")) {
+    } else if (course.name.includes("MATEMATİK")) {
       return color[1];
-    } else if (course.name.includes("İngilizce")) {
+    } else if (course.name.includes("İNGİLİZCE")) {
       return color[3];
-    } else if (course.name.includes("Görsel Sanatlar")) {
+    } else if (course.name.includes("COĞRAFYA")) {
+      return color[4];
+    } else if (course.name.includes("BİYOLOJİ")) {
+      return color[0];
+    } else if (course.name.includes("FİZİK")) {
       return color[2];
-    } else if (course.name.includes("Tarihi")) {
-      return color[3];
-    } else if (course.name.includes("Türkçe")) {
+    } else if (course.name.includes("TÜRKÇE")) {
       return color[1];
-    } else if (course.name.includes("Bilgiler")) {
+    } else if (course.name.includes("DİLİ")) {
       return color[4];
     } else return color[Math.floor(Math.random() * 4)];
   } else return "none";

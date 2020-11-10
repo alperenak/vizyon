@@ -8,7 +8,6 @@
     box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
     background-color: white;
     position: relative;
-    overflow-y: scroll;
 
 
     & .title {
@@ -19,6 +18,8 @@
         color: $darkBlue
     }
 
+    & .teachersSectionWrapper{
+        overflow-y: scroll;
     & .teachersSection {
         display: flex;
         align-items: center;
@@ -32,47 +33,47 @@
             display: flex;
             align-items: center;
             height: 50px;
+            justify-content: space-between;
             width: 330px;
             margin: 10px 0;
 
-            & .avatar {
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                overflow: hidden;
-
-                & img {
-                    width: 100%;
-                }
-
-
-            }
-
-            & .teacherInfo {
+            & .profileSection {
                 display: flex;
-                margin-left: 20px;
-                flex-direction: column;
-                height: 50px;
-                align-items: flex-start;
-                margin-top: 10px;
+                & .avatar {
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    overflow: hidden;
 
-                & .name {
-                    font-family: SofiaBold;
-                    font-size: 16px;
-                    color: $darkBlue
+                    & img {
+                        width: 100%;
+                    }
                 }
 
-                & .branch {
-                    font-size: 14px;
-                    color: $lightPurple
+                & .teacherInfo {
+                    display: flex;
+                    margin-left: 20px;
+                    flex-direction: column;
+                    height: 50px;
+                    align-items: flex-start;
+                    margin-top: 10px;
+
+                    & .name {
+                        font-family: SofiaBold;
+                        font-size: 16px;
+                        color: $darkBlue
+                    }
+
+                    & .branch {
+                        font-size: 14px;
+                        color: $lightPurple
+                    }
                 }
             }
-
             & .icon {
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                position: absolute;
                 right: 20px;
                 border-radius: 8px;
                 width: 32px;
@@ -89,4 +90,5 @@
             }
         }
     }
+}
 }
