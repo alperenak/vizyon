@@ -33,6 +33,8 @@ import Cambridge from "../../assets/images/cambridge.png";
 import Meb from "../../assets/images/meb.jpg";
 import WritingAz from "../../assets/images/writingAz.svg";
 import VocabularyAz from "../../assets/images/vocabulary.png";
+import Zoom from "../../assets/images/zoom.png";
+
 export default function Apps() {
   const [count, setCount] = useState(fakeAppsData.length);
   const [loading, setLoading] = useState(false);
@@ -171,6 +173,8 @@ export function RenderIcon(props) {
     return <img src={Meb} {...props} className={styles.actively} />;
   } else if (iconName === "unlocklearning") {
     return <img src={Cambridge} {...props} className={styles.actively} />;
+  }else if (iconName === "zoom") {
+    return <img src={Zoom} {...props} className={styles.actively} />;
   } else return "none";
 }
 const fakeAppsData = [

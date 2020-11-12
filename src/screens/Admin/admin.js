@@ -110,7 +110,6 @@ function RenderCard({
   const [filteredClass, setFilteredClass] = useState(false);
   const [appData, setAppData] = useState([]);
   const history = useHistory();
-  console.log("umarim degismiyor", announcementsData);
   window.onclick = function (e) {
     if (e.target !== dropdownNames && e.target !== dropdownIcon) {
       setDropdownActive(false);
@@ -157,7 +156,6 @@ function RenderCard({
     else setDisplayClass(res);
   }
 
-  console.log(display);
   useEffect(() => {
     setLoading(true);
     getAllUser(token)
