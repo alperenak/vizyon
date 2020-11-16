@@ -79,7 +79,7 @@ export default function Syllabus({ syllabusData, classInfo }) {
             return (
               <table>
                 {item.periods.length !== 0
-                  ? item.periods.slice(0, 6).map((item, index) => {
+                  ? item.periods.slice(0, 8).map((item, index) => {
                       return (
                         <tr>
                           <div className={styles.lessonLabelWrapper}>
