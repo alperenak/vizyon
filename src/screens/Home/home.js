@@ -22,16 +22,6 @@ export default function Home() {
 
   console.log("userdata: ", userData);
   useEffect(() => {
-    window.addEventListener(
-      "beforeunload",
-      (ev) => {
-        if (!localStorage.getItem("rememberMe")) {
-          removeCookies("token");
-        }
-        return (ev.returnValue = "Are you sure you want to close?");
-      },
-      []
-    );
     if (IsAuth(token)) {
       if (!userData) {
         setLoading(true);

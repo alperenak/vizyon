@@ -2,7 +2,16 @@ import React, { useContext, useEffect, useState } from "react";
 import styles from "./topBar.module.scss";
 import Logo from "../../assets/images/logo.png";
 import ChromeIcon from "../../assets/icons/chrome-brands-purple.svg";
-import { Down, EnvelopeSolid, Menu, Notification } from "../../icons";
+import {
+  CogSolid,
+  Down,
+  EnvelopeSolid,
+  Menu,
+  Notification,
+  PowerOffSolid,
+  User,
+  UserIcon,
+} from "../../icons";
 import Avatar from "../../assets/images/avatar.png";
 import SubBar from "./subBar/subBar";
 import { UserContext } from "../../context/userContext";
@@ -82,12 +91,35 @@ export default function TopBar() {
                 className={`${styles.dropdownContent}  ${
                   dropdownActive ? styles.active : ""
                 }`}
-                onClick={() => {
-                  removeCookies("token");
-                  window.location.replace("/");
-                }}
               >
-                Çıkış Yap
+                <div
+                  onClick={() => {
+                    history.push("/settings");
+                  }}
+                  className={styles.dropdownItem}
+                >
+                  <CogSolid className={styles.dropdownIcon} />
+                  <div className={styles.dropdownItemName}>Ayarlar</div>
+                </div>
+                <div
+                  onClick={() => {
+                    history.push("/profile");
+                  }}
+                  className={styles.dropdownItem}
+                >
+                  <UserIcon className={styles.dropdownIcon} />
+                  <div className={styles.dropdownItemName}>Profilim</div>
+                </div>
+                <div
+                  onClick={() => {
+                    removeCookies("token");
+                    window.location.replace("/");
+                  }}
+                  className={styles.dropdownItem}
+                >
+                  <PowerOffSolid className={styles.dropdownIcon} />
+                  <div className={styles.dropdownItemName}>Çıkış Yap</div>
+                </div>
               </div>
             </div>
             <Down

@@ -14,6 +14,8 @@ import SyllabusManagement from "./sub-components/SyllabusManagement/syllabusMana
 import AppManagement from "./sub-components/AppManagement/appManagement";
 import Exams from "./sub-components/Exams/exams";
 import NewMessages from "./sub-components/newMessages/newMessages";
+import Settings from "./sub-components/Settings/settings";
+import Profile from "./sub-components/Profile/profile";
 
 export default function Card(props) {
   return (
@@ -53,6 +55,10 @@ function RenderByTypes(props) {
     return <Exams {...props} />;
   } else if (type === "newMessages") {
     return <NewMessages {...props} />;
+  } else if (type === "settings") {
+    return <Settings {...props} />;
+  } else if (type === "profile") {
+    return <Profile {...props} />;
   } else {
     return <div>hata</div>;
   }
