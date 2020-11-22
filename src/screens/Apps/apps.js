@@ -88,9 +88,7 @@ export default function Apps() {
                             .then((data) => {
                               window.open(data.data.data);
                             })
-                            .catch((e) =>
-                              alert("Kullanıcı bu platforma kayıtlı değil")
-                            );
+                            .catch((e) => window.open(item.app.url));
                         }}
                         className={styles.renderApps}
                       >
@@ -173,7 +171,7 @@ export function RenderIcon(props) {
     return <img src={Meb} {...props} className={styles.actively} />;
   } else if (iconName === "unlocklearning") {
     return <img src={Cambridge} {...props} className={styles.actively} />;
-  }else if (iconName === "zoom") {
+  } else if (iconName === "zoom") {
     return <img src={Zoom} {...props} className={styles.actively} />;
   } else return "none";
 }
