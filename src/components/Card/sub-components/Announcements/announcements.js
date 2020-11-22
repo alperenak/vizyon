@@ -94,7 +94,17 @@ export default function Announcements({
           {announcementsData && announcementsData.length !== 0 ? (
             announcementsData.slice(0, mapCount).map((item) => {
               return (
-                <div className={styles.announcements}>
+                <div
+                  className={styles.announcements}
+                  onClick={() => {
+                    if (!isAdmin) {
+                      setActive(true);
+                      setModalType("title");
+                      setDetail(item.detail);
+                      setEditableTitle(item.title);
+                    }
+                  }}
+                >
                   <div className={styles.imageCircle}>
                     <img
                       src={item.icon.includes("http") ? item.icon : duyurular}
@@ -212,7 +222,12 @@ function RenderModal({
   const token = GetToken();
   return (
     <Modal isActive={isActive} setIsActive={setIsActive}>
-      {type === "delete" ? (
+      {type === "title" ? (
+        <div className={styles.detailWrapper}>
+          <h3>{editableTitle}</h3>
+          <div className={styles.announcementsDetailText}>{detail}</div>
+        </div>
+      ) : type === "delete" ? (
         <div className={styles.deleteQuestion}>
           <div className={styles.deleteQuestionTitle}>
             Silmek istediğinizden emin misiniz?
