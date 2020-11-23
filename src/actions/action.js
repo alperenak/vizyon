@@ -540,3 +540,56 @@ export async function GetUsersbyClassesName(assignedClass, token) {
   );
   return response;
 }
+export async function UpdateUserPassword(
+  token,
+  payload = { userId: "", oldPassword: "", newPassword: "" }
+) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = axios.post(`${uri}/auth/update-password`, payload, config);
+  return response;
+}
+export async function UpdateUserAppPassword(
+  token,
+  userId,
+  passwordId,
+  payload = {
+    credentials: {
+      username: "",
+      password: "",
+    },
+    _id: "",
+    app: "",
+    user: "",
+  }
+) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = axios.put(
+    `${uri}/users/${userId}/password/${passwordId}`,
+    payload,
+    config
+  );
+  return response;
+}
+export async function GetUserAppPasswordsByPasswordId(
+  token,
+  userId,
+  passwordId
+) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  return await axios.get(
+    `${uri}/users/${userId}/password/${passwordId}`,
+    config
+  );
+}
+export async function GetUserAppPassword(token, userId) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  return await axios.get(`${uri}/users/${userId}/password`, config);
+}

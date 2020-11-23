@@ -1,6 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { GetToken, GetUser } from "../../../../actions/action";
-import { Edit, EditSolid, IconLock, IconUser, Inbox } from "../../../../icons";
+import {
+  GetToken,
+  GetUser,
+  GetUserAppPassword,
+  UpdateUserAppPassword,
+  UpdateUserPassword,
+} from "../../../../actions/action";
+import {
+  CheckSolidCircle,
+  Edit,
+  EditSolid,
+  IconLock,
+  IconUser,
+  Inbox,
+  TimesCircleSolid,
+} from "../../../../icons";
 import Background from "../../../../assets/images/classroom.jpg";
 import Card from "../../card";
 import styles from "./settings.module.scss";
@@ -32,13 +46,18 @@ export default function Settings() {
   const [tabsType, setTabsType] = useState("myAccount");
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [userId, setUserId] = useState("");
   const [newPasswordAgain, setNewPasswordAgain] = useState("");
   const [appData, setAppData] = useState([]);
+  const [appPasswordData, setAppPasswordData] = useState([]);
   const [modalType, setModalType] = useState("");
   const [isActiveModal, setIsActiveModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(false);
   useEffect(() => {
     GetUser(token).then((data) => {
       setUserData(data);
+      setUserId(data.data.data.id);
+
       setName(data.data.data.first_name + " " + data.data.data.last_name);
       setAvatar(data.data.data.profile_photo);
       setClassroomName(
@@ -46,6 +65,9 @@ export default function Settings() {
           ? data.data.data.studentInfo.class.name
           : null
       );
+      GetUserAppPassword(token, data.data.data.id).then((data) => {
+        setAppPasswordData(data.data.data);
+      });
     });
   }, []);
   return (
@@ -115,9 +137,24 @@ export default function Settings() {
               value={newPassword}
             >
               <IconLock className={styles.icon} />
+              {newPassword &&
+              newPasswordAgain &&
+              newPassword !== "" &&
+              newPasswordAgain !== "" &&
+              newPassword !== newPasswordAgain ? (
+                <TimesCircleSolid className={styles.timesSolid} />
+              ) : newPassword &&
+                newPasswordAgain &&
+                newPassword !== "" &&
+                newPasswordAgain !== "" &&
+                newPassword === newPasswordAgain ? (
+                <CheckSolidCircle className={styles.checkSolid} />
+              ) : (
+                ""
+              )}
             </Input>
             <Input
-              onChange={(e) => setNewPassword(e.target.value)}
+              onChange={(e) => setNewPasswordAgain(e.target.value)}
               method={"changePassword"}
               type={"password"}
               placeholder={"Yeni şifren tekrar"}
@@ -125,8 +162,51 @@ export default function Settings() {
               value={newPasswordAgain}
             >
               <IconLock className={styles.icon} />
+              {newPassword &&
+              newPasswordAgain &&
+              newPassword !== "" &&
+              newPasswordAgain !== "" &&
+              newPassword !== newPasswordAgain ? (
+                <TimesCircleSolid className={styles.timesSolid} />
+              ) : newPassword &&
+                newPasswordAgain &&
+                newPassword !== "" &&
+                newPasswordAgain !== "" &&
+                newPassword === newPasswordAgain ? (
+                <CheckSolidCircle className={styles.checkSolid} />
+              ) : (
+                ""
+              )}
             </Input>
-            <Button type={"change"} title={"Şifremi değiştir"} />
+            {errorMessage ? (
+              <div className={styles.errorMessage}>{errorMessage}</div>
+            ) : (
+              ""
+            )}
+            <Button
+              type={"change"}
+              title={"Şifremi değiştir"}
+              onClick={() => {
+                if (
+                  newPassword &&
+                  newPasswordAgain &&
+                  newPassword !== "" &&
+                  newPasswordAgain !== "" &&
+                  newPassword === newPasswordAgain
+                ) {
+                  UpdateUserPassword(token, {
+                    userId: userId,
+                    oldPassword: oldPassword,
+                    newPassword: newPassword,
+                  })
+                    .then(() => {
+                      alert("Şifreniz başarıyla değiştildi");
+                      window.location.replace("/");
+                    })
+                    .catch(() => setErrorMessage("Eski şifren yanlış"));
+                }
+              }}
+            />
           </div>
         </div>
       ) : (
@@ -138,36 +218,42 @@ export default function Settings() {
             <div className={styles.edit}>Düzenle</div>
           </div>
           <div className={styles.renderApps}>
-            {fakeData.map((item) => {
-              return (
-                <div className={styles.renderAppRow}>
-                  <div className={styles.appAvatarWrapper}>
-                    <div className={styles.appAvatar}>
-                      <RenderIcon
-                        iconName={item.appName}
-                        className={styles.icon}
+            {appPasswordData && appPasswordData.length !== 0
+              ? appPasswordData.map((item) => {
+                  return (
+                    <div className={styles.renderAppRow}>
+                      <div className={styles.appAvatarWrapper}>
+                        <div className={styles.appAvatar}>
+                          <RenderIcon
+                            iconName={item.app.name}
+                            className={styles.icon}
+                          />
+                        </div>
+                        <div className={styles.appName}>{item.app.title}</div>
+                      </div>
+
+                      <div className={styles.appUsername}>
+                        {item.credentials.username}
+                      </div>
+                      <div className={styles.appPassword}>
+                        {item.credentials.password}
+                      </div>
+                      <EditSolid
+                        onClick={() => {
+                          setAppData({
+                            appName: item.app.title,
+                            username: item.credentials.username,
+                            password: item.credentials.password,
+                          });
+                          setModalType("edit");
+                          setIsActiveModal(true);
+                        }}
+                        className={styles.editIcon}
                       />
                     </div>
-                    <div className={styles.appName}>{item.appName}</div>
-                  </div>
-
-                  <div className={styles.appUsername}>{item.username}</div>
-                  <div className={styles.appPassword}>{item.password}</div>
-                  <EditSolid
-                    onClick={() => {
-                      setAppData({
-                        appName: item.appName,
-                        username: item.username,
-                        password: item.password,
-                      });
-                      setModalType("edit");
-                      setIsActiveModal(true);
-                    }}
-                    className={styles.editIcon}
-                  />
-                </div>
-              );
-            })}
+                  );
+                })
+              : ""}
           </div>
         </div>
       )}

@@ -1,6 +1,8 @@
 export { default as ActiveMenuIcons } from "./ActiveMenuIcons";
 export { default as ArrowLeftSolid } from "./ArrowLeftSolid";
 export { default as CheckSolid } from "./CheckSolid";
+export { default as CheckSolidCircle } from "./CheckCircleSolid";
+export { default as TimesCircleSolid } from "./TimesCircleSolid";
 export { default as Clock } from "./Clock";
 export { default as Comunication } from "./Comunication";
 export { default as DateIcon } from "./Date";
