@@ -52,7 +52,9 @@ export default function Settings() {
   const [appPasswordData, setAppPasswordData] = useState([]);
   const [modalType, setModalType] = useState("");
   const [isActiveModal, setIsActiveModal] = useState(false);
+  const [passwordId, setPasswordId] = useState("");
   const [errorMessage, setErrorMessage] = useState(false);
+  const [payload, setPayload] = useState([]);
   useEffect(() => {
     GetUser(token).then((data) => {
       setUserData(data);
@@ -245,6 +247,11 @@ export default function Settings() {
                             username: item.credentials.username,
                             password: item.credentials.password,
                           });
+                          setPayload({
+                            _id: item._id,
+                            app: item.app._id,
+                            user: userId,
+                          });
                           setModalType("edit");
                           setIsActiveModal(true);
                         }}
@@ -258,15 +265,27 @@ export default function Settings() {
         </div>
       )}
       <Modal isActive={isActiveModal} setIsActive={setIsActiveModal}>
-        <RenderModalContent setIsActive={setIsActiveModal} appData={appData} />
+        <RenderModalContent
+          setIsActive={setIsActiveModal}
+          appData={appData}
+          userId={userId}
+          passwordId={passwordId}
+          payload={payload}
+        />
       </Modal>
     </div>
   );
 }
-export function RenderModalContent({ setIsActive, appData }) {
+export function RenderModalContent({
+  setIsActive,
+  appData,
+  userId,
+  passwordId,
+  payload,
+}) {
   const [appUsername, setAppUsername] = useState({ status: true });
   const [appPassword, setAppPassword] = useState({ status: true });
-
+  const token = GetToken();
   return (
     <div>
       <h3>Uygulama Şifresi Değiştirme</h3>
@@ -294,7 +313,29 @@ export function RenderModalContent({ setIsActive, appData }) {
       >
         <IconLock className={styles.modalIcon} />
       </Input>
-      <Button type={"change"} title={"Kaydet"} />
+      <Button
+        type={"change"}
+        title={"Kaydet"}
+        onClick={() => {
+          const credentials = {
+            username:
+              typeof appUsername === "string" ? appUsername : appData.username,
+            password:
+              typeof appPassword === "string" ? appPassword : appData.password,
+          };
+          UpdateUserAppPassword(token, userId, payload._id, {
+            credentials: credentials,
+            _id: payload._id,
+            app: payload.app,
+            user: payload.user,
+          })
+            .then(() => {
+              alert("Uygulama şifresi değiştirme başarılı");
+              window.location.reload();
+            })
+            .catch(() => alert("Bir hata oluştu"));
+        }}
+      />
     </div>
   );
 }
