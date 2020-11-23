@@ -101,6 +101,7 @@ export default function TopBar() {
                   <CogSolid className={styles.dropdownIcon} />
                   <div className={styles.dropdownItemName}>Ayarlar</div>
                 </div>
+                {/*
                 <div
                   onClick={() => {
                     history.push("/profile");
@@ -110,6 +111,7 @@ export default function TopBar() {
                   <UserIcon className={styles.dropdownIcon} />
                   <div className={styles.dropdownItemName}>Profilim</div>
                 </div>
+                */}
                 <div
                   onClick={() => {
                     removeCookies("token");

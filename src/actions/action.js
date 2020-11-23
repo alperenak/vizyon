@@ -204,6 +204,20 @@ export function getAllUser(token) {
   const response = axios.get(`${uri}/users`, config);
   return response;
 }
+export function getAllStudents(token) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = axios.get(`${uri}/users?role=student`, config);
+  return response;
+}
+export function getAllTeachers(token) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = axios.get(`${uri}/users?role=instructor`, config);
+  return response;
+}
 
 export async function CreateUser(
   token,
