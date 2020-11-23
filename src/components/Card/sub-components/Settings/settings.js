@@ -67,7 +67,7 @@ export default function Settings() {
             }`}
             onClick={() => setTabsType("myApps")}
           >
-            Uygulamarım
+            Uygulamalarım
           </div>
         </div>
       </div>
@@ -105,12 +105,12 @@ export default function Settings() {
             >
               <IconLock className={styles.icon} />
             </Input>
-            <h3>Yeni şifren</h3>
+            <h3>Yeni Şifre</h3>
             <Input
               onChange={(e) => setNewPassword(e.target.value)}
               method={"changePassword"}
               type={"password"}
-              placeholder={"Yeni şifren"}
+              placeholder={"Yeni Şifre"}
               inputStyle={"change"}
               value={newPassword}
             >
@@ -120,7 +120,7 @@ export default function Settings() {
               onChange={(e) => setNewPassword(e.target.value)}
               method={"changePassword"}
               type={"password"}
-              placeholder={"Yeni şifren tekrar"}
+              placeholder={"Yeni Şifre Tekrar"}
               inputStyle={"change"}
               value={newPasswordAgain}
             >
@@ -154,7 +154,7 @@ export default function Settings() {
                   <div className={styles.appUsername}>{item.username}</div>
                   <div className={styles.appPassword}>{item.password}</div>
                   <EditSolid
-                    onClick={() => {
+                    onClick={() => {/*
                       setAppData({
                         appName: item.appName,
                         username: item.username,
@@ -162,6 +162,7 @@ export default function Settings() {
                       });
                       setModalType("edit");
                       setIsActiveModal(true);
+                      */
                     }}
                     className={styles.editIcon}
                   />
@@ -214,12 +215,12 @@ export function RenderModalContent({ setIsActive, appData }) {
 }
 
 const fakeData = [
-  { appName: "zoom", username: "alperen", password: "123" },
-  { appName: "eba", username: "alperen", password: "dsafdasf" },
-  { appName: "writingaz", username: "alperen", password: "dasfdasfadsf123" },
-  { appName: "razplus", username: "alperen", password: "1dfasdas23" },
-  { appName: "k12", username: "alperen", password: "12dasfdas3" },
-  { appName: "unlocklearning", username: "alperen", password: "123" },
+  { appName: "zoom", username: "Veri eklenmedi", password: "*******" },
+  { appName: "eba", username: "Veri eklenmedi", password: "*******" },
+  { appName: "writingaz", username: "Veri eklenmedi", password: "*******" },
+  { appName: "razplus", username: "Veri eklenmedi", password: "*******" },
+  { appName: "k12", username: "Veri eklenmedi", password: "*******" },
+  { appName: "unlocklearning", username: "Veri eklenmedi", password: "*******" },
 ];
 export function RenderIcon(props) {
   let { iconName } = props;

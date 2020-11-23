@@ -9,6 +9,8 @@ import IsAdmin, {
   GetUser,
   GetAnnouncements,
   getAllUser,
+  getAllStudents,
+  getAllTeachers,
   getAllClass,
   IsRoleAdmin,
   GetAllExams,
@@ -158,13 +160,10 @@ function RenderCard({
 
   useEffect(() => {
     setLoading(true);
-    getAllUser(token)
+    getAllStudents(token)
       .then((data) => {
-        setTeachersData(
-          data.data.data.filter((item) => item.role === "instructor")
-        );
         setStudentsData(
-          data.data.data.filter((item) => item.role === "student")
+          data.data.data
         );
       })
       .then(() => setLoading(false))
@@ -172,6 +171,17 @@ function RenderCard({
         setLoading(false);
         alert("Kullanıcılar Getirilemedi");
       });
+    getAllTeachers(token)
+        .then((data) => {
+          setTeachersData(
+              data.data.data
+          );
+        })
+        .then(() => setLoading(false))
+        .catch((e) => {
+          setLoading(false);
+          alert("Kullanıcılar Getirilemedi");
+        });
 
     getAllClass(token)
       .then((data) => {
@@ -188,7 +198,7 @@ function RenderCard({
       })
       .then(() => setLoading(false))
       .catch(() => alert("Sınavlar getirilemedi"));
-    GetSpecifiApps(token, id ? id : "1")
+    GetSpecifiApps(token, id ? id : 9)
       .then((item) => {
         setAppData(item);
       })
