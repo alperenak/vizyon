@@ -235,7 +235,9 @@ export default function Settings() {
                       </div>
 
                       <div className={styles.appUsername}>
-                        {item.credentials.username}
+                        {item.credentials.email
+                          ? item.credentials.email
+                          : item.credentials.username}
                       </div>
                       <div className={styles.appPassword}>
                         {item.credentials.password}
@@ -244,7 +246,9 @@ export default function Settings() {
                         onClick={() => {
                           setAppData({
                             appName: item.app.title,
-                            username: item.credentials.username,
+                            username: item.credentials.email
+                              ? item.credentials.email
+                              : item.credentials.username,
                             password: item.credentials.password,
                           });
                           setPayload({
@@ -317,23 +321,50 @@ export function RenderModalContent({
         type={"change"}
         title={"Kaydet"}
         onClick={() => {
-          const credentials = {
-            username:
-              typeof appUsername === "string" ? appUsername : appData.username,
-            password:
-              typeof appPassword === "string" ? appPassword : appData.password,
-          };
-          UpdateUserAppPassword(token, userId, payload._id, {
-            credentials: credentials,
-            _id: payload._id,
-            app: payload.app,
-            user: payload.user,
-          })
-            .then(() => {
-              alert("Uygulama şifresi değiştirme başarılı");
-              window.location.reload();
+          if (appData.username) {
+            const credentials = {
+              username:
+                typeof appUsername === "string"
+                  ? appUsername
+                  : appData.username,
+              password:
+                typeof appPassword === "string"
+                  ? appPassword
+                  : appData.password,
+            };
+            UpdateUserAppPassword(token, userId, payload._id, {
+              credentials: credentials,
+              _id: payload._id,
+              app: payload.app,
+              user: payload.user,
             })
-            .catch(() => alert("Bir hata oluştu"));
+              .then(() => {
+                alert("Uygulama şifresi değiştirme başarılı");
+                window.location.reload();
+              })
+              .catch(() => alert("Bir hata oluştu"));
+          }
+          //  else if (appData.email) {
+          //   const credentials = {
+          //     email:
+          //       typeof appUsername === "string" ? appUsername : appData.email,
+          //     password:
+          //       typeof appPassword === "string"
+          //         ? appPassword
+          //         : appData.password,
+          //   };
+          //   UpdateUserAppPassword(token, userId, payload._id, {
+          //     credentials: credentials,
+          //     _id: payload._id,
+          //     app: payload.app,
+          //     user: payload.user,
+          //   })
+          //     .then(() => {
+          //       alert("Uygulama şifresi değiştirme başarılı");
+          //       window.location.reload();
+          //     })
+          //     .catch(() => alert("Bir hata oluştu"));
+          // }
         }}
       />
     </div>
