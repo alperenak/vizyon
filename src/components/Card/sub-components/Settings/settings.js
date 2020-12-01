@@ -235,29 +235,27 @@ export default function Settings() {
                       </div>
 
                       <div className={styles.appUsername}>
-                        {item.credentials.email
-                          ? item.credentials.email
-                          : item.credentials.username}
+                        {"Veri eklenmedi"}
                       </div>
                       <div className={styles.appPassword}>
-                        {item.credentials.password}
+                        {"********"}
                       </div>
                       <EditSolid
                         onClick={() => {
-                          setAppData({
-                            appName: item.app.title,
-                            username: item.credentials.email
-                              ? item.credentials.email
-                              : item.credentials.username,
-                            password: item.credentials.password,
-                          });
-                          setPayload({
-                            _id: item._id,
-                            app: item.app._id,
-                            user: userId,
-                          });
-                          setModalType("edit");
-                          setIsActiveModal(true);
+                          // setAppData({
+                          //   appName: item.app.title,
+                          //   username: item.credentials.email
+                          //     ? item.credentials.email
+                          //     : item.credentials.username,
+                          //   password: item.credentials.password,
+                          // });
+                          // setPayload({
+                          //   _id: item._id,
+                          //   app: item.app._id,
+                          //   user: userId,
+                          // });
+                          // setModalType("edit");
+                          // setIsActiveModal(true);
                         }}
                         className={styles.editIcon}
                       />
