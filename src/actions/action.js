@@ -221,7 +221,7 @@ export function getAllTeachers(token, page, limit) {
     headers: { authorization: `Bearer ${token}` },
   };
   const response = axios.get(
-    `${uri}/users?role=instructorlimit=${limit ? limit : 100}&page=${
+    `${uri}/users?role=instructor&limit=${limit ? limit : 100}&page=${
       page ? page : 1
     }`,
     config
