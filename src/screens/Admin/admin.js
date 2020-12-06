@@ -106,6 +106,8 @@ function RenderCard({
   const dropdownNames = document.getElementById("dropdownName");
   const dropdownIcon = document.getElementById("dropdownIcon");
   const [studentsData, setStudentsData] = useState([]);
+  const [totalTeacher, setTotalTeacher] = useState(0);
+  const [totalStudent, setTotalStudent] = useState(0);
   const token = GetToken();
   const [userPageNum, setUserPageNum] = useState(1);
   const [teachersData, setTeachersData] = useState([]);
@@ -165,6 +167,8 @@ function RenderCard({
     getAllStudents(token)
       .then((data) => {
         setStudentsData(data.data.data);
+        console.log("studentTotal:", data.data.total);
+        setTotalStudent(data.data.total);
       })
       .then(() => setLoading(false))
       .catch((e) => {
@@ -174,6 +178,8 @@ function RenderCard({
     getAllTeachers(token)
       .then((data) => {
         setTeachersData(data.data.data);
+        console.log("teacherTotal:", data.data.total);
+        setTotalTeacher(data.data.total);
       })
       .then(() => setLoading(false))
       .catch((e) => {
@@ -324,41 +330,55 @@ function RenderCard({
             type={"userManagement"}
             tabsType={tabsType}
           />
-          <Pagination
-            totalCount={1000 / 100}
-            selectedPage={userPageNum}
-            onClick={(pageNum) => {
-              if (tabsType === "student") {
-                setLoading(true);
-                getAllStudents(token, pageNum)
-                  .then((data) => {
-                    setStudentsData(data.data.data);
-                    setUserPageNum(
-                      data.data.pagination.next.page !== null
-                        ? data.data.pagination.next.page - 1
-                        : data.data.pagination.next.previous + 1
-                    );
-                  })
-                  .then(() => setLoading(false))
-                  .catch((e) => {
-                    setLoading(false);
-                    alert("Kullanıcılar Getirilemedi");
-                  });
-              } else if (tabsType === "teacher") {
-                setLoading(true);
-                getAllTeachers(token, pageNum)
-                  .then((data) => {
-                    setTeachersData(data.data.data);
-                    setUserPageNum(data.data.pagination.page);
-                  })
-                  .then(() => setLoading(false))
-                  .catch((e) => {
-                    setLoading(false);
-                    alert("Kullanıcılar Getirilemedi");
-                  });
+          {totalStudent !== 0 || totalTeacher !== 0 ? (
+            <Pagination
+              totalCount={
+                tabsType === "student"
+                  ? Number((totalStudent / 100).toFixed())
+                  : tabsType === "teacher"
+                  ? Number((totalTeacher / 100).toFixed())
+                  : ""
               }
-            }}
-          />
+              selectedPage={userPageNum}
+              onClick={(pageNum) => {
+                if (tabsType === "student") {
+                  setLoading(true);
+                  getAllStudents(token, pageNum)
+                    .then((data) => {
+                      setStudentsData(data.data.data);
+                      setUserPageNum(
+                        data.data.pagination.next.page !== null
+                          ? data.data.pagination.next.page - 1
+                          : data.data.pagination.next.previous + 1
+                      );
+                    })
+                    .then(() => setLoading(false))
+                    .catch((e) => {
+                      setLoading(false);
+                      alert("Kullanıcılar Getirilemedi");
+                    });
+                } else if (tabsType === "teacher") {
+                  setLoading(true);
+                  getAllTeachers(token, pageNum)
+                    .then((data) => {
+                      setTeachersData(data.data.data);
+                      setUserPageNum(
+                        data.data.pagination.next.page !== null
+                          ? data.data.pagination.next.page - 1
+                          : data.data.pagination.next.previous + 1
+                      );
+                    })
+                    .then(() => setLoading(false))
+                    .catch((e) => {
+                      setLoading(false);
+                      alert("Kullanıcılar Getirilemedi");
+                    });
+                }
+              }}
+            />
+          ) : (
+            "data"
+          )}
         </>
       );
     } else if (pathname === "/admin/syllabus") {

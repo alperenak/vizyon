@@ -80,8 +80,11 @@ function makeArray(count) {
   console.log("count:", count);
 
   let arr = [];
-  for (let i = 1; i <= count; i++) {
-    arr.push(i);
+  if (count !== 0) {
+    for (let i = 1; i <= count; i++) arr.push(i);
   }
+
+  console.log("arr:", arr);
+
   return arr;
 }
