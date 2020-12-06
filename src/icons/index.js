@@ -6,6 +6,8 @@ export { default as TimesCircleSolid } from "./TimesCircleSolid";
 export { default as Clock } from "./Clock";
 export { default as Comunication } from "./Comunication";
 export { default as DateIcon } from "./Date";
+export { default as ChevronLeftSolid } from "./ChevronLeftSolid";
+export { default as ChevronRightSolid } from "./ChevronRightSolid";
 export { default as Ders } from "./Ders";
 export { default as Dosyalar } from "./Dosyalar";
 export { default as Down } from "./Down";
