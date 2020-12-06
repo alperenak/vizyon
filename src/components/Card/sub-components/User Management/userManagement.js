@@ -55,137 +55,134 @@ export default function UserManagement({
   console.log("general", studentsData);
 
   return (
-    <div style={{ display: "flex", flexDirection: "column" }}>
-      <div className={styles.schedule}>
-        <div className={styles.topSide}>
-          <div className={styles.title}>Kullanıcı Yönetimi</div>
-          <div
-            onClick={() => {
-              setIsActive(true);
-              setModalType("add");
-            }}
-            className={styles.feedback}
-          >
-            <PlusCircleSolid className={styles.feedbackIcon} />
-            <div className={styles.feedbackTitle}>
-              {tabsType === "student"
-                ? "Yeni Öğrenci Oluştur"
-                : "Yeni Öğretmen oluştur"}
-            </div>
+    <div className={styles.schedule}>
+      <div className={styles.topSide}>
+        <div className={styles.title}>Kullanıcı Yönetimi</div>
+        <div
+          onClick={() => {
+            setIsActive(true);
+            setModalType("add");
+          }}
+          className={styles.feedback}
+        >
+          <PlusCircleSolid className={styles.feedbackIcon} />
+          <div className={styles.feedbackTitle}>
+            {tabsType === "student"
+              ? "Yeni Öğrenci Oluştur"
+              : "Yeni Öğretmen oluştur"}
           </div>
         </div>
-        <div className={styles.scheduleTitlesSection}>
-          <table>
-            <tr className={styles.scheduleTitlesRow}>
-              <div className={styles.scheduleTitles}>
-                <User
-                  className={`${styles.scheduleTitlesIcon} ${styles.user}`}
-                />
-                <td className={styles.ogretmen}>Ad Soyad</td>
-              </div>
-              {/* <div className={styles.scheduleTitles}>
+      </div>
+      <div className={styles.scheduleTitlesSection}>
+        <table>
+          <tr className={styles.scheduleTitlesRow}>
+            <div className={styles.scheduleTitles}>
+              <User className={`${styles.scheduleTitlesIcon} ${styles.user}`} />
+              <td className={styles.ogretmen}>Ad Soyad</td>
+            </div>
+            {/* <div className={styles.scheduleTitles}>
               <Ders className={`${styles.scheduleTitlesIcon}`} />
               <td>Sınıf</td>
             </div> */}
-              <div className={styles.scheduleTitles}>
-                <Ders
-                  className={`${styles.scheduleTitlesIcon} ${styles.editAndDelete}`}
-                />
-                <td>Düzenle ve Sil</td>
-              </div>
-            </tr>
-          </table>
-        </div>
-        <div className={styles.scheduleSection}>
-          <table>
-            {studentsData && studentsData !== null && tabsType === "student"
-              ? studentsData.map((item) => {
-                  return (
-                    <tr
-                      onClick={() => {
-                        setClassId(item._id);
-                      }}
-                    >
-                      <div className={styles.scheduleTeacher}>
-                        <div className={styles.avatar}>
-                          <img
-                            // src={String(
-                            //   getTeacherAvatar(teachersData, item.course.code)
-                            // ).replace(/,/gi, "")}\
-                            src={item.profile_photo}
-                          />
-                        </div>
-                        <td>{`${item.first_name} ${item.last_name}`}</td>
+            <div className={styles.scheduleTitles}>
+              <Ders
+                className={`${styles.scheduleTitlesIcon} ${styles.editAndDelete}`}
+              />
+              <td>Düzenle ve Sil</td>
+            </div>
+          </tr>
+        </table>
+      </div>
+      <div className={styles.scheduleSection}>
+        <table>
+          {studentsData && studentsData !== null && tabsType === "student"
+            ? studentsData.map((item) => {
+                return (
+                  <tr
+                    onClick={() => {
+                      setClassId(item._id);
+                    }}
+                  >
+                    <div className={styles.scheduleTeacher}>
+                      <div className={styles.avatar}>
+                        <img
+                          // src={String(
+                          //   getTeacherAvatar(teachersData, item.course.code)
+                          // ).replace(/,/gi, "")}\
+                          src={item.profile_photo}
+                        />
                       </div>
-                      <td>
-                        {item.studentInfo
-                          ? item.studentInfo.class?.name
-                          : "sınıf bilgisi yok"}
-                      </td>
-                      <td className={styles.space}>
-                        {/* <PlusCircleSolid className={styles.addExamIcon} /> */}
-                      </td>
-                      <td className={styles.space}>
-                        <EditSolid
-                          onClick={() => {
-                            setClassId(item._id);
-                            setModalType("edit");
-                            setIsActive(true);
-                          }}
-                          className={styles.editIcon}
+                      <td>{`${item.first_name} ${item.last_name}`}</td>
+                    </div>
+                    <td>
+                      {item.studentInfo
+                        ? item.studentInfo.class?.name
+                        : "sınıf bilgisi yok"}
+                    </td>
+                    <td className={styles.space}>
+                      {/* <PlusCircleSolid className={styles.addExamIcon} /> */}
+                    </td>
+                    <td className={styles.space}>
+                      <EditSolid
+                        onClick={() => {
+                          setClassId(item._id);
+                          setModalType("edit");
+                          setIsActive(true);
+                        }}
+                        className={styles.editIcon}
+                      />
+                      <TrashSolid
+                        onClick={() => {
+                          deleteUser(token, item._id);
+                        }}
+                        className={styles.deleteIcon}
+                      />
+                    </td>
+                  </tr>
+                );
+              })
+            : teachersData.map((item) => {
+                return (
+                  <tr
+                    onClick={() => {
+                      setClassId(item._id);
+                    }}
+                  >
+                    <div className={styles.scheduleTeacher}>
+                      <div className={styles.avatar}>
+                        <img
+                          // src={String(
+                          //   getTeacherAvatar(teachersData, item.course.code)
+                          // ).replace(/,/gi, "")}\
+                          src={item.profile_photo}
                         />
-                        <TrashSolid
-                          onClick={() => {
-                            deleteUser(token, item._id);
-                          }}
-                          className={styles.deleteIcon}
-                        />
-                      </td>
-                    </tr>
-                  );
-                })
-              : teachersData.map((item) => {
-                  return (
-                    <tr
-                      onClick={() => {
-                        setClassId(item._id);
-                      }}
-                    >
-                      <div className={styles.scheduleTeacher}>
-                        <div className={styles.avatar}>
-                          <img
-                            // src={String(
-                            //   getTeacherAvatar(teachersData, item.course.code)
-                            // ).replace(/,/gi, "")}\
-                            src={item.profile_photo}
-                          />
-                        </div>
-                        <td>{`${item.first_name} ${item.last_name}`}</td>
                       </div>
-                      {/* <td>{item. ? item.teacher : "Eyüp Saruhan"}</td> */}
-                      <td className={styles.space}></td>
-                      <td className={styles.space}>
-                        <EditSolid
-                          onClick={() => {
-                            setClassId(item._id);
-                            setModalType("edit");
-                            setIsActive(true);
-                          }}
-                          className={styles.editIcon}
-                        />
-                        <TrashSolid
-                          onClick={() => {
-                            deleteUser(token, item._id);
-                          }}
-                          className={styles.deleteIcon}
-                        />
-                      </td>
-                    </tr>
-                  );
-                })}
-          </table>
-        </div>
-        {/* <AlertBox
+                      <td>{`${item.first_name} ${item.last_name}`}</td>
+                    </div>
+                    {/* <td>{item. ? item.teacher : "Eyüp Saruhan"}</td> */}
+                    <td className={styles.space}></td>
+                    <td className={styles.space}>
+                      <EditSolid
+                        onClick={() => {
+                          setClassId(item._id);
+                          setModalType("edit");
+                          setIsActive(true);
+                        }}
+                        className={styles.editIcon}
+                      />
+                      <TrashSolid
+                        onClick={() => {
+                          deleteUser(token, item._id);
+                        }}
+                        className={styles.deleteIcon}
+                      />
+                    </td>
+                  </tr>
+                );
+              })}
+        </table>
+      </div>
+      {/* <AlertBox
         title={
           "Yukarıdaki ders programı **2020 / 2021 Eğitim - Öğretim Yılı**’nın ilk yarısına kadar geçerlidir."
         }
@@ -194,18 +191,16 @@ export default function UserManagement({
         <GreenTip className={styles.greenTip} />
       </AlertBox> */}
 
-        <Modal isActive={isActive} setIsActive={setIsActive}>
-          <RenderModalContent
-            isActive={isActive}
-            setIsActive={setIsActive}
-            type={modalType}
-            classId={classId}
-            tabsType={tabsType}
-            teachersData={teachersData}
-          />
-        </Modal>
-      </div>
-      <Pagination totalCount={15} onClick={(e) => alert(e)} />
+      <Modal isActive={isActive} setIsActive={setIsActive}>
+        <RenderModalContent
+          isActive={isActive}
+          setIsActive={setIsActive}
+          type={modalType}
+          classId={classId}
+          tabsType={tabsType}
+          teachersData={teachersData}
+        />
+      </Modal>
     </div>
   );
 }

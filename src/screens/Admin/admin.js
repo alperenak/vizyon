@@ -24,6 +24,7 @@ import { Down, SearchSolid } from "../../icons";
 import { useCookies } from "react-cookie";
 import Login from "../../screens/Login/login";
 import Loading from "../../components/Loading/loading";
+import Pagination from "../../components/Pagination/pagination";
 export default function Admin() {
   const [announcementsData, setAnnouncementsData] = useState(false);
   const [newAnnouncementsData, setNewAnnouncementsData] = useState([]);
@@ -106,6 +107,7 @@ function RenderCard({
   const dropdownIcon = document.getElementById("dropdownIcon");
   const [studentsData, setStudentsData] = useState([]);
   const token = GetToken();
+  const [userPageNum, setUserPageNum] = useState(1);
   const [teachersData, setTeachersData] = useState([]);
   const [classData, setClassData] = useState([]);
   const [allExams, setAllExams] = useState([]);
@@ -162,9 +164,7 @@ function RenderCard({
     setLoading(true);
     getAllStudents(token)
       .then((data) => {
-        setStudentsData(
-          data.data.data
-        );
+        setStudentsData(data.data.data);
       })
       .then(() => setLoading(false))
       .catch((e) => {
@@ -172,16 +172,14 @@ function RenderCard({
         alert("Kullanıcılar Getirilemedi");
       });
     getAllTeachers(token)
-        .then((data) => {
-          setTeachersData(
-              data.data.data
-          );
-        })
-        .then(() => setLoading(false))
-        .catch((e) => {
-          setLoading(false);
-          alert("Kullanıcılar Getirilemedi");
-        });
+      .then((data) => {
+        setTeachersData(data.data.data);
+      })
+      .then(() => setLoading(false))
+      .catch((e) => {
+        setLoading(false);
+        alert("Kullanıcılar Getirilemedi");
+      });
 
     getAllClass(token)
       .then((data) => {
@@ -325,6 +323,41 @@ function RenderCard({
             studentsData={displayStudent === "" ? studentsData : displayStudent}
             type={"userManagement"}
             tabsType={tabsType}
+          />
+          <Pagination
+            totalCount={1000 / 100}
+            selectedPage={userPageNum}
+            onClick={(pageNum) => {
+              if (tabsType === "student") {
+                setLoading(true);
+                getAllStudents(token, pageNum)
+                  .then((data) => {
+                    setStudentsData(data.data.data);
+                    setUserPageNum(
+                      data.data.pagination.next.page !== null
+                        ? data.data.pagination.next.page - 1
+                        : data.data.pagination.next.previous + 1
+                    );
+                  })
+                  .then(() => setLoading(false))
+                  .catch((e) => {
+                    setLoading(false);
+                    alert("Kullanıcılar Getirilemedi");
+                  });
+              } else if (tabsType === "teacher") {
+                setLoading(true);
+                getAllTeachers(token, pageNum)
+                  .then((data) => {
+                    setTeachersData(data.data.data);
+                    setUserPageNum(data.data.pagination.page);
+                  })
+                  .then(() => setLoading(false))
+                  .catch((e) => {
+                    setLoading(false);
+                    alert("Kullanıcılar Getirilemedi");
+                  });
+              }
+            }}
           />
         </>
       );

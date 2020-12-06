@@ -204,18 +204,28 @@ export function getAllUser(token) {
   const response = axios.get(`${uri}/users`, config);
   return response;
 }
-export function getAllStudents(token) {
+export function getAllStudents(token, page, limit) {
   const config = {
     headers: { authorization: `Bearer ${token}` },
   };
-  const response = axios.get(`${uri}/users?role=student`, config);
+  const response = axios.get(
+    `${uri}/users?role=student&limit=${limit ? limit : 100}&page=${
+      page ? page : 1
+    }`,
+    config
+  );
   return response;
 }
-export function getAllTeachers(token) {
+export function getAllTeachers(token, page, limit) {
   const config = {
     headers: { authorization: `Bearer ${token}` },
   };
-  const response = axios.get(`${uri}/users?role=instructor`, config);
+  const response = axios.get(
+    `${uri}/users?role=instructorlimit=${limit ? limit : 100}&page=${
+      page ? page : 1
+    }`,
+    config
+  );
   return response;
 }
 

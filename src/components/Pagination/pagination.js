@@ -1,16 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ChevronLeftSolid, ChevronRightSolid } from "../../icons";
 import styles from "./pagination.module.scss";
 
-export default function Pagination({ totalCount, onClick }) {
+export default function Pagination({ totalCount, selectedPage, onClick }) {
   const arr = makeArray(totalCount);
   const [defaultCount, setDefaultCount] = useState(totalCount);
-  const [selectedCirle, setSelectedCircle] = useState(1);
+  const [selectedCirle, setSelectedCircle] = useState(selectedPage);
   const [rightDisable, setRightDisable] = useState(false);
   const [leftDisable, setLeftDisable] = useState(true);
 
-  console.log("totalCOunt:", totalCount);
-
+  console.log("selectedPage:", selectedPage);
+  useEffect(() => {
+    setSelectedCircle(selectedPage);
+  }, [selectedPage]);
   return (
     <div className={styles.paginationContainer}>
       <div className={styles.paginationWrapper}>
