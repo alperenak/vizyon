@@ -158,12 +158,12 @@ export function IsRoleAdmin() {
   });
 }
 
-export async function getAllClass(token, limit = 20, page = 1) {
+export async function getAllClass(token, limit = 100, page = 1) {
   const config = {
     headers: { authorization: `Bearer ${token}` },
   };
   const response = await axios.get(
-    `${uri}/classes?limit=${limit}&page=${1}`,
+    `${uri}/classes?limit=${limit}&page=${page}`,
     config
   );
   return response;
@@ -285,7 +285,7 @@ export async function deleteUser(token, userId) {
   const response = await axios.delete(`${uri}/users/${userId}`, config);
   return response;
 }
-export async function importSchedule(token, file) {
+export async function importSchedule(token, file, classId) {
   const config = {
     headers: {
       authorization: `Bearer ${token}`,
@@ -294,7 +294,11 @@ export async function importSchedule(token, file) {
   };
   console.log("gelen", file);
 
-  const response = await axios.put(`${uri}/classes/import`, file, config);
+  const response = await axios.put(
+    `${uri}/classes/${classId}/schedule`,
+    file,
+    config
+  );
   return response;
 }
 export async function getAppsLog(
@@ -322,7 +326,7 @@ export async function GetSyllabusDownloadLink(token, classId) {
     headers: { authorization: `Bearer ${token}` },
   };
   const response = await axios.get(
-    `${uri}/classes/schedule-xls/${classId}`,
+    `${uri}/classes/${classId}/schedule-xls/`,
     config
   );
   return response;
@@ -332,7 +336,7 @@ export async function GetSyllabusPdfDownloadLink(token, classId) {
     headers: { authorization: `Bearer ${token}` },
   };
   const response = await axios.get(
-    `${uri}/classes/schedule-pdf/${classId}`,
+    `${uri}/classes/${classId}/schedule-pdf/`,
     config
   );
   return response;
@@ -342,7 +346,7 @@ export async function GetSchedulesDownloadLink(token, classId) {
     headers: { authorization: `Bearer ${token}` },
   };
   const response = await axios.get(
-    `${uri}/classes/exams-xls/${classId}`,
+    `${uri}/classes/${classId}/exams-xls/`,
     config
   );
   return response;
@@ -352,7 +356,7 @@ export async function GetSchedulesPdfDownloadLink(token, classId) {
     headers: { authorization: `Bearer ${token}` },
   };
   const response = await axios.get(
-    `${uri}/classes/exams-pdf/${classId}`,
+    `${uri}/classes/${classId}/exams-pdf/`,
     config
   );
   return response;

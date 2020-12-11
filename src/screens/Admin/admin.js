@@ -266,7 +266,11 @@ function RenderCard({
                     <div
                       onClick={() => {
                         const res = classData.filter((item1) => {
-                          return item1.name.slice(0, 2).includes(item.name[0]);
+                          return item1.name
+                            .slice(0, 2)
+                            .includes(
+                              item.name.slice(0, item.name.indexOf("."))
+                            );
                         });
                         setFilteredClass(res);
                         setDropdownName(item.name);

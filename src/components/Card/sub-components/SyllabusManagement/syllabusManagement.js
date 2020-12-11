@@ -34,39 +34,9 @@ import Card from "../../card";
 import teacherAvatar from "../../../../assets/images/teacherAvatar.png";
 import { useDropzone } from "react-dropzone";
 import { FileContext } from "../../../../context/fileContext";
+import Loading from "../../../Loading/loading";
 export default function SyllabusManagement() {
-  const [classData, setClassData] = useState([
-    {
-      name: "5 A",
-      teacher: "Alperen Karaguzel",
-      activeProgram: "ders programi.xls",
-      createdAt: "20 Ekim 2020 19:12",
-    },
-    {
-      name: "5 B",
-      teacher: "Alperen Karaguzel",
-      activeProgram: "ders programi.xls",
-      createdAt: "20 Ekim 2020 19:12",
-    },
-    {
-      name: "5 C",
-      teacher: "Alperen Karaguzel",
-      activeProgram: "ders programi.xls",
-      createdAt: "20 Ekim 2020 19:12",
-    },
-    {
-      name: "5 D",
-      teacher: "Alperen Karaguzel",
-      activeProgram: "ders programi.xls",
-      createdAt: "20 Ekim 2020 19:12",
-    },
-    {
-      name: "5 E",
-      teacher: "Alperen Karaguzel",
-      activeProgram: "ders programi.xls",
-      createdAt: "20 Ekim 2020 19:12",
-    },
-  ]);
+  const [classData, setClassData] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const [modalType, setModalType] = useState(false);
   const [classId, setClassId] = useState(false);
@@ -81,129 +51,135 @@ export default function SyllabusManagement() {
     isDragReject,
   } = useDropzone({ noClick: true });
   const [fileData, setFileData] = useContext(FileContext);
+  const [loading, setLoading] = useState(false);
   const token = GetToken();
   console.log(acceptedFiles);
   useEffect(() => {
+    setLoading(true);
     getAllClass(token).then((data) => {
       setClassData(data.data.data);
       console.log("sinif", data);
+      setLoading(false);
     });
-    getAllUser(token).then((data) => {
-      setTeachersData(
-        data.data.data.filter((item) => item.role === "instructor")
-      );
-      console.log(
-        "user",
-        data.data.data.filter((item) => item.role === "instructor")
-      );
-    });
+    // getAllUser(token).then((data) => {
+    //   setTeachersData(
+    //     data.data.data.filter((item) => item.role === "instructor")
+    //   );
+    //   setLoading(false);
+    // });
   }, []);
   return (
-    <div className={styles.schedule}>
-      <div className={styles.topSide}>
-        <div className={styles.title}>Ders Programı</div>
-      </div>
-      <div className={styles.scheduleTitlesSection}>
-        <table>
-          <tr className={styles.scheduleTitlesRow}>
-            <div className={styles.scheduleTitles}>
-              <td className={styles.ogretmen}>Sınıf Adı</td>
-            </div>
-            <div className={styles.scheduleTitles}>
-              <td>Öğretmen Adı</td>
-            </div>
-            <div className={styles.scheduleTitles}>
-              <td>Aktif Ders Programı</td>
-            </div>
-            <div className={styles.scheduleTitles}>
-              <td>Oluşturma Tarihi</td>
-            </div>
-            <div className={styles.scheduleTitles}>
-              <td>Yükle</td>
-            </div>
-            <div className={styles.scheduleTitles}>
-              <td>İndir</td>
-            </div>
-            <div className={styles.scheduleTitles}>
-              <td>Sil</td>
-            </div>
-          </tr>
-        </table>
-      </div>
-      <div className={styles.scheduleSection}>
-        <table>
-          {classData && classData !== null ? (
-            classData.map((item) => {
-              return (
-                <tr
-                  onClick={() => {
-                    setClassId(item._id);
-                  }}
-                >
-                  <div className={styles.scheduleTeacher}>
-                    <div className={styles.avatar}>
-                      <img src={teacherAvatar} />
-                    </div>
-                    <td>{item.name}</td>
-                  </div>
-                  <td className={styles.instructorName}>
-                    {item.instructor
-                      ? `${item.instructor.first_name} ${item.instructor.last_name}`
-                      : "-"}
-                  </td>
-                  <div>
-                    <td>
-                      {item.activeProgram
-                        ? item.activeProgram
-                        : "ders programi.xls"}
-                    </td>
-                  </div>
-                  <td>
-                    {item.createdAt ? item.createdAt : "20 Ekim 2020 19:12"}
-                  </td>
-                  <td>
-                    <UploadSolid
-                      onClick={() => {
-                        setModalType("edit");
-                        setIsActive(true);
-                      }}
-                      className={styles.addExamIcon}
-                    />
-                  </td>
+    <>
+      {loading ? (
+        <Loading noBackground={true} />
+      ) : (
+        <div className={styles.schedule}>
+          <div className={styles.topSide}>
+            <div className={styles.title}>Ders Programı</div>
+          </div>
+          <div className={styles.scheduleTitlesSection}>
+            <table>
+              <tr className={styles.scheduleTitlesRow}>
+                <div className={styles.scheduleTitles}>
+                  <td className={styles.ogretmen}>Sınıf Adı</td>
+                </div>
+                <div className={styles.scheduleTitles}>
+                  <td>Öğretmen Adı</td>
+                </div>
+                <div className={styles.scheduleTitles}>
+                  <td>Aktif Ders Programı</td>
+                </div>
+                <div className={styles.scheduleTitles}>
+                  <td>Oluşturma Tarihi</td>
+                </div>
+                <div className={styles.scheduleTitles}>
+                  <td>Yükle</td>
+                </div>
+                <div className={styles.scheduleTitles}>
+                  <td>İndir</td>
+                </div>
+                <div className={styles.scheduleTitles}>
+                  <td>Sil</td>
+                </div>
+              </tr>
+            </table>
+          </div>
+          <div className={styles.scheduleSection}>
+            <table>
+              {classData && classData !== null
+                ? classData.map((item) => {
+                    return (
+                      <tr
+                        onClick={() => {
+                          setClassId(item._id);
+                        }}
+                      >
+                        <div className={styles.scheduleTeacher}>
+                          <div className={styles.avatar}>
+                            <img src={teacherAvatar} />
+                          </div>
+                          <td>{item.name}</td>
+                        </div>
+                        <td className={styles.instructorName}>
+                          {item.instructor
+                            ? `${item.instructor.first_name} ${item.instructor.last_name}`
+                            : "-"}
+                        </td>
+                        <div>
+                          <td>
+                            {item.activeProgram
+                              ? item.activeProgram
+                              : "ders programi.xls"}
+                          </td>
+                        </div>
+                        <td>
+                          {item.createdAt
+                            ? item.createdAt
+                            : "20 Ekim 2020 19:12"}
+                        </td>
+                        <td>
+                          <UploadSolid
+                            onClick={() => {
+                              setModalType("edit");
+                              setIsActive(true);
+                              setClassId(item._id);
+                            }}
+                            className={styles.addExamIcon}
+                          />
+                        </td>
 
-                  <td>
-                    <div
-                      className={styles.downloadSyllabus}
-                      onClick={() =>
-                        GetSyllabusDownloadLink(token, item._id).then((data) =>
-                          window.open(data.data.data[0])
-                        )
-                      }
-                    >
-                      <div className={styles.formatXLS}>
-                        <Download className={styles.formatIcon} />
-                        <div className={styles.formatName}>XLS</div>
-                      </div>
-                      <div className={styles.downloadTitle}></div>
-                    </div>
-                  </td>
-                  <td>
-                    <TrashSolid
-                      onClick={() => {
-                        deleteClass(token, item._id);
-                      }}
-                      className={styles.deleteIcon}
-                    />
-                  </td>
-                </tr>
-              );
-            })
-          ) : (
-            <div>data yok</div>
-          )}
-        </table>
-      </div>
-      {/* <AlertBox
+                        <td>
+                          <div
+                            className={styles.downloadSyllabus}
+                            onClick={() =>
+                              GetSyllabusDownloadLink(
+                                token,
+                                item._id
+                              ).then((data) => window.open(data.data.data[0]))
+                            }
+                          >
+                            <div className={styles.formatXLS}>
+                              <Download className={styles.formatIcon} />
+                              <div className={styles.formatName}>XLS</div>
+                            </div>
+                            <div className={styles.downloadTitle}></div>
+                          </div>
+                        </td>
+                        <td>
+                          <TrashSolid
+                            onClick={() => {
+                              deleteClass(token, item._id);
+                            }}
+                            className={styles.deleteIcon}
+                          />
+                        </td>
+                      </tr>
+                    );
+                  })
+                : ""}
+            </table>
+          </div>
+          {/* <AlertBox
         title={
           "Yukarıdaki ders programı **2020 / 2021 Eğitim - Öğretim Yılı**’nın ilk yarısına kadar geçerlidir."
         }
@@ -211,17 +187,19 @@ export default function SyllabusManagement() {
       >
         <GreenTip className={styles.greenTip} />
       </AlertBox> */}
-      <Modal isActive={isActive} setIsActive={setIsActive}>
-        <RenderModalContent
-          isActive={isActive}
-          setIsActive={setIsActive}
-          type={modalType}
-          classId={classId}
-          teachersData={teachersData}
-          fileData={fileData}
-        />
-      </Modal>
-    </div>
+          <Modal isActive={isActive} setIsActive={setIsActive}>
+            <RenderModalContent
+              isActive={isActive}
+              setIsActive={setIsActive}
+              type={modalType}
+              classId={classId}
+              teachersData={teachersData}
+              fileData={fileData}
+            />
+          </Modal>
+        </div>
+      )}
+    </>
   );
 }
 
@@ -243,7 +221,12 @@ function RenderModalContent({
   if (type === "edit")
     return (
       <>
-        <Card type={"dropzone"} isActive={isActive} setIsActive={setIsActive} />
+        <Card
+          type={"dropzone"}
+          isActive={isActive}
+          setIsActive={setIsActive}
+          classId={classId}
+        />
         {/* <input
           onChange={(e) => {
             setRealFileData(e.target.files[0]);
