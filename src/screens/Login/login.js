@@ -3,6 +3,7 @@ import styles from "./login.module.scss";
 import LoginImages from "../../assets/images/loginBackground.jpg";
 import TeacherLoginImages from "../../assets/images/teacher.jpg";
 import AdminLoginImages from "../../assets/images/admin.jpg";
+import LoginLogoSmall from "../../assets/icons/loginLogo.svg";
 import Input from "../../components/Input/input";
 import { IconLock, IconUser, LoginLogo } from "../../icons";
 import Button from "../../components/Button/button";
@@ -46,13 +47,26 @@ export default function Login({}) {
         <Loading />
       ) : (
         <div className={styles.loginContainer}>
-          <LoginLogo className={styles.logoCircle} />
+          <LoginLogo id="loginWhenScreenHight" className={styles.logoCircle} />
           <div className={styles.loginImages}>
             <img
+              height="250"
+              src={LoginLogoSmall}
+              id="loginWhenScreenSmall"
+              className={styles.responsiveLogoCircle}
+            />
+            {/* <LoginLogo className={styles.responsiveLogoCircle} /> */}
+            <img
+              className={styles.loginBacgroundImage}
               src={pathname === "/login/teacher" ? LoginImages : LoginImages}
             />
           </div>
           <div className={styles.loginForm}>
+            <img
+              height="250"
+              src={LoginLogoSmall}
+              className={styles.responsiveLogoWhenMedium}
+            />
             <RenderLoginMethod
               username={username}
               setUsername={setUsername}

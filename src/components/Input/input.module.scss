@@ -1,5 +1,5 @@
 @import "../../helpers/variableBreakpoints.scss";
-
+@import "../../helpers/responsiveBreakpointsMixins.scss";
 .inputContainer {
   display: flex;
   justify-content: center;
@@ -22,6 +22,11 @@
     padding-left: 50px;
     box-shadow: 0 2px 5px 0 rgba(110, 42, 245, 0.09);
     caret-color: $darkPurple;
+    @include medium {
+      width: calc(300px - 4px - 50px);
+      padding-right: 4px;
+      padding-left: 50px;
+    }
   }
 
   & .modal {
@@ -72,6 +77,9 @@
 
 .login {
   width: 400px;
+  @include medium {
+    width: 300px;
+  }
 }
 .changePassword {
   width: 300px;
