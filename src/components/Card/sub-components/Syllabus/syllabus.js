@@ -1,6 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./syllabus.module.scss";
-import { Download, Info, PdfDownload, Xls, YellowTip } from "../../../../icons";
+import {
+  ChevronLeftSolid,
+  ChevronRightSolid,
+  Download,
+  Info,
+  PdfDownload,
+  Xls,
+  YellowTip,
+} from "../../../../icons";
 import Dropdown from "../../../Dropdown/dropdown";
 import TeacherAvatar from "../../../../assets/images/teacherAvatar.png";
 import AlertBox from "../../../Alert/alert";
@@ -15,6 +23,12 @@ export default function Syllabus({ syllabusData, classInfo }) {
   console.log("classInfo", classInfo);
   let date = new Date();
   let weekDays = ["Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma"];
+  const [tablePagination, setTablePagination] = useState([
+    { start: 0, end: 2 },
+    { start: 2, end: 4 },
+    { start: 4, end: 5 },
+  ]);
+  const [syllabusPageNum, setSyllabusPageNum] = useState(2);
   let daysData = getDayData(weekDays);
   const token = GetToken();
   return (
@@ -35,7 +49,6 @@ export default function Syllabus({ syllabusData, classInfo }) {
           </div>
           <div className={styles.downloadTitle}>Ders Programını İndir</div>
         </div>
-        <div className={styles.title}>Ders Programı</div>
         <div
           className={styles.downloadSyllabus}
           onClick={() => {
@@ -73,6 +86,23 @@ export default function Syllabus({ syllabusData, classInfo }) {
           <div>data yok</div>
         )}
       </div>
+      <ResponsiveWeekDaysData
+        syllabusData={syllabusData}
+        syllabusPageNum={syllabusPageNum}
+        tablePagination={tablePagination}
+      />
+      <RenderArrow
+        type={"left"}
+        onClick={() => {
+          if (syllabusPageNum > 1) setSyllabusPageNum(syllabusPageNum - 1);
+        }}
+      />
+      <RenderArrow
+        type={"right"}
+        onClick={() => {
+          if (syllabusPageNum < 3) setSyllabusPageNum(syllabusPageNum + 1);
+        }}
+      />
       <div className={styles.Lessons}>
         {syllabusData && syllabusData !== null ? (
           syllabusData.slice(0, 5).map((item) => {
@@ -148,6 +178,11 @@ export default function Syllabus({ syllabusData, classInfo }) {
           <div>data yok</div>
         )}
       </div>
+      <ResponsiveLessons
+        syllabusData={syllabusData}
+        syllabusPageNum={syllabusPageNum}
+        tablePagination={tablePagination}
+      />
       <AlertBox
         title={`Yukarıdaki ders programı **${d.getFullYear()} / ${
           d.getFullYear() + 1
@@ -319,4 +354,133 @@ export function getMonthNumber(month = "Nisan") {
       return 29;
     } else return 28;
   } else return 30;
+}
+
+function ResponsiveWeekDaysData({
+  syllabusData,
+  tablePagination,
+  syllabusPageNum,
+}) {
+  return (
+    <div className={styles.responsiveWeekDaysContainer}>
+      {syllabusData && syllabusData !== null ? (
+        getDayData()
+          .slice(
+            tablePagination[syllabusPageNum - 1].start,
+            tablePagination[syllabusPageNum - 1].end
+          )
+          .map((item) => {
+            return (
+              <div className={styles.dayLabel}>
+                <div className={`${styles.dayCircle} ${styles[item.color]}`}>
+                  {item.day}
+                </div>
+                <div className={styles.dayName}> {item.dayName}</div>
+              </div>
+            );
+          })
+      ) : (
+        <div>data yok</div>
+      )}
+    </div>
+  );
+}
+function ResponsiveLessons({ syllabusData, tablePagination, syllabusPageNum }) {
+  return (
+    <div className={styles.responsiveLessons}>
+      {syllabusData && syllabusData !== null ? (
+        syllabusData
+          .slice(
+            tablePagination[syllabusPageNum - 1].start,
+            tablePagination[syllabusPageNum - 1].end
+          )
+          .map((item) => {
+            return (
+              <table>
+                {item.periods.length !== 0
+                  ? item.periods.map((item, index) => {
+                      return (
+                        <tr>
+                          <div className={styles.lessonLabelWrapper}>
+                            <Dropdown
+                              teacher={getTeacherName(item)}
+                              lessonName={getLessonName(item.course)}
+                              startingTime={getLessonTime(item).startingTime}
+                              avatar={getTeacherAvatar(item.instructor)}
+                              endTime={getLessonTime(item).endingTime}
+                            >
+                              <div
+                                className={`${styles.lessonLabel} ${
+                                  styles[`lbl${getColor(item.course)}`]
+                                }`}
+                              >
+                                <td className={styles[getColor(item.course)]}>
+                                  {getLessonName(item.course).length > 12
+                                    ? `${getLessonName(item.course).slice(
+                                        0,
+                                        12
+                                      )}...`
+                                    : getLessonName(item.course)}
+                                </td>
+                                <span>{getTeacherName(item)}</span>
+                              </div>
+                            </Dropdown>
+                          </div>
+                        </tr>
+                      );
+                    })
+                  : ["", "", "", "", "", ""].map((item, index) => {
+                      return (
+                        <tr>
+                          <div className={styles.lessonLabelWrapper}>
+                            <Dropdown
+                              teacher={"Bilgi bulunamadı"}
+                              lessonName={""}
+                              startingTime={""}
+                              avatar={getTeacherAvatar(item.instructor)}
+                              endTime={""}
+                            >
+                              <div
+                                className={`${styles.lessonLabel} ${
+                                  styles[`lbl${getColor(item.course)}`]
+                                }`}
+                              >
+                                <td className={styles[getColor(item.course)]}>
+                                  {getLessonName(item.course).length > 12
+                                    ? `${getLessonName(item.course).slice(
+                                        0,
+                                        12
+                                      )}...`
+                                    : getLessonName(item.course)}
+                                </td>
+                                <span>{getTeacherName(item)}</span>
+                              </div>
+                            </Dropdown>
+                          </div>
+                        </tr>
+                      );
+                    })}
+              </table>
+            );
+          })
+      ) : (
+        <div>data yok</div>
+      )}
+    </div>
+  );
+}
+function RenderArrow({ type, onClick }) {
+  return (
+    <div className={`${styles.responsiveArrowWrapper} ${styles[type]}`}>
+      <div onClick={onClick} className={styles.responsiveArrow}>
+        {type === "left" ? (
+          <ChevronLeftSolid className={styles.arrowIcon} />
+        ) : type === "right" ? (
+          <ChevronRightSolid className={styles.arrowIcon} />
+        ) : (
+          ""
+        )}
+      </div>
+    </div>
+  );
 }
