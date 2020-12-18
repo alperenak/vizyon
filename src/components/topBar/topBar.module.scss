@@ -1,149 +1,152 @@
-@import '../../helpers/variableBreakpoints.scss';
-
-.TopBar {
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    width: 100%;
-    height: 84px;
-    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 1);
-    background-color: $darkPurple;
-    z-index: 9999999999999999999999999999999;
-
-    & .space {
-        width: 133px;
-    }
-
-    & .logo {
-        position: absolute;
-        left: calc(10vw + 10px);
-        width: 133px;
-
-    }
-
-    & .Menu {
-        width: 24px;
-        height: 24px;
-        cursor: pointer;
-    }
-
-    & .Notification {
-        width: 24px;
-        height: 24px;
-        color: white;
-        cursor: pointer;
-        margin-left: 15px;
-        box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.09);
-
-    }
-
-    & .profileSection {
-        display: flex;
-        align-items: center;
-
-        & .profile {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-left: 41px;
-
-            & .downIcon {
-                color: white;
-                margin-right: 32px;;
-            }
-
-            & .avatar {
-                width: 25px;
-                height: 25px;
-                border-radius: 50%;
-                overflow: hidden;
-
-                & img {
-                    width: 100%;
-                }
-            }
-
-            & .dropdown {
-                position: relative;
-                display: inline-block;
-
-                & .profileName {
-                    color: white;
-                    margin-left: 12px;
-                    margin-right: 6px;
-                    cursor: pointer;
-                }
-
-                & .dropdownContent {
-                    display: none;
-                    flex-direction: column;
-                    position: absolute;
-                    justify-content: center;
-                    align-items: center;
-                    background-color: #f9f9f9;
-                    min-width: 130px;
-                    border-radius: 8px;
-                    box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
-                    cursor: pointer;
-                    font-size: 14px;
-                    color: $darkBlue;
-                    font-family: SofiaBold;
-                    z-index: 1;
-                    overflow: hidden;
-                  & .dropdownItem{
-                      display: flex;
-                      align-items: center;
-                      width: 100%;
-                      height: 100%;
-                      height: 40px;
-                      & .dropdownIcon{
-                          padding: 10px;
-                          color: $darkBlue;
-                      }
-                    &:hover{
-                        background-color: #f3f3f3;
-                    }
-                  }  
-                }
-
-               
-
-                & .active {
-                    display: flex;
-                }
-            }
-
-        }
-    }
+@import "../../helpers/variableBreakpoints.scss";
+@import "../../helpers/responsiveBreakpointsMixins.scss";
+.responsiveSubBar {
+  height: 80px;
 }
-.chromeExtentionsButton{
+.TopBar {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  width: 100%;
+  height: 84px;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 1);
+  background-color: $darkPurple;
+  z-index: 9999999999999999999999999999999;
+
+  & .space {
+    width: 133px;
+  }
+
+  & .logo {
+    position: absolute;
+    left: calc(10vw + 10px);
+    width: 133px;
+    @include medium {
+      width: 120px;
+      left: 0px;
+    }
+  }
+
+  & .Menu {
+    width: 24px;
+    height: 24px;
+    cursor: pointer;
+  }
+
+  & .Notification {
+    width: 24px;
+    height: 24px;
+    color: white;
+    cursor: pointer;
+    margin-left: 15px;
+    box-shadow: 0 4px 6px 0 rgba(0, 0, 0, 0.09);
+  }
+
+  & .profileSection {
     display: flex;
     align-items: center;
-    justify-content: flex-end;
-    border-radius: 8px;
-    background-color: white;
-    padding-right: 15px;
-    padding-left: 55px;
-    position: relative;
-    margin-left: 25px;
-    min-height: 44px;
-    margin: 24px 0;
-    box-shadow: 0 2px 4px 0 rgba(53, 10, 139, 0.49);
-    cursor: pointer;
-    transition: 0.3s;
 
-    &:hover {
-        opacity: 0.9;
-        ;
-    }
-    & .extention{
-        color: $darkPurple;
+    & .profile {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-left: 41px;
 
-    }
-    & img{
-        width: 25px;
-        position: absolute;
-        left:15px;
+      & .downIcon {
         color: white;
+        margin-right: 32px;
+      }
+
+      & .avatar {
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        overflow: hidden;
+
+        & img {
+          width: 100%;
+        }
+      }
+
+      & .dropdown {
+        position: relative;
+        display: inline-block;
+
+        & .profileName {
+          color: white;
+          margin-left: 12px;
+          margin-right: 6px;
+          cursor: pointer;
+        }
+
+        & .dropdownContent {
+          display: none;
+          flex-direction: column;
+          position: absolute;
+          justify-content: center;
+          align-items: center;
+          background-color: #f9f9f9;
+          min-width: 130px;
+          border-radius: 8px;
+          box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+          cursor: pointer;
+          font-size: 14px;
+          color: $darkBlue;
+          font-family: SofiaBold;
+          z-index: 1;
+          overflow: hidden;
+          & .dropdownItem {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            height: 100%;
+            height: 40px;
+            & .dropdownIcon {
+              padding: 10px;
+              color: $darkBlue;
+            }
+            &:hover {
+              background-color: #f3f3f3;
+            }
+          }
+        }
+
+        & .active {
+          display: flex;
+        }
+      }
     }
+  }
+}
+.chromeExtentionsButton {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  border-radius: 8px;
+  background-color: white;
+  padding-right: 15px;
+  padding-left: 55px;
+  position: relative;
+  margin-left: 25px;
+  min-height: 44px;
+  margin: 24px 0;
+  box-shadow: 0 2px 4px 0 rgba(53, 10, 139, 0.49);
+  cursor: pointer;
+  transition: 0.3s;
+  @include small {
+    display: none;
+  }
+
+  &:hover {
+    opacity: 0.9;
+  }
+  & .extention {
+    color: $darkPurple;
+  }
+  & img {
+    width: 25px;
+    position: absolute;
+    left: 15px;
+    color: white;
+  }
 }

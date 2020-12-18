@@ -98,10 +98,7 @@ export default function Settings() {
 
       {/* ****** Profile ****** */}
       {tabsType === "myAccount" ? (
-        <div
-          style={{ display: "flex" }}
-          classroomName={styles.settingsProfileWrapper}
-        >
+        <div className={styles.settingsProfileWrapper}>
           <div className={styles.classesCard}>
             <div className={styles.classBackground}>
               <img src={Background} />
@@ -237,9 +234,7 @@ export default function Settings() {
                       <div className={styles.appUsername}>
                         {"Veri eklenmedi"}
                       </div>
-                      <div className={styles.appPassword}>
-                        {"********"}
-                      </div>
+                      <div className={styles.appPassword}>{"********"}</div>
                       <EditSolid
                         onClick={() => {
                           // setAppData({

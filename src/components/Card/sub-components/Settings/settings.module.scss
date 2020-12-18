@@ -1,5 +1,5 @@
 @import "../../../../helpers/variableBreakpoints.scss";
-
+@import "../../../../helpers/responsiveBreakpointsMixins.scss";
 .settings {
   width: 770px;
   display: flex;
@@ -11,6 +11,11 @@
   margin-top: 40px;
   position: relative;
   height: 500px;
+  @include medium {
+    height: 1000px;
+    justify-content: flex-start;
+    align-items: center;
+  }
 
   & .topSide {
     display: flex;
@@ -21,13 +26,22 @@
     justify-content: center;
     padding-top: 30px;
     width: 100%;
-
+    @include medium {
+      flex-direction: column;
+      align-items: center;
+      height: 80px;
+      justify-content: space-between;
+    }
     & .title {
       position: absolute;
       font-size: 18px;
       font-family: SofiaBold;
       color: $darkBlue;
       left: 30px;
+      @include medium {
+        position: relative;
+        left: 0px;
+      }
     }
   }
 
@@ -142,6 +156,10 @@
   box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
   border-radius: 8px;
   height: 40px;
+  @include medium {
+    position: relative;
+    right: 0px;
+  }
 
   & .tabsButton {
     display: flex;
@@ -264,6 +282,9 @@
   background-color: rgb(235, 235, 235);
 }
 .appsPasswords {
+  @include medium {
+    margin-top: 100px;
+  }
   & .titles {
     display: flex;
     justify-content: center;
@@ -311,4 +332,11 @@
 }
 .errorMessage {
   color: red;
+}
+.settingsProfileWrapper {
+  display: flex;
+  @include medium {
+    display: flex;
+    flex-direction: column;
+  }
 }

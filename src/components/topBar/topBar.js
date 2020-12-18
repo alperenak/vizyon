@@ -42,7 +42,7 @@ export default function TopBar() {
     setSubBarctive(!subBarActive);
     const subBar = document.getElementById("subBar");
     if (subBar.style.height === "" || subBar.style.height === "0px")
-      document.getElementById("subBar").style.height = "80px";
+      document.getElementById("subBar").className = styles.responsiveSubBar;
     else {
       document.getElementById("subBar").style.height = "0px";
     }

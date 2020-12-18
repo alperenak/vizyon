@@ -1,5 +1,5 @@
 @import "../../../../helpers/variableBreakpoints.scss";
-
+@import "../../../../helpers/responsiveBreakpointsMixins.scss";
 .announcementsCard {
   display: flex;
   flex-direction: column;
@@ -275,7 +275,11 @@
 }
 .detailWrapper {
   width: 770px;
+  @include medium {
+    width: 90%;
+  }
   & .announcementsDetailText {
     padding: 10px;
+    word-wrap: break-word;
   }
 }

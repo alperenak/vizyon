@@ -28,7 +28,7 @@ export default function Syllabus({ syllabusData, classInfo }) {
     { start: 2, end: 4 },
     { start: 4, end: 5 },
   ]);
-  const [syllabusPageNum, setSyllabusPageNum] = useState(2);
+  const [syllabusPageNum, setSyllabusPageNum] = useState(1);
   let daysData = getDayData(weekDays);
   const token = GetToken();
   return (
@@ -469,7 +469,7 @@ function ResponsiveLessons({ syllabusData, tablePagination, syllabusPageNum }) {
     </div>
   );
 }
-function RenderArrow({ type, onClick }) {
+export function RenderArrow({ type, onClick }) {
   return (
     <div className={`${styles.responsiveArrowWrapper} ${styles[type]}`}>
       <div onClick={onClick} className={styles.responsiveArrow}>

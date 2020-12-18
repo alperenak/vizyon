@@ -10,7 +10,35 @@
   background-color: white;
   margin-top: 40px;
   position: relative;
+  & .responsiveArrowWrapper {
+    display: none;
+    @include medium {
+      display: flex;
+      position: absolute;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+    }
+    & .responsiveArrow {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 30px;
+      height: 100px;
+      border-radius: 8px;
+      background-color: #f3f3f3;
 
+      &:hover {
+        background-color: #e2e2e2;
+      }
+    }
+  }
+  & .left {
+    left: 10px;
+  }
+  & .right {
+    right: 10px;
+  }
   & .topSide {
     display: flex;
     margin: 0 30px;
@@ -146,9 +174,63 @@
     align-items: center;
     flex-direction: column;
     width: 100%;
+    & .responsiveTitles {
+      display: none;
+      @include medium {
+        display: flex;
+        width: 100%;
+        align-items: center;
+        justify-content: center;
+        & .scheduleTitlesRow {
+          display: flex;
+          align-items: center;
+          justify-content: space-around;
+          width: 50%;
 
-    & table {
+          & .scheduleTitles {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100px;
+
+            & .scheduleTitlesIcon {
+              width: 30px;
+              height: 30px;
+            }
+          }
+
+          // & .ogretmen {
+          //   margin-right: 130px;
+          // }
+
+          // & .tarih {
+          //   margin-right: 80px;
+          // }
+
+          // & .user {
+          //   margin-left: 25px;
+          // }
+
+          // & .date {
+          //   margin-left: 140px;
+          // }
+
+          & td {
+            font-size: 14px;
+            font-family: SofiaMedium;
+            color: $darkBlue;
+            margin-left: 10px;
+            text-align: center;
+          }
+        }
+      }
+    }
+
+    & .scheduleTitlesTable {
       width: 100%;
+      @include medium {
+        display: none;
+      }
 
       & .scheduleTitlesRow {
         display: flex;
