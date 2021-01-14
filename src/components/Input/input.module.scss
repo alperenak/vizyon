@@ -69,7 +69,19 @@
     box-shadow: 0 2px 5px 0 rgba(110, 42, 245, 0.09);
     caret-color: $darkPurple;
   }
-
+  & .detail {
+    border: none;
+    height: 50px;
+    width: calc(300px - 8px - 50px);
+    font-family: SofiaMedium;
+    color: $darkBlue;
+    outline: none;
+    border-radius: 8px;
+    padding-right: 12px;
+    padding-left: 12px;
+    box-shadow: 0 2px 5px 0 rgba(110, 42, 245, 0.09);
+    caret-color: $darkPurple;
+  }
   ::placeholder {
     color: #ccd2df;
   }

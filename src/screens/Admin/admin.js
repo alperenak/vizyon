@@ -116,6 +116,7 @@ function RenderCard({
   const [filteredClass, setFilteredClass] = useState(false);
   const [appData, setAppData] = useState([]);
   const history = useHistory();
+  console.log(pathname.includes("/admin/user/teacher"));
   window.onclick = function (e) {
     if (e.target !== dropdownNames && e.target !== dropdownIcon) {
       setDropdownActive(false);
@@ -390,6 +391,36 @@ function RenderCard({
         <>
           <h1>Ders Programı Yönetimi</h1>
           <Card type={"syllabusManagement"} tabsType={tabsType} />
+        </>
+      );
+    } else if (
+      pathname.includes("/admin/user/student") ||
+      pathname.includes("/admin/user/teacher")
+    ) {
+      return (
+        <>
+          <h1>Kullanıcı Detayları</h1>
+          <div className={`${styles.topSide} ${styles.centeredTabs}`}>
+            <div className={styles.tabs}>
+              <div
+                className={`${styles.tabsButton} ${
+                  tabsType === "student" ? styles.tabsButtonActive : ""
+                }`}
+                onClick={() => setTabsType("student")}
+              >
+                Genel
+              </div>
+              <div
+                className={`${styles.tabsButton} ${
+                  tabsType === "teacher" ? styles.tabsButtonActive : ""
+                }`}
+                onClick={() => setTabsType("teacher")}
+              >
+                Uygulamalar
+              </div>
+            </div>
+          </div>
+          <Card type={"userDetails"} tabsType={tabsType} />
         </>
       );
     } else if (pathname === "/admin/activity") {

@@ -621,3 +621,41 @@ export async function GetUserAppPassword(token, userId) {
   };
   return await axios.get(`${uri}/users/${userId}/password`, config);
 }
+export async function GetUserInformations(token, userId) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  return await axios.get(`${uri}/users/${userId}`, config);
+}
+export async function UpdateUserInfo(
+  token,
+  userId,
+  payload = {
+    studentInfo: {
+      class: {
+        _id: "5fc59677a2b39930f4bf5f19",
+        name: "5 E",
+      },
+      studentNumber: 182,
+      school: "ORTOKUL",
+    },
+    role: "student",
+    _id: "5fc59529c3d54336149b2fd7",
+    fullName: "ECE ALPARSLAN",
+    first_name: "ECE",
+    last_name: "ALPARSLAN",
+    username: "ece.alparslan@gelisimkoleji.k12.tr",
+    createdAt: "2020-12-01T00:58:17.705Z",
+    __v: 0,
+    assignedClass: "5fc59677a2b39930f4bf5f19",
+    profile_photo:
+      "https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png",
+    id: "5fc59529c3d54336149b2fd7",
+  }
+) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = axios.put(`${uri}/users/${userId}`, payload, config);
+  return response;
+}
