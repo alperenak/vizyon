@@ -30,6 +30,7 @@ import {
   GetAllApps,
   GetGeneralLogs,
   GetDetailLogs,
+  GetUserInformations,
 } from "../../../../actions/action";
 import { useLocation } from "react-router-dom";
 import { useParams } from "react-router-dom";
@@ -44,6 +45,8 @@ export default function ActivityDetails({
 }) {
   const [LogData, setLogData] = useState([]);
   const [loading, setLaoding] = useState(true);
+  const [userFullName, setUserFullName] = useState("");
+  const [userAvatar, setUserAvatar] = useState("");
   const [singleUser, setSingleUser] = useContext(SingleUserContext);
   const location = useLocation();
   const apps = [
@@ -81,10 +84,16 @@ export default function ActivityDetails({
   const [mode, setMode] = useState("");
   console.log(convertedDropdownValue);
   useEffect(() => {
+    GetUserInformations(token, id).then((data) => {
+      if (tabsType === "student") {
+        setUserFullName(data.data.data.userInfo.fullName);
+        setUserAvatar(data.data.data.userInfo.profile_photo);
+      }
+    });
     GetGeneralLogs(token, id, convertedDropdownValue)
       .then((data) => {
         setLogData(data.data.data.logs);
-        if (data.data.data.logs[0].user) setMode("class");
+        if (data.data.data.logs[0]?.user) setMode("class");
         setLaoding(false);
       })
       .then(() => {});
@@ -94,17 +103,17 @@ export default function ActivityDetails({
     });
   }, [convertedDropdownValue]);
   return (
-    <div className={styles.schedule}>
+    <>
       {loading ? (
-        <Loading />
+        <Loading fullscreen />
       ) : (
-        <>
+        <div className={styles.schedule}>
           <div className={styles.topSide}>
             <div className={styles.title}>
               <div className={styles.avatar}>
-                <img src={singleUser.profile} />
+                <img src={userAvatar} />
               </div>
-              <div className={styles.name}>{singleUser.name}</div>
+              <div className={styles.name}>{userFullName}</div>
             </div>
           </div>
           <div className={styles.scheduleTitlesSection}>
@@ -136,7 +145,7 @@ export default function ActivityDetails({
           </div>
           <div className={styles.scheduleSection}>
             <table>
-              {tabsType === "Genel" ? (
+              {tabsType === "Genel" && LogData.length !== 0 ? (
                 LogData?.map((item, index) => {
                   return (
                     <tr onClick={() => {}}>
@@ -158,7 +167,7 @@ export default function ActivityDetails({
                     </tr>
                   );
                 })
-              ) : tabsType === "Detaylar" ? (
+              ) : tabsType === "Detaylar" && LogData.length !== 0 ? (
                 LogData.map((item) => {
                   return (
                     <tr>
@@ -178,13 +187,15 @@ export default function ActivityDetails({
                   );
                 })
               ) : (
-                <div>data yok</div>
+                <h3 style={{ margin: 20 }}>
+                  Bu kullanıcı için gösterilecek bir rapor yok
+                </h3>
               )}
             </table>
           </div>
-        </>
+        </div>
       )}
-    </div>
+    </>
   );
 }
 const studentsData = [

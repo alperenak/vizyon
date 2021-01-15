@@ -4,14 +4,22 @@ import {
   GetToken,
   GetUserAppPassword,
   GetUserInformations,
+  UpdateUserAppPassword,
   UpdateUserInfo,
+  UpdateUserPassword,
 } from "../../../../actions/action";
 import { useHistory, useParams } from "react-router-dom";
 import Input from "../../../Input/input";
 import Loading from "../../../Loading/loading";
 import styles from "./userDetails.module.scss";
 import Background from "../../../../assets/images/classroom.jpg";
-import { Edit, EditSolid, ArrowLeftSolid } from "../../../../icons";
+import {
+  Edit,
+  EditSolid,
+  ArrowLeftSolid,
+  IconUser,
+  IconLock,
+} from "../../../../icons";
 import Office from "../../../../assets/images/office.png";
 import Actively from "../../../../assets/images/actively.png";
 import BrainPop from "../../../../assets/images/brainpop.png";
@@ -30,6 +38,7 @@ import Udemy from "../../../../assets/images/udemy.png";
 import Zoom from "../../../../assets/images/zoom.png";
 import Button from "../../../Button/button";
 import Dropdown from "../../../Dropdown/dropdown";
+import Modal from "../../../Modal/modal";
 export default function UserDetail({ tabsType }) {
   const token = GetToken();
   const params = useParams();
@@ -49,7 +58,12 @@ export default function UserDetail({ tabsType }) {
   const [oldClassName, setOldClassName] = useState("");
   const [profilePhoto, setProfilePhoto] = useState("");
   const [appPasswordData, setAppPasswordData] = useState([]);
+  const [appData, setAppData] = useState([]);
+  const [payload, setPayload] = useState({});
+  const [isActiveModal, setIsActiveModal] = useState(false);
+  const [modalType, setModalType] = useState("");
   const [errorMessage, setErrorMessage] = useState(false);
+  const userId = params.id;
   console.log(
     firstName,
     lastName,
@@ -63,9 +77,10 @@ export default function UserDetail({ tabsType }) {
       .then((data) => {
         //test
         setLoading(false);
-        let Cdata = data.data.data.userInfo;
+        let Cdata;
+        if (data.data.data.userInfo) Cdata = data.data.data.userInfo;
+        else Cdata = data.data.data;
         setAllTheClasses(data.data.data.classes);
-
         setRole(Cdata.role);
         setUserData(Cdata);
         setFirstName(Cdata.first_name);
@@ -294,25 +309,31 @@ export default function UserDetail({ tabsType }) {
                       </div>
 
                       <div className={styles.appUsername}>
-                        {"Veri eklenmedi"}
+                        {item.credentials.email
+                          ? item.credentials.email
+                          : item.credentials.username
+                          ? item.credentials.username
+                          : ""}
                       </div>
-                      <div className={styles.appPassword}>{"********"}</div>
+                      <div className={styles.appPassword}>
+                        {item.credentials.password}
+                      </div>
                       <EditSolid
                         onClick={() => {
-                          // setAppData({
-                          //   appName: item.app.title,
-                          //   username: item.credentials.email
-                          //     ? item.credentials.email
-                          //     : item.credentials.username,
-                          //   password: item.credentials.password,
-                          // });
-                          // setPayload({
-                          //   _id: item._id,
-                          //   app: item.app._id,
-                          //   user: userId,
-                          // });
-                          // setModalType("edit");
-                          // setIsActiveModal(true);
+                          setAppData({
+                            appName: item.app.title,
+                            username: item.credentials.email
+                              ? item.credentials.email
+                              : item.credentials.username,
+                            password: item.credentials.password,
+                          });
+                          setPayload({
+                            _id: item._id,
+                            app: item.app._id,
+                            user: userId,
+                          });
+                          setModalType("edit");
+                          setIsActiveModal(true);
                         }}
                         className={styles.editIcon}
                       />
@@ -323,6 +344,97 @@ export default function UserDetail({ tabsType }) {
           </div>
         </div>
       )}
+      <Modal isActive={isActiveModal} setIsActive={setIsActiveModal}>
+        <RenderModalContent
+          appData={appData}
+          userId={userId}
+          payload={payload}
+        />
+      </Modal>
+    </div>
+  );
+}
+export function RenderModalContent({ appData, userId, payload }) {
+  const [appUsername, setAppUsername] = useState({ status: true });
+  const [appPassword, setAppPassword] = useState({ status: true });
+  const token = GetToken();
+  return (
+    <div>
+      <h3>Uygulama Şifresi Değiştirme</h3>
+      <Input
+        onChange={(e) => setAppUsername(e.target.value)}
+        method={"changePassword"}
+        value={
+          appUsername && appUsername.status ? appData.username : appUsername
+        }
+        type={"text"}
+        placeholder={"Kullanıcı Adın"}
+        inputStyle={"change"}
+      >
+        <IconUser className={styles.modalIcon} />
+      </Input>
+      <Input
+        onChange={(e) => setAppPassword(e.target.value)}
+        method={"changePassword"}
+        type={"password"}
+        placeholder={"Eski şifren"}
+        inputStyle={"change"}
+        value={
+          appPassword && appPassword.status ? appData.password : appPassword
+        }
+      >
+        <IconLock className={styles.modalIcon} />
+      </Input>
+      <Button
+        type={"change"}
+        title={"Kaydet"}
+        onClick={() => {
+          if (appData.username) {
+            const credentials = {
+              username:
+                typeof appUsername === "string"
+                  ? appUsername
+                  : appData.username,
+              password:
+                typeof appPassword === "string"
+                  ? appPassword
+                  : appData.password,
+            };
+            UpdateUserAppPassword(token, userId, payload._id, {
+              credentials: credentials,
+              _id: payload._id,
+              app: payload.app,
+              user: payload.user,
+            })
+              .then(() => {
+                alert("Uygulama şifresi değiştirme başarılı");
+                window.location.reload();
+              })
+              .catch(() => alert("Bir hata oluştu"));
+          }
+          //  else if (appData.email) {
+          //   const credentials = {
+          //     email:
+          //       typeof appUsername === "string" ? appUsername : appData.email,
+          //     password:
+          //       typeof appPassword === "string"
+          //         ? appPassword
+          //         : appData.password,
+          //   };
+          //   UpdateUserAppPassword(token, userId, payload._id, {
+          //     credentials: credentials,
+          //     _id: payload._id,
+          //     app: payload.app,
+          //     user: payload.user,
+          //   })
+          //     .then(() => {
+          //       alert("Uygulama şifresi değiştirme başarılı");
+          //       window.location.reload();
+          //     })
+          //     .catch(() => alert("Bir hata oluştu"));
+          // }
+        }}
+      />
     </div>
   );
 }
