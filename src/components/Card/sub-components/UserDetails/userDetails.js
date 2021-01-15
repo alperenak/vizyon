@@ -61,13 +61,11 @@ export default function UserDetail({ tabsType }) {
   useEffect(() => {
     GetUserInformations(token, params.id)
       .then((data) => {
-<<<<<<< HEAD
+        //test
         setLoading(false);
         let Cdata = data.data.data.userInfo;
         setAllTheClasses(data.data.data.classes);
-=======
-        let Cdata = data.data.data.userInfo;
->>>>>>> 7966095697fcd6bf6a2b4a1b806f06a78f7eaaa2
+
         setRole(Cdata.role);
         setUserData(Cdata);
         setFirstName(Cdata.first_name);
