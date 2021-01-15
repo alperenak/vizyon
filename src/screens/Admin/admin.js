@@ -150,6 +150,15 @@ function RenderCard({
       });
       if (e.target.value === "") setDisplayStudent("");
       else setDisplayStudent(res);
+    } else if (tabsType === "class") {
+      const res = classData.filter((state) => {
+        const name = state.name;
+        return e.target.value
+          ? name.toLowerCase().includes(e.target.value.toLowerCase())
+          : "";
+      });
+      if (e.target.value === "") setDisplayClass("");
+      else setDisplayClass(res);
     }
   }
 
@@ -452,11 +461,20 @@ function RenderCard({
               >
                 Öğretmen
               </div>
+              <div
+                className={`${styles.tabsButton} ${
+                  tabsType === "class" ? styles.tabsButtonActive : ""
+                }`}
+                onClick={() => setTabsType("class")}
+              >
+                Sınıf
+              </div>
             </div>
           </div>
           <Card
             teachersData={displayTeacher === "" ? teachersData : displayTeacher}
             studentsData={displayStudent === "" ? studentsData : displayStudent}
+            classData={displayClass === "" ? classData : displayClass}
             type={"activity"}
             tabsType={tabsType}
           />

@@ -627,6 +627,24 @@ export async function GetUserInformations(token, userId) {
   };
   return await axios.get(`${uri}/users/${userId}`, config);
 }
+export async function GetGeneralLogs(token, userId, date) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  return await axios.get(
+    `${uri}/logs/app-logs?userId=${userId}&date=${date}`,
+    config
+  );
+}
+export async function GetDetailLogs(token, userId, date) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  return await axios.get(
+    `${uri}/logs/app-logs?userId=${userId}&date=${date}&detail=true`,
+    config
+  );
+}
 export async function UpdateUserInfo(
   token,
   userId,

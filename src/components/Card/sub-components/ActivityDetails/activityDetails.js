@@ -24,14 +24,26 @@ import Input from "../../../Input/input";
 import Button from "../../../Button/button";
 import Office from "../../../../assets/images/office.png";
 import teacherAvatar from "../../../../assets/images/teacherAvatar.png";
-import { getAppsLog, GetToken, GetAllApps } from "../../../../actions/action";
+import {
+  getAppsLog,
+  GetToken,
+  GetAllApps,
+  GetGeneralLogs,
+  GetDetailLogs,
+} from "../../../../actions/action";
 import { useLocation } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import Card from "../../card";
 import { SingleUserContext } from "../../../../context/singleUserContext";
 import Apps from "../../../Apps/apps";
-export default function ActivityDetails({ tabsType, dropdownValue }) {
+import Loading from "../../../Loading/loading";
+export default function ActivityDetails({
+  tabsType,
+  dropdownValue,
+  convertedDropdownValue,
+}) {
   const [LogData, setLogData] = useState([]);
+  const [loading, setLaoding] = useState(true);
   const [singleUser, setSingleUser] = useContext(SingleUserContext);
   const location = useLocation();
   const apps = [
@@ -66,151 +78,112 @@ export default function ActivityDetails({ tabsType, dropdownValue }) {
   ]);
   const token = GetToken();
   const { id } = useParams();
-  console.log(dropdownValue);
+  const [mode, setMode] = useState("");
+  console.log(convertedDropdownValue);
   useEffect(() => {
-    getAppsLog(token, 0, "2020-08-08", "2020-10-10", 1000, id, dropdownValue)
+    GetGeneralLogs(token, id, convertedDropdownValue)
       .then((data) => {
-        setLogData(data);
-        setAppCountData(
-          [
-            {
-              name: "udemy",
-              count: getOccurrence(data.data.data.logs, "udemy"),
-            },
-            {
-              name: "khanAcademy",
-              count: getOccurrence(data.data.data.logs, "khanAcademy"),
-            },
-            {
-              name: "razkids",
-              count: getOccurrence(data.data.data.logs, "razkids"),
-            },
-            {
-              name: "okuvaryumstudent",
-              count: getOccurrence(data.data.data.logs, "okuvaryumstudent"),
-            },
-            {
-              name: "okuvaryumteacher",
-              count: getOccurrence(data.data.data.logs, "okuvaryumteacher"),
-            },
-            {
-              name: "brainpop",
-              count: getOccurrence(data.data.data.logs, "brainpop"),
-            },
-            {
-              name: "activelylearn",
-              count: getOccurrence(data.data.data.logs, "activelylearn"),
-            },
-            {
-              name: "morpa",
-              count: getOccurrence(data.data.data.logs, "morpa"),
-            },
-            {
-              name: "writingaz",
-              count: getOccurrence(data.data.data.logs, "writingaz"),
-            },
-            {
-              name: "scienceaz",
-              count: getOccurrence(data.data.data.logs, "scienceaz"),
-            },
-            {
-              name: "razplus",
-              count: getOccurrence(data.data.data.logs, "razplus"),
-            },
-            {
-              name: "office365",
-              count: getOccurrence(data.data.data.logs, "office365"),
-            },
-          ].filter((item) => {
-            return item.count !== 0;
-          })
-        );
+        setLogData(data.data.data.logs);
+        if (data.data.data.logs[0].user) setMode("class");
+        setLaoding(false);
       })
       .then(() => {});
+    GetDetailLogs(token, id, convertedDropdownValue);
     GetAllApps(token).then((item) => {
       console.log(item);
     });
-  }, [dropdownValue]);
+  }, [convertedDropdownValue]);
   return (
     <div className={styles.schedule}>
-      <div className={styles.topSide}>
-        <div className={styles.title}>
-          <div className={styles.avatar}>
-            <img src={singleUser.profile} />
+      {loading ? (
+        <Loading />
+      ) : (
+        <>
+          <div className={styles.topSide}>
+            <div className={styles.title}>
+              <div className={styles.avatar}>
+                <img src={singleUser.profile} />
+              </div>
+              <div className={styles.name}>{singleUser.name}</div>
+            </div>
           </div>
-          <div className={styles.name}>{singleUser.name}</div>
-        </div>
-      </div>
-      <div className={styles.scheduleTitlesSection}>
-        <table>
-          <tr className={styles.scheduleTitlesRow}>
-            <div className={styles.scheduleTitles}>
-              <User className={`${styles.scheduleTitlesIcon} ${styles.user}`} />
-              <td className={styles.ogretmen}>Uygulama Adı</td>
-            </div>
-            <div className={styles.scheduleTitles}>
-              <Ders className={`${styles.scheduleTitlesIcon}`} />
-              <td>{tabsType === "Genel" ? "Giriş Sayısı" : "Tarih"}</td>
-            </div>
-          </tr>
-        </table>
-      </div>
-      <div className={styles.scheduleSection}>
-        <table>
-          {LogData.length !== 0 &&
-          LogData.data &&
-          LogData.data.data &&
-          LogData.data.data !== null &&
-          tabsType === "Genel" ? (
-            appCountData.map((item, index) => {
-              return (
-                <tr onClick={() => {}}>
-                  <div className={styles.scheduleTeacher}>
-                    <div className={styles.avatar}>
-                      <img
-                        // src={String(
-                        //   getTeacherAvatar(teachersData, item.course.code)
-                        // ).replace(/,/gi, "")}\
-                        src={Office}
-                      />
-                    </div>
-                    <td>{item.name}</td>
+          <div className={styles.scheduleTitlesSection}>
+            <table>
+              <tr className={styles.scheduleTitlesRow}>
+                {mode === "class" && (
+                  <div className={styles.scheduleTitles}>
+                    <User
+                      className={`${styles.scheduleTitlesIcon} ${styles.user}`}
+                    />
+                    <td className={styles.ogretmen}>Kullanıcı Adı</td>
                   </div>
-                  <td>{item.count}</td>
-                  <td className={styles.space}>
-                    {/* <PlusCircleSolid className={styles.addExamIcon} /> */}
-                  </td>
-                  <td className={styles.space}></td>
-                </tr>
-              );
-            })
-          ) : LogData.length !== 0 &&
-            LogData.data &&
-            LogData.data.data &&
-            LogData.data.data !== null &&
-            tabsType === "Detaylar" ? (
-            LogData.data.data.logs.map((item) => {
-              return (
-                <tr>
-                  <div className={styles.scheduleTeacher}>
-                    <div className={styles.avatar}>
-                      <img src={Office} />
+                )}
+                <div className={styles.scheduleTitles}>
+                  <User
+                    className={`${styles.scheduleTitlesIcon} ${styles.user}`}
+                  />
+                  <td className={styles.ogretmen}>Uygulama Adı</td>
+                </div>
+                {mode !== "class" ||
+                  (tabsType === "Detaylar" && (
+                    <div className={styles.scheduleTitles}>
+                      <Ders className={`${styles.scheduleTitlesIcon}`} />
+                      <td>{tabsType === "Genel" ? "Giriş Sayısı" : "Tarih"}</td>
                     </div>
-                    <td>{item.app}</td>
-                  </div>
-                  <td>{`${ConvertDate(item.timestamp)} ${convertHourMinute(
-                    item.timestamp
-                  )}`}</td>
-                  <td className={styles.space}></td>
-                  <td className={styles.space}></td>
-                </tr>
-              );
-            })
-          ) : (
-            <div>data yok</div>
-          )}
-        </table>
-      </div>
+                  ))}
+              </tr>
+            </table>
+          </div>
+          <div className={styles.scheduleSection}>
+            <table>
+              {tabsType === "Genel" ? (
+                LogData?.map((item, index) => {
+                  return (
+                    <tr onClick={() => {}}>
+                      <div className={styles.scheduleTeacher}>
+                        <div className={styles.avatar}>
+                          <img
+                            // src={String(
+                            //   getTeacherAvatar(teachersData, item.course.code)
+                            // ).replace(/,/gi, "")}\
+                            src={Office}
+                          />
+                        </div>
+                        <td>{item.user}</td>
+                      </div>
+                      <td style={{ marginLeft: 100 }}>{item.app}</td>
+                      <td>{item.count}</td>
+
+                      <td className={styles.space}></td>
+                    </tr>
+                  );
+                })
+              ) : tabsType === "Detaylar" ? (
+                LogData.map((item) => {
+                  return (
+                    <tr>
+                      <div className={styles.scheduleTeacher}>
+                        <div className={styles.avatar}>
+                          <img src={Office} />
+                        </div>
+                        <td>{item.user}</td>
+                        <td style={{ width: 300 }}>{item.app}</td>
+                      </div>
+                      <td>{`${ConvertDate(item.timestamp)} ${convertHourMinute(
+                        item.timestamp
+                      )}`}</td>
+                      <td className={styles.space}></td>
+                      <td className={styles.space}></td>
+                    </tr>
+                  );
+                })
+              ) : (
+                <div>data yok</div>
+              )}
+            </table>
+          </div>
+        </>
+      )}
     </div>
   );
 }
