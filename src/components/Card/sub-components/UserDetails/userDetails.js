@@ -61,7 +61,9 @@ export default function UserDetail({ tabsType }) {
   useEffect(() => {
     GetUserInformations(token, params.id)
       .then((data) => {
-        let Cdata = data.data.data;
+        setLoading(false);
+        let Cdata = data.data.data.userInfo;
+        setAllTheClasses(data.data.data.classes);
         setRole(Cdata.role);
         setUserData(Cdata);
         setFirstName(Cdata.first_name);
@@ -90,10 +92,6 @@ export default function UserDetail({ tabsType }) {
         setLoading(false);
         setErrorMessage(e);
       });
-    getAllClass(token, 65, 1).then((data) => {
-      setAllTheClasses(data.data.data);
-      setLoading(false);
-    });
 
     GetUserAppPassword(token, params.id)
       .then((data) => {
