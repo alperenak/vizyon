@@ -80,6 +80,7 @@ export default function UserDetail({ tabsType }) {
         let Cdata;
         if (data.data.data.userInfo) Cdata = data.data.data.userInfo;
         else Cdata = data.data.data;
+
         setAllTheClasses(data.data.data.classes);
         setRole(Cdata.role);
         setUserData(Cdata);
