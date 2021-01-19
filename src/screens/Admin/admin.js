@@ -197,7 +197,7 @@ function RenderCard({
         alert("Kullanıcılar Getirilemedi");
       });
 
-    getAllClass(token)
+    getAllClass(token, 100, 1, "name,grade")
       .then((data) => {
         setClassData(data.data.data);
       })

@@ -158,12 +158,14 @@ export function IsRoleAdmin() {
   });
 }
 
-export async function getAllClass(token, limit = 100, page = 1) {
+export async function getAllClass(token, limit = 100, page = 1, select) {
   const config = {
     headers: { authorization: `Bearer ${token}` },
   };
   const response = await axios.get(
-    `${uri}/classes?limit=${limit}&page=${page}`,
+    `${uri}/classes?limit=${limit}&page=${page}${
+      select ? `&select=${select}` : ""
+    }`,
     config
   );
   return response;
