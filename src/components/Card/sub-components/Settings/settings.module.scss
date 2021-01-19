@@ -1,0 +1,343 @@
+@import "../../../../helpers/variableBreakpoints.scss";
+@import "../../../../helpers/responsiveBreakpointsMixins.scss";
+.settings {
+  width: 770px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+  background-color: white;
+  margin-top: 40px;
+  position: relative;
+  height: 500px;
+  @include medium {
+    height: 1000px;
+    justify-content: flex-start;
+    align-items: center;
+  }
+
+  & .topSide {
+    display: flex;
+    margin: 0 30px;
+    width: calc(100% -60px);
+    position: absolute;
+    top: 0;
+    justify-content: center;
+    padding-top: 30px;
+    width: 100%;
+    @include medium {
+      flex-direction: column;
+      align-items: center;
+      height: 80px;
+      justify-content: space-between;
+    }
+    & .title {
+      position: absolute;
+      font-size: 18px;
+      font-family: SofiaBold;
+      color: $darkBlue;
+      left: 30px;
+      @include medium {
+        position: relative;
+        left: 0px;
+      }
+    }
+  }
+
+  & .classesCard {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 300px;
+    border-radius: 12px;
+    margin-left: 30px;
+    box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+    position: relative;
+    background-color: white;
+    margin-top: 40px;
+
+    & .classBackground {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 354px;
+      min-height: 110px;
+      height: 120px;
+      border-radius: 12px;
+      overflow: hidden;
+
+      & img {
+        height: 100%;
+      }
+    }
+
+    & .teacherAvatarBackground {
+      display: flex;
+      position: absolute;
+      top: 100px;
+      justify-content: center;
+      align-items: center;
+      width: 120px;
+      height: 120px;
+      background-color: white;
+      border-radius: 50%;
+      box-shadow: 0 4px 10px 0 #eee5fd;
+
+      & .teacherAvatar {
+        width: 110px;
+        height: 110px;
+        position: relative;
+
+        & img {
+          object-fit: cover;
+          width: 110px;
+          height: 110px;
+          border-radius: 50%;
+        }
+
+        & .editIcon {
+          position: absolute;
+          top: 35%;
+          width: 45px;
+          cursor: pointer;
+          height: 45px;
+          right: -22.5px;
+          z-index: 999999999;
+        }
+      }
+    }
+
+    & .name {
+      font-family: SofiaBold;
+      color: $darkBlue;
+      font-size: 16px;
+      margin-top: 120px;
+    }
+
+    & .classroomName {
+      color: $lightPurple;
+      font-size: 16px;
+      margin-top: 5px;
+      margin-bottom: -20px;
+    }
+
+    & .alertboxes {
+      display: flex;
+      flex-direction: column;
+      margin-top: 20px;
+      width: 100%;
+
+      & .MessageCheckIcon {
+        position: absolute;
+        height: 40px;
+        top: 7px;
+        width: 40px;
+        left: 10px;
+      }
+
+      & .ExamIcon {
+        position: absolute;
+        height: 32px;
+        width: 32px;
+        left: 15px;
+      }
+
+      margin-bottom: 15px;
+    }
+  }
+}
+
+.tabs {
+  display: flex;
+  position: absolute;
+  right: 50px;
+  width: 400px;
+  box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+  border-radius: 8px;
+  height: 40px;
+  @include medium {
+    position: relative;
+    right: 0px;
+  }
+
+  & .tabsButton {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: SofiaBold;
+    width: 200px;
+    box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+    border-radius: 8px;
+    transition: 0.3s;
+    cursor: pointer;
+  }
+
+  & .tabsButtonActive {
+    background-color: $darkPurple;
+    color: white;
+  }
+}
+.changePasswordContainer {
+  margin-left: 50px;
+  margin-top: 40px;
+  & .icon {
+    position: absolute;
+    left: 15px;
+    width: 20px;
+    height: 20px;
+    z-index: 1;
+  }
+  & .checkSolid {
+    position: absolute;
+    right: 15px;
+    width: 20px;
+    height: 20px;
+    color: rgb(35, 124, 35);
+    z-index: 1;
+  }
+  & .timesSolid {
+    position: absolute;
+    right: 15px;
+    width: 20px;
+    color: red;
+    height: 20px;
+    z-index: 1;
+  }
+}
+.renderAppRow {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  height: 80px;
+  position: relative;
+  justify-content: space-around;
+  border-radius: 12px;
+  transition: 0.3s;
+
+  & .appAvatarWrapper {
+    display: flex;
+    max-width: 200px;
+    width: 150px;
+    padding-left: 50px;
+    align-items: center;
+
+    & .appAvatar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 50px;
+      height: 50px;
+      min-width: 50px;
+      border-radius: 50%;
+      box-shadow: 0 3px 8px 0 rgba(110, 42, 245, 0.11);
+      border-radius: 50%;
+      overflow: hidden;
+
+      & .icon {
+        width: 100%;
+      }
+
+      & .office {
+        width: 50%;
+      }
+
+      & .morpa {
+        width: 70%;
+        border-radius: 25px;
+      }
+
+      & .brain {
+        width: 65%;
+      }
+
+      & .actively {
+        width: 80%;
+      }
+    }
+    .appName {
+      margin-left: 15px;
+      font-family: SofiaMedium;
+    }
+  }
+  & .appUsername {
+    width: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  & .appPassword {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+  }
+  & .editIcon {
+    width: 70px;
+    color: rgb(35, 126, 42);
+    cursor: pointer;
+  }
+}
+.renderAppRow:hover {
+  background-color: rgb(235, 235, 235);
+}
+.appsPasswords {
+  @include medium {
+    margin-top: 100px;
+  }
+  & .titles {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    justify-content: space-around;
+    font-family: SofiaBold;
+    color: $darkBlue;
+    margin-top: 70px !important;
+    margin-left: 10px;
+    & .appNameTitle {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 200px;
+    }
+    & .usernameTitle {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 200px;
+    }
+    & .passwordTitle {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 200px;
+    }
+    & .edit {
+      width: 100px;
+    }
+  }
+}
+.renderApps {
+  overflow-y: scroll;
+  margin-top: 10px;
+  height: 350px;
+}
+.modalIcon {
+  position: absolute;
+  left: 15px;
+  width: 20px;
+  height: 20px;
+  z-index: 1;
+}
+.errorMessage {
+  color: red;
+}
+.settingsProfileWrapper {
+  display: flex;
+  @include medium {
+    display: flex;
+    margin-top: 100px;
+    flex-direction: column;
+  }
+}

@@ -1,10 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import styles from "./home.module.scss";
-import TopBar from "../../components/topBar/topBar";
 import Card from "../../components/Card/card";
-import Avatar from "../../assets/images/teacherAvatar.png";
-import AnnouncementImage from "../../assets/images/announcements.png";
-import { UserContext } from "../../context/userContext";
 import IsAdmin, {
   GetAnnouncements,
   GetAnnouncementsStudent,
@@ -14,12 +10,14 @@ import IsAdmin, {
   IsAuth,
 } from "../../actions/action";
 import Loading from "../../components/Loading/loading";
+import { useCookies } from "react-cookie";
 export default function Home() {
   const [userData, setUserData] = useState(false);
   const [announcementsData, setAnnouncementsData] = useState(false);
   const [userRole, setUserRole] = useState("");
   const [newMessagesData, setNewMessagesData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [cookies, setCookies, removeCookies] = useCookies();
   const token = GetToken();
 
   console.log("userdata: ", userData);
@@ -130,6 +128,15 @@ export default function Home() {
                   " " +
                   userData.data.data.last_name
                 }
+                scheduleDate={
+                  userData.data.data.studentInfo &&
+                  userData.data.data.studentInfo.class
+                    ? userData.data.data.studentInfo.class.exams.map((item) => {
+                        return item.date;
+                      })
+                    : []
+                }
+                newMessagesCount={newMessagesData.data?.data.total}
                 classroomName={`${getClassName(
                   userData.data.data.studentInfo &&
                     userData.data.data.studentInfo.class
@@ -165,11 +172,8 @@ export default function Home() {
 }
 function getClassName(name) {
   if (name && name !== null) {
-    return `${name.slice(0, name.length - 1)} / ${name.slice(
-      name.length - 1,
-      name.length
-    )} Sınıfı`;
-  } else return "";
+    return name;
+  } else return "Sınıf bilgisi bulunamadı";
 }
 
 function getSyllabusData(data) {
@@ -181,52 +185,3 @@ function getSyllabusData(data) {
     return data.instructorInfo.schedule;
   } else return [];
 }
-// const announcementsData = [
-//   {
-//     announcementsTitle: "Gelişim okulları 2020-2021 eğitim yılına hazır!",
-//     image: AnnouncementImage,
-//     date: "31 Ağustos 2020",
-//   },
-//   {
-//     announcementsTitle: "Gelişim okulları 2020-2021 eğitim yılına hazır!",
-//     image: AnnouncementImage,
-//     date: "31 Ağustos 2020",
-//   },
-//   {
-//     announcementsTitle: "Gelişim okulları 2020-2021 eğitim yılına hazır!",
-//     image: AnnouncementImage,
-//     date: "31 Ağustos 2020",
-//   },
-//   {
-//     announcementsTitle: "Gelişim okulları 2020-2021 eğitim yılına hazır!",
-//     image: AnnouncementImage,
-//     date: "31 Ağustos 2020",
-//   },
-//   {
-//     announcementsTitle: "Gelişim okulları 2020-2021 eğitim yılına hazır!",
-//     image: AnnouncementImage,
-//     date: "31 Ağustos 2020",
-//   },
-// ];
-const teachersData = [
-  {
-    teacherName: "Alperen Karagüzel",
-    avatar: Avatar,
-    branch: "Sosyal Bilgiler Öğretmeni",
-  },
-  {
-    teacherName: "Kerem Kara",
-    avatar: Avatar,
-    branch: "Beden Eğitimi Öğretmeni",
-  },
-  {
-    teacherName: "Ali Harun",
-    avatar: Avatar,
-    branch: "Fen Bilimleri Öğretmeni",
-  },
-  {
-    teacherName: "Mustafa Ulusoy",
-    avatar: Avatar,
-    branch: "Türkçe Öğretmeni",
-  },
-];

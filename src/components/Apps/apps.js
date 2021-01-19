@@ -16,6 +16,7 @@ import Meb from "../../assets/images/meb.jpg";
 import RazKids from "../../assets/images/razkids.png";
 import { CheckSolid } from "../../icons";
 import Udemy from "../../assets/images/udemy.png";
+import Zoom from "../../assets/images/zoom.png";
 export default function Apps({
   iconName,
   appName,
@@ -83,5 +84,7 @@ export function RenderIcon(props) {
     return <img src={Meb} {...props} className={styles.actively} />;
   } else if (iconName === "unlocklearning") {
     return <img src={Cambridge} {...props} className={styles.actively} />;
+  } else if (iconName === "zoom") {
+    return <img src={Zoom} {...props} className={styles.actively} />;
   } else return "none";
 }

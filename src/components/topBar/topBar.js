@@ -1,7 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
 import styles from "./topBar.module.scss";
 import Logo from "../../assets/images/logo.png";
-import { Down, EnvelopeSolid, Menu, Notification } from "../../icons";
+import ChromeIcon from "../../assets/icons/chrome-brands-purple.svg";
+import {
+  CogSolid,
+  Down,
+  EnvelopeSolid,
+  Menu,
+  Notification,
+  PowerOffSolid,
+  User,
+  UserIcon,
+} from "../../icons";
 import Avatar from "../../assets/images/avatar.png";
 import SubBar from "./subBar/subBar";
 import { UserContext } from "../../context/userContext";
@@ -32,7 +42,7 @@ export default function TopBar() {
     setSubBarctive(!subBarActive);
     const subBar = document.getElementById("subBar");
     if (subBar.style.height === "" || subBar.style.height === "0px")
-      document.getElementById("subBar").style.height = "80px";
+      document.getElementById("subBar").className = styles.responsiveSubBar;
     else {
       document.getElementById("subBar").style.height = "0px";
     }
@@ -81,18 +91,54 @@ export default function TopBar() {
                 className={`${styles.dropdownContent}  ${
                   dropdownActive ? styles.active : ""
                 }`}
-                onClick={() => {
-                  removeCookies("token");
-                  window.location.replace("/");
-                }}
               >
-                Çıkış Yap
+                <div
+                  onClick={() => {
+                    history.push("/settings");
+                  }}
+                  className={styles.dropdownItem}
+                >
+                  <CogSolid className={styles.dropdownIcon} />
+                  <div className={styles.dropdownItemName}>Ayarlar</div>
+                </div>
+                {/*
+                <div
+                  onClick={() => {
+                    history.push("/profile");
+                  }}
+                  className={styles.dropdownItem}
+                >
+                  <UserIcon className={styles.dropdownIcon} />
+                  <div className={styles.dropdownItemName}>Profilim</div>
+                </div>
+                */}
+                <div
+                  onClick={() => {
+                    removeCookies("token");
+                    window.location.replace("/");
+                  }}
+                  className={styles.dropdownItem}
+                >
+                  <PowerOffSolid className={styles.dropdownIcon} />
+                  <div className={styles.dropdownItemName}>Çıkış Yap</div>
+                </div>
               </div>
             </div>
             <Down
               className={styles.downIcon}
               onClick={() => setDropdownActive(!dropdownActive)}
             />
+          </div>
+          <div
+            onClick={() => {
+              window.open(
+                "https://chrome.google.com/webstore/detail/gfkelnilbjflkdjhhfeojhpbjogakifh"
+              );
+            }}
+            className={styles.chromeExtentionsButton}
+          >
+            <img src={ChromeIcon} />
+            <div className={styles.extention}>Eklentiyi indir</div>
           </div>
         </div>
       </div>

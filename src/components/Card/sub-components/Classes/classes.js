@@ -1,10 +1,39 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./classes.module.scss";
 import Background from "../../../../assets/images/classroom.jpg";
 import ClassroomTeacher from "../../../../assets/images/classroomTeacher.png";
 import { CheckSolid, Edit, MessageCheck, Exam } from "../../../../icons";
 import AlertBox from "../../../Alert/alert";
-export default function Classes({ name, classroomName, avatar, background }) {
+import { months } from "../../../../utils/utils";
+export default function Classes({
+  name,
+  classroomName,
+  avatar,
+  background,
+  scheduleDate,
+  newMessagesCount,
+}) {
+  const [firstExamDate, setFirstExamDate] = useState(false);
+  useEffect(() => {
+    const data = scheduleDate.map((item) => {
+      const d = new Date(item);
+      const getDateCount = d.getDate();
+      const getMonthCount = d.getMonth();
+      const getYearCount = d.getFullYear();
+      return {
+        dayCount: getDateCount,
+        monthCount: getMonthCount,
+        yearCount: getYearCount,
+      };
+    });
+    setFirstExamDate(
+      data
+        .sort((a, b) => a.yearCount - b.yearCount)
+        .sort((a, b) => a.monthCount - b.monthCount)
+        .sort((a, b) => a.dayCount - b.dayCount)
+    );
+  }, []);
+
   return (
     <div className={styles.classesCard}>
       <div className={styles.classBackground}>
@@ -20,14 +49,39 @@ export default function Classes({ name, classroomName, avatar, background }) {
       <div className={styles.classroomName}>{classroomName}</div>
       <div className={styles.alertboxes}>
         <AlertBox
-          title={"Sonraki sınavın **17 Eylül 2020**’de."}
+          title={`${
+            newMessagesCount && newMessagesCount !== 0
+              ? `Okunmamış **${newMessagesCount}** mesajınız var`
+              : newMessagesCount && newMessagesCount === 0
+              ? "Okunmamış mesajınız bulunmamaktadır"
+              : "Mesaj bilgisi bulunamadı"
+          }`}
           type={"tertiary"}
           size={"small"}
         >
           <MessageCheck className={styles.MessageCheckIcon} />
         </AlertBox>
         <AlertBox
-          title={"Sonraki sınavın **17 Eylül 2020**’de."}
+          title={`${
+            firstExamDate &&
+            firstExamDate?.dayCount &&
+            firstExamDate?.monthCount &&
+            firstExamDate?.yearCount
+              ? `Sonraki sınavın **${
+                  firstExamDate && firstExamDate[0]?.dayCount
+                    ? firstExamDate[0]?.dayCount
+                    : ""
+                } ${
+                  firstExamDate && firstExamDate[0]?.monthCount
+                    ? months[firstExamDate[0]?.monthCount]
+                    : ""
+                }  ${
+                  firstExamDate && firstExamDate[0]?.yearCount
+                    ? firstExamDate[0]?.yearCount
+                    : ""
+                }**’de.`
+              : "Sınav bilgisi bulunamamaktadır"
+          }`}
           type={"primary"}
           size={"small"}
         >

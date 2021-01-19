@@ -33,6 +33,8 @@ import Cambridge from "../../assets/images/cambridge.png";
 import Meb from "../../assets/images/meb.jpg";
 import WritingAz from "../../assets/images/writingAz.svg";
 import VocabularyAz from "../../assets/images/vocabulary.png";
+import Zoom from "../../assets/images/zoom.png";
+
 export default function Apps() {
   const [count, setCount] = useState(fakeAppsData.length);
   const [loading, setLoading] = useState(false);
@@ -74,38 +76,39 @@ export default function Apps() {
           <div className={styles.appsContainer}>
             <div className={styles.title}>Uygulamalar</div>
             <div className={styles.appsGrid}>
-              {AppsData &&
-              AppsData !== null &&
-              AppsData.data.data[0].Apps !== null &&
-              AppsData.data.data[0].Apps.length !== 0 ? (
-                AppsData.data.data[0].Apps.filter((item) => {
-                  return item.isSet === true;
-                }).map((item) => {
-                  return (
-                    <div
-                      onClick={() => {
-                        GetSSO(token, item.app._id)
-                          .then((data) => {
-                            window.open(data.data.data);
-                          })
-                          .catch((e) =>
-                            alert("Kullanıcı bu platforma kayıtlı değil")
-                          );
-                      }}
-                      className={styles.renderApps}
-                    >
-                      <div className={styles.appAvatar}>
-                        <RenderIcon
-                          iconName={item.app.name}
-                          className={styles.icon}
-                        />
+              {AppsData && AppsData.data && AppsData.data.data.length !== 0 ? (
+                AppsData.data?.data[0].Apps.length !== 0 ? (
+                  AppsData.data?.data[0].Apps.filter((item) => {
+                    return item.isSet === true;
+                  }).map((item) => {
+                    return (
+                      <div
+                        onClick={() => {
+                          GetSSO(token, item.app._id)
+                            .then((data) => {
+                              window.open(data.data.data);
+                            })
+                            .catch((e) => window.open(item.app.url));
+                        }}
+                        className={styles.renderApps}
+                      >
+                        <div className={styles.appAvatar}>
+                          <RenderIcon
+                            iconName={item.app.name}
+                            className={styles.icon}
+                          />
+                        </div>
+                        <div className={styles.appName}>{item.app.title}</div>
                       </div>
-                      <div className={styles.appName}>{item.app.title}</div>
-                    </div>
-                  );
-                })
+                    );
+                  })
+                ) : (
+                  <div>yükleniyor...</div>
+                )
               ) : (
-                <div>yükleniyor...</div>
+                <div style={{ marginLeft: 25 }}>
+                  Uygulama bilgisi bulunamadı
+                </div>
               )}
             </div>
           </div>
@@ -168,6 +171,8 @@ export function RenderIcon(props) {
     return <img src={Meb} {...props} className={styles.actively} />;
   } else if (iconName === "unlocklearning") {
     return <img src={Cambridge} {...props} className={styles.actively} />;
+  } else if (iconName === "zoom") {
+    return <img src={Zoom} {...props} className={styles.actively} />;
   } else return "none";
 }
 const fakeAppsData = [

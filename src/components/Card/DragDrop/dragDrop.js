@@ -5,7 +5,7 @@ import { GetToken, importSchedule, uploadFile } from "../../../actions/action";
 import Button from "../../Button/button";
 import axios from "axios";
 import { FileContext } from "../../../context/fileContext";
-export default function DropzoneField({ isActive, setIsActive }) {
+export default function DropzoneField({ isActive, setIsActive, classId }) {
   const [fileData, setFileData] = useContext(FileContext);
   const {
     acceptedFiles,
@@ -19,16 +19,17 @@ export default function DropzoneField({ isActive, setIsActive }) {
   } = useDropzone({ noClick: true, accept: ".xlsx" });
 
   const fileRejectionItems = fileRejections.map(({ file, errors }) => (
-    <li key={file.path}>
-      {file.path} - {file.size} bytes
+    <div key={file.path}>
+      {!errors && `${file.path} - ${file.size} bytes`}
       <ul>
         {errors.map((e) => (
           <li style={{ color: "red" }} key={e.code}>
-            Reddedildi:{e.message}
+            Gönderilen dosya formatı yanlış. Lütfen standart dosya yüklemesi
+            yapınız.
           </li>
         ))}
       </ul>
-    </li>
+    </div>
   ));
   const files = acceptedFiles.map((file) => {
     return <li key={file.path}>{file.path}</li>;
@@ -102,7 +103,13 @@ export default function DropzoneField({ isActive, setIsActive }) {
           console.log(acceptedFiles[0]);
           formdata.append("file", acceptedFiles[0]);
           console.log("dsadsa", formdata);
-          importSchedule(token, formdata).then((data) => console.log(data));
+          importSchedule(token, formdata, classId)
+            .then((data) => console.log(data))
+            .catch((e) =>
+              alert(
+                "Gönderilen dosya formatı yanlış. Lütfen standart dosya yüklemesi yapınız."
+              )
+            );
           setIsActive(false);
         }}
       />

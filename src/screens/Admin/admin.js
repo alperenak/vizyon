@@ -9,6 +9,8 @@ import IsAdmin, {
   GetUser,
   GetAnnouncements,
   getAllUser,
+  getAllStudents,
+  getAllTeachers,
   getAllClass,
   IsRoleAdmin,
   GetAllExams,
@@ -22,6 +24,7 @@ import { Down, SearchSolid } from "../../icons";
 import { useCookies } from "react-cookie";
 import Login from "../../screens/Login/login";
 import Loading from "../../components/Loading/loading";
+import Pagination from "../../components/Pagination/pagination";
 export default function Admin() {
   const [announcementsData, setAnnouncementsData] = useState(false);
   const [newAnnouncementsData, setNewAnnouncementsData] = useState([]);
@@ -103,14 +106,17 @@ function RenderCard({
   const dropdownNames = document.getElementById("dropdownName");
   const dropdownIcon = document.getElementById("dropdownIcon");
   const [studentsData, setStudentsData] = useState([]);
+  const [totalTeacher, setTotalTeacher] = useState(0);
+  const [totalStudent, setTotalStudent] = useState(0);
   const token = GetToken();
+  const [userPageNum, setUserPageNum] = useState(1);
   const [teachersData, setTeachersData] = useState([]);
   const [classData, setClassData] = useState([]);
   const [allExams, setAllExams] = useState([]);
   const [filteredClass, setFilteredClass] = useState(false);
   const [appData, setAppData] = useState([]);
   const history = useHistory();
-  console.log("umarim degismiyor", announcementsData);
+  console.log(pathname.includes("/admin/user/teacher"));
   window.onclick = function (e) {
     if (e.target !== dropdownNames && e.target !== dropdownIcon) {
       setDropdownActive(false);
@@ -144,6 +150,15 @@ function RenderCard({
       });
       if (e.target.value === "") setDisplayStudent("");
       else setDisplayStudent(res);
+    } else if (tabsType === "class") {
+      const res = classData.filter((state) => {
+        const name = state.name;
+        return e.target.value
+          ? name.toLowerCase().includes(e.target.value.toLowerCase())
+          : "";
+      });
+      if (e.target.value === "") setDisplayClass("");
+      else setDisplayClass(res);
     }
   }
 
@@ -157,17 +172,24 @@ function RenderCard({
     else setDisplayClass(res);
   }
 
-  console.log(display);
   useEffect(() => {
     setLoading(true);
-    getAllUser(token)
+    getAllStudents(token)
       .then((data) => {
-        setTeachersData(
-          data.data.data.filter((item) => item.role === "instructor")
-        );
-        setStudentsData(
-          data.data.data.filter((item) => item.role === "student")
-        );
+        setStudentsData(data.data.data);
+        console.log("studentTotal:", data.data.total);
+        setTotalStudent(data.data.total);
+      })
+      .then(() => setLoading(false))
+      .catch((e) => {
+        setLoading(false);
+        alert("Kullanıcılar Getirilemedi");
+      });
+    getAllTeachers(token)
+      .then((data) => {
+        setTeachersData(data.data.data);
+        console.log("teacherTotal:", data.data.total);
+        setTotalTeacher(data.data.total);
       })
       .then(() => setLoading(false))
       .catch((e) => {
@@ -190,7 +212,7 @@ function RenderCard({
       })
       .then(() => setLoading(false))
       .catch(() => alert("Sınavlar getirilemedi"));
-    GetSpecifiApps(token, id ? id : "1")
+    GetSpecifiApps(token, id ? id : 9)
       .then((item) => {
         setAppData(item);
       })
@@ -254,7 +276,11 @@ function RenderCard({
                     <div
                       onClick={() => {
                         const res = classData.filter((item1) => {
-                          return item1.name.slice(0, 2).includes(item.name[0]);
+                          return item1.name
+                            .slice(0, 2)
+                            .includes(
+                              item.name.slice(0, item.name.indexOf("."))
+                            );
                         });
                         setFilteredClass(res);
                         setDropdownName(item.name);
@@ -318,6 +344,55 @@ function RenderCard({
             type={"userManagement"}
             tabsType={tabsType}
           />
+          {totalStudent !== 0 || totalTeacher !== 0 ? (
+            <Pagination
+              totalCount={
+                tabsType === "student"
+                  ? Number((totalStudent / 100).toFixed())
+                  : tabsType === "teacher"
+                  ? Number((totalTeacher / 100).toFixed())
+                  : ""
+              }
+              selectedPage={userPageNum}
+              onClick={(pageNum) => {
+                if (tabsType === "student") {
+                  setLoading(true);
+                  getAllStudents(token, pageNum)
+                    .then((data) => {
+                      setStudentsData(data.data.data);
+                      setUserPageNum(
+                        data.data.pagination.next.page !== null
+                          ? data.data.pagination.next.page - 1
+                          : data.data.pagination.next.previous + 1
+                      );
+                    })
+                    .then(() => setLoading(false))
+                    .catch((e) => {
+                      setLoading(false);
+                      alert("Kullanıcılar Getirilemedi");
+                    });
+                } else if (tabsType === "teacher") {
+                  setLoading(true);
+                  getAllTeachers(token, pageNum)
+                    .then((data) => {
+                      setTeachersData(data.data.data);
+                      setUserPageNum(
+                        data.data.pagination.next.page !== null
+                          ? data.data.pagination.next.page - 1
+                          : data.data.pagination.next.previous + 1
+                      );
+                    })
+                    .then(() => setLoading(false))
+                    .catch((e) => {
+                      setLoading(false);
+                      alert("Kullanıcılar Getirilemedi");
+                    });
+                }
+              }}
+            />
+          ) : (
+            "data"
+          )}
         </>
       );
     } else if (pathname === "/admin/syllabus") {
@@ -327,10 +402,40 @@ function RenderCard({
           <Card type={"syllabusManagement"} tabsType={tabsType} />
         </>
       );
+    } else if (
+      pathname.includes("/admin/user/student") ||
+      pathname.includes("/admin/user/teacher")
+    ) {
+      return (
+        <>
+          <h1>Kullanıcı Detayları</h1>
+          <div className={`${styles.topSide} ${styles.centeredTabs}`}>
+            <div className={styles.tabs}>
+              <div
+                className={`${styles.tabsButton} ${
+                  tabsType === "student" ? styles.tabsButtonActive : ""
+                }`}
+                onClick={() => setTabsType("student")}
+              >
+                Genel
+              </div>
+              <div
+                className={`${styles.tabsButton} ${
+                  tabsType === "teacher" ? styles.tabsButtonActive : ""
+                }`}
+                onClick={() => setTabsType("teacher")}
+              >
+                Uygulamalar
+              </div>
+            </div>
+          </div>
+          <Card type={"userDetails"} tabsType={tabsType} />
+        </>
+      );
     } else if (pathname === "/admin/activity") {
       return (
         <>
-          <h1>Aktivite Yönetimi</h1>
+          <h1>Raporlar</h1>
           <div className={styles.topSide}>
             <Input
               placeholder="Ara"
@@ -356,11 +461,20 @@ function RenderCard({
               >
                 Öğretmen
               </div>
+              <div
+                className={`${styles.tabsButton} ${
+                  tabsType === "class" ? styles.tabsButtonActive : ""
+                }`}
+                onClick={() => setTabsType("class")}
+              >
+                Sınıf
+              </div>
             </div>
           </div>
           <Card
             teachersData={displayTeacher === "" ? teachersData : displayTeacher}
             studentsData={displayStudent === "" ? studentsData : displayStudent}
+            classData={displayClass === "" ? classData : displayClass}
             type={"activity"}
             tabsType={tabsType}
           />

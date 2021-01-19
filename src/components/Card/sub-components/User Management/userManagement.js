@@ -30,6 +30,8 @@ import {
   updateClass,
   updateUser,
 } from "../../../../actions/action";
+import Pagination from "../../../Pagination/pagination";
+import { useHistory } from "react-router-dom";
 // import teacherAvatar from "../../../../assets/images/teacherAvatar.png";
 export default function UserManagement({
   tabsType,
@@ -46,6 +48,8 @@ export default function UserManagement({
   const [isActive, setIsActive] = useState(false);
   const [modalType, setModalType] = useState(false);
   const [classId, setClassId] = useState(false);
+  const [pageNum, setPageNum] = useState(1);
+  const history = useHistory();
   const [generalData, setGeneralData] = useState(
     tabsType === "student" ? studentsData : teachersData
   );
@@ -99,6 +103,11 @@ export default function UserManagement({
                   <tr
                     onClick={() => {
                       setClassId(item._id);
+                      history.push(
+                        `/admin/user/${tabsType}/${
+                          item.id ? item.id : item._id
+                        }`
+                      );
                     }}
                   >
                     <div className={styles.scheduleTeacher}>
@@ -121,14 +130,14 @@ export default function UserManagement({
                       {/* <PlusCircleSolid className={styles.addExamIcon} /> */}
                     </td>
                     <td className={styles.space}>
-                      <EditSolid
+                      {/* <EditSolid
                         onClick={() => {
                           setClassId(item._id);
                           setModalType("edit");
                           setIsActive(true);
                         }}
                         className={styles.editIcon}
-                      />
+                      /> */}
                       <TrashSolid
                         onClick={() => {
                           deleteUser(token, item._id);
@@ -144,6 +153,11 @@ export default function UserManagement({
                   <tr
                     onClick={() => {
                       setClassId(item._id);
+                      history.push(
+                        `/admin/user/${tabsType}/${
+                          item.id ? item.id : item._id
+                        }`
+                      );
                     }}
                   >
                     <div className={styles.scheduleTeacher}>
@@ -160,14 +174,14 @@ export default function UserManagement({
                     {/* <td>{item. ? item.teacher : "Eyüp Saruhan"}</td> */}
                     <td className={styles.space}></td>
                     <td className={styles.space}>
-                      <EditSolid
+                      {/* <EditSolid
                         onClick={() => {
                           setClassId(item._id);
                           setModalType("edit");
                           setIsActive(true);
                         }}
                         className={styles.editIcon}
-                      />
+                      /> */}
                       <TrashSolid
                         onClick={() => {
                           deleteUser(token, item._id);

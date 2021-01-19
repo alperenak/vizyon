@@ -1,19 +1,17 @@
-@import '../../../../helpers/variableBreakpoints.scss';
-
+@import "../../../../helpers/variableBreakpoints.scss";
+@import "../../../../helpers/responsiveBreakpointsMixins.scss";
 .announcementsCard {
   display: flex;
   flex-direction: column;
   border-radius: 12px;
-  height: 430px;
+  padding-bottom: 20px;
   max-height: 600px;
   width: 770px;
   background-color: #fefdff;
   position: relative;
   margin-top: 40px;
-  padding-bottom: 10px;
   transition: height 1s;
   box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
-
 
   & .topSide {
     display: flex;
@@ -85,9 +83,15 @@
       display: flex;
       position: relative;
       align-items: center;
-      margin: 10px 20px;
+      margin: 0 20px;
+      cursor: pointer;
       height: 40px;
       width: calc(100% - 40px);
+      border-radius: 12px;
+      padding: 10px;
+      &:hover {
+        background-color: rgb(233, 233, 233);
+      }
 
       & .imageCircle {
         width: 40px;
@@ -267,5 +271,15 @@
 
   & .active {
     display: flex;
+  }
+}
+.detailWrapper {
+  width: 770px;
+  @include medium {
+    width: 90%;
+  }
+  & .announcementsDetailText {
+    padding: 10px;
+    word-wrap: break-word;
   }
 }

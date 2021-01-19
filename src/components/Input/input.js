@@ -8,6 +8,7 @@ export default function Input(props) {
     children,
     type,
     onChange,
+    onClick,
     value,
     method,
     ref,
@@ -16,6 +17,7 @@ export default function Input(props) {
     <div className={`${styles.inputContainer} ${styles[method]}`}>
       {children}
       <input
+        onClick={onClick}
         type={type}
         placeholder={placeholder}
         className={styles[inputStyle]}

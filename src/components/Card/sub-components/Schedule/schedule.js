@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import styles from "./schedule.module.scss";
 import {
   Ders,
@@ -9,18 +9,64 @@ import {
   Clock,
   PdfDownload,
   GreenTip,
+  ChevronRightSolid,
+  ChevronLeftSolid,
 } from "../../../../icons";
 import AlertBox from "../../../Alert/alert";
 import { ConvertDate, ConvertTime } from "../../../../utils/utils";
 import teacherAvatar from "../../../../assets/images/teacherAvatar.png";
-import { GetSchedulesDownloadLink, GetToken } from "../../../../actions/action";
+import {
+  GetSchedulesDownloadLink,
+  GetSchedulesPdfDownloadLink,
+  GetToken,
+} from "../../../../actions/action";
+import { AlertboxContext } from "../../../../context/alertboxContext";
 export default function Schedule({ scheduleData, teachersData, classInfo }) {
   const token = GetToken();
+  const [alertboxData, setAlertboxData] = useContext(AlertboxContext);
+  const d = new Date();
+  const [tablePagination, setTablePagination] = useState([
+    { start: 0, end: 2 },
+    { start: 2, end: 4 },
+    { start: 4, end: 5 },
+  ]);
+  const [schedulePageNum, setSchedulePageNum] = useState(1);
+  const staticTitleData = [
+    {
+      title: "Öğretmen",
+      titleStyle: styles.ogretmen,
+      icon: <User className={`${styles.scheduleTitlesIcon} ${styles.user}`} />,
+    },
+    {
+      title: "Dersin Adı",
+      titleStyle: "",
+      icon: <Ders className={styles.scheduleTitlesIcon} />,
+    },
+    {
+      title: "Tarih",
+      titleStyle: styles.tarih,
+      icon: (
+        <DateIcon className={`${styles.scheduleTitlesIcon} ${styles.date}`} />
+      ),
+    },
+    {
+      title: "Saat",
+      titleStyle: "",
+      icon: <Clock className={styles.scheduleTitlesIcon} />,
+    },
+  ];
   return (
     <div className={styles.schedule}>
       <div className={styles.topSide}>
         <div className={styles.title}>Sınav Takvimi</div>
-        <div className={styles.downloadSyllabusPdf}>
+        <div
+          className={styles.downloadSyllabusPdf}
+          onClick={() =>
+            GetSchedulesPdfDownloadLink(token, classInfo._id).then((item) =>
+              window.open(item.data.data[0])
+            )
+          }
+        >
           <div className={styles.formatXLS}>
             <PdfDownload className={styles.formatIcon} />
             <div className={styles.formatName}>PDF</div>
@@ -41,13 +87,20 @@ export default function Schedule({ scheduleData, teachersData, classInfo }) {
           </div>
           <div className={styles.downloadTitle}>Sınav Takvimini İndir</div>
         </div>
+        {/*
         <div className={styles.feedback}>
           <Info className={styles.feedbackIcon} />
           <div className={styles.feedbackTitle}>Sorun Bildir</div>
         </div>
+        */}
       </div>
       <div className={styles.scheduleTitlesSection}>
-        <table>
+        <RenderResponsiveTitles
+          titleData={staticTitleData}
+          schedulePageNum={schedulePageNum}
+          tablePagination={tablePagination}
+        />
+        <table className={styles.scheduleTitlesTable}>
           <tr className={styles.scheduleTitlesRow}>
             <div className={styles.scheduleTitles}>
               <User className={`${styles.scheduleTitlesIcon} ${styles.user}`} />
@@ -70,6 +123,18 @@ export default function Schedule({ scheduleData, teachersData, classInfo }) {
           </tr>
         </table>
       </div>
+      <RenderArrow
+        type={"left"}
+        onClick={() => {
+          if (schedulePageNum > 1) setSchedulePageNum(schedulePageNum - 1);
+        }}
+      />
+      <RenderArrow
+        type={"right"}
+        onClick={() => {
+          if (schedulePageNum < 2) setSchedulePageNum(schedulePageNum + 1);
+        }}
+      />
       <div className={styles.scheduleSection}>
         <table>
           {scheduleData && scheduleData !== null ? (
@@ -102,9 +167,9 @@ export default function Schedule({ scheduleData, teachersData, classInfo }) {
         </table>
       </div>
       <AlertBox
-        title={
-          "Yukarıdaki ders programı **2020 / 2021 Eğitim - Öğretim Yılı**’nın ilk yarısına kadar geçerlidir."
-        }
+        title={`Yukarıdaki sınav takvimi **${d.getFullYear()} / ${
+          d.getFullYear() + 1
+        } Eğitim - Öğretim Yılı**’nın ilk yarısına kadar geçerlidir.`}
         type={"primary"}
       >
         <GreenTip className={styles.greenTip} />
@@ -136,4 +201,44 @@ function getTeacherAvatar(teachersData, code) {
     });
     return teacherProfile;
   } else return teacherAvatar;
+}
+function RenderResponsiveTitles({
+  titleData,
+  schedulePageNum,
+  tablePagination,
+}) {
+  return (
+    <table className={styles.responsiveTitles}>
+      <tr className={styles.scheduleTitlesRow}>
+        {titleData
+          .slice(
+            tablePagination[schedulePageNum - 1].start,
+            tablePagination[schedulePageNum - 1].end
+          )
+          .map((item) => {
+            return (
+              <div className={styles.scheduleTitles}>
+                {item.icon}
+                <td className={item.titleStyle}>{item.title}</td>
+              </div>
+            );
+          })}
+      </tr>
+    </table>
+  );
+}
+export function RenderArrow({ type, onClick }) {
+  return (
+    <div className={`${styles.responsiveArrowWrapper} ${styles[type]}`}>
+      <div onClick={onClick} className={styles.responsiveArrow}>
+        {type === "left" ? (
+          <ChevronLeftSolid className={styles.arrowIcon} />
+        ) : type === "right" ? (
+          <ChevronRightSolid className={styles.arrowIcon} />
+        ) : (
+          ""
+        )}
+      </div>
+    </div>
+  );
 }

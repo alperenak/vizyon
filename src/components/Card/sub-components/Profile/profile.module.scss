@@ -1,0 +1,30 @@
+@import '../../../../helpers/variableBreakpoints.scss';
+
+.profile {
+    width: 770px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+    background-color: white;
+    margin-top: 40px;
+    position: relative;
+    height: 500px;
+    
+    & .topSide {
+        display: flex;
+        margin: 0 30px;
+        width: calc(100% -60px);
+        position: relative;
+        justify-content: flex-end;
+        padding-top: 30px;
+
+        & .title {
+            position: absolute;
+            font-size: 18px;
+            font-family: SofiaBold;
+            color: $darkBlue;
+            left: 0;
+        }
+    }
+}

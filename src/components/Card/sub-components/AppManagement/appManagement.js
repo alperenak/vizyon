@@ -48,9 +48,7 @@ export default function AppManagement({ dropdownValue, appData, setAppData }) {
     { isSelected: false, appName: "Activelulearn", icon: "activelylearn" },
   ]);
   const token = GetToken();
-  console.log(id);
 
-  console.log("hadi insallah", appData);
   return (
     <>
       <div className={styles.apps}>
@@ -68,7 +66,6 @@ export default function AppManagement({ dropdownValue, appData, setAppData }) {
                   onClick={() => {
                     let arr = appData;
                     arr.data.data[0].Apps[index].isSet = !item.isSet;
-                    console.log(arr);
                     setAppData(arr);
                   }}
                 >
@@ -96,7 +93,7 @@ export default function AppManagement({ dropdownValue, appData, setAppData }) {
             });
           }}
           type={"primary"}
-          title={"kaydet"}
+          title={"Kaydet"}
         />
       </div>
     </>
