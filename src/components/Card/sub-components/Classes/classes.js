@@ -1,15 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styles from "./classes.module.scss";
 import Background from "../../../../assets/images/classroom.jpg";
-import ClassroomTeacher from "../../../../assets/images/classroomTeacher.png";
-import { CheckSolid, Edit, MessageCheck, Exam } from "../../../../icons";
+import { Edit, MessageCheck, Exam } from "../../../../icons";
 import AlertBox from "../../../Alert/alert";
 import { months } from "../../../../utils/utils";
 export default function Classes({
   name,
   classroomName,
   avatar,
-  background,
   scheduleDate,
   newMessagesCount,
 }) {

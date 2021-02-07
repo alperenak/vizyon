@@ -8,7 +8,9 @@
   width: 100vw;
   height: 100vh;
   overflow: hidden;
-
+  @include small {
+    height: max-content;
+  }
   & .logoCircle {
     position: absolute;
     width: 220px;

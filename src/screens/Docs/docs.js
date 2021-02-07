@@ -1,8 +1,6 @@
 import React, { Component } from "react";
-import { Text } from "office-ui-fabric-react";
 import { GraphFileBrowser } from "@microsoft/file-browser";
 import { UserAgentApplication } from "msal";
-import { GetUserId } from "../../utils/utils";
 
 const CLIENT_ID = "87ef2d13-c32b-43fb-bcee-26e04a442680";
 const SCOPES = ["files.readwrite.all", "user.read"];
@@ -47,14 +45,14 @@ class App extends Component {
       (token) => {
         this.setState({ token });
       },
-      (err) => {
+      () => {
         this.msal.acquireTokenRedirect(SCOPES);
       }
     );
   };
 
   _loginPromptAndAuthenticate = () => {
-    this.msal.loginPopup(SCOPES).then((idToken) => {
+    this.msal.loginPopup(SCOPES).then(() => {
       this._acquireAccessToken();
     });
   };

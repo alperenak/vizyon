@@ -1,21 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./syllabusManagement.module.scss";
-import {
-  Ders,
-  Download,
-  Info,
-  User,
-  Date,
-  Clock,
-  GreenTip,
-  PlusCircleSolid,
-  EditSolid,
-  TrashSolid,
-  Down,
-  UploadSolid,
-} from "../../../../icons";
-import AlertBox from "../../../Alert/alert";
-import { ConvertDate, ConvertTime } from "../../../../utils/utils";
+import { Download, TrashSolid, Down, UploadSolid } from "../../../../icons";
 import Modal from "../../../Modal/modal";
 import Input from "../../../Input/input";
 import Button from "../../../Button/button";
@@ -23,50 +8,26 @@ import {
   addClass,
   deleteClass,
   getAllClass,
-  getAllUser,
-  getSpesificRoleUsers,
   GetSyllabusDownloadLink,
   GetToken,
-  updateClass,
-  importSchedule,
 } from "../../../../actions/action";
 import Card from "../../card";
 import teacherAvatar from "../../../../assets/images/teacherAvatar.png";
-import { useDropzone } from "react-dropzone";
-import { FileContext } from "../../../../context/fileContext";
 import Loading from "../../../Loading/loading";
 export default function SyllabusManagement() {
   const [classData, setClassData] = useState(false);
   const [isActive, setIsActive] = useState(false);
   const [modalType, setModalType] = useState(false);
   const [classId, setClassId] = useState(false);
-  const [teachersData, setTeachersData] = useState([]);
-  const {
-    acceptedFiles,
-    getRootProps,
-    getInputProps,
-    isDragActive,
-    isDragAccept,
-    open,
-    isDragReject,
-  } = useDropzone({ noClick: true });
-  const [fileData, setFileData] = useContext(FileContext);
+  const [teachersData] = useState([]);
   const [loading, setLoading] = useState(false);
   const token = GetToken();
-  console.log(acceptedFiles);
   useEffect(() => {
     setLoading(true);
     getAllClass(token, 100, 1, "name,grade").then((data) => {
       setClassData(data.data.data);
-      console.log("sinif", data);
       setLoading(false);
     });
-    // getAllUser(token).then((data) => {
-    //   setTeachersData(
-    //     data.data.data.filter((item) => item.role === "instructor")
-    //   );
-    //   setLoading(false);
-    // });
   }, []);
   return (
     <>
@@ -107,9 +68,10 @@ export default function SyllabusManagement() {
           <div className={styles.scheduleSection}>
             <table>
               {classData && classData !== null
-                ? classData.map((item) => {
+                ? classData.map((item, index) => {
                     return (
                       <tr
+                        key={index}
                         onClick={() => {
                           setClassId(item._id);
                         }}
@@ -179,14 +141,6 @@ export default function SyllabusManagement() {
                 : ""}
             </table>
           </div>
-          {/* <AlertBox
-        title={
-          "Yukarıdaki ders programı **2020 / 2021 Eğitim - Öğretim Yılı**’nın ilk yarısına kadar geçerlidir."
-        }
-        type={"primary"}
-      >
-        <GreenTip className={styles.greenTip} />
-      </AlertBox> */}
           <Modal isActive={isActive} setIsActive={setIsActive}>
             <RenderModalContent
               isActive={isActive}
@@ -194,7 +148,6 @@ export default function SyllabusManagement() {
               type={modalType}
               classId={classId}
               teachersData={teachersData}
-              fileData={fileData}
             />
           </Modal>
         </div>
@@ -209,14 +162,11 @@ function RenderModalContent({
   setIsActive,
   classId,
   teachersData,
-  fileData,
 }) {
   const [updatingClassName, setUpdatingClassName] = useState("");
   const [dropdownActive, setDropdownActive] = useState("");
   const [dropdownName, setDropdownName] = useState("Öğretmen Seçiniz");
   const [instructorId, setInstructorId] = useState("");
-  const [realFileData, setRealFileData] = useState([]);
-  const selectedFile = document.getElementById("fileDrop")?.files[0];
   const token = GetToken();
   if (type === "edit")
     return (
@@ -227,13 +177,6 @@ function RenderModalContent({
           setIsActive={setIsActive}
           classId={classId}
         />
-        {/* <input
-          onChange={(e) => {
-            setRealFileData(e.target.files[0]);
-          }}
-          type="file"
-          id="fileDrop"
-        /> */}
       </>
     );
   else if (type === "add") {
@@ -262,9 +205,10 @@ function RenderModalContent({
               }`}
               onClick={() => {}}
             >
-              {teachersData.map((item) => {
+              {teachersData.map((item, index) => {
                 return (
                   <div
+                    key={index}
                     onClick={() => {
                       setDropdownName(`${item.first_name} ${item.last_name}`);
                       setInstructorId(item.id);
@@ -278,7 +222,6 @@ function RenderModalContent({
             </div>
           </div>
           <Input
-            // value={addAnnouncementsTitle}
             placeholder="Sınıfın adını giriniz"
             onChange={(e) => setUpdatingClassName(e.target.value)}
             inputStyle={"modal"}
@@ -290,7 +233,6 @@ function RenderModalContent({
           onClick={() => {
             setIsActive(false);
             addClass(token, instructorId, updatingClassName).then(() =>
-              // GetAnnouncements(token)
               window.location.reload()
             );
             setIsActive(false);

@@ -1,8 +1,5 @@
 import React from "react";
 
-/*** Styles ***/
-import styles from "./messagesingle.scss";
-
 const MessageSingle = ({ message, sender }) => {
   return (
     <div

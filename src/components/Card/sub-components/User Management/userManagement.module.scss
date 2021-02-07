@@ -4,6 +4,10 @@
   width: 12px;
   height: 12px;
 }
+h3{
+  width: 100%;
+  text-align: left;
+}
 
 ::-webkit-scrollbar-button {
   width: 0px;
@@ -53,6 +57,51 @@
   position: relative;
   overflow-y: scroll;
   max-height: 500px;
+  & .modalIcon {
+    position: absolute;
+    left: 15px;
+    width: 20px;
+    height: 20px;
+    z-index: 1;
+  }
+  & .errorMessage {
+    color: red;
+  }
+  & .icon {
+    position: absolute;
+    left: 15px;
+    width: 20px;
+    height: 20px;
+    z-index: 1;
+  }
+  & .checkSolid {
+    position: absolute;
+    right: 15px;
+    width: 20px;
+    height: 20px;
+    color: rgb(35, 124, 35);
+    z-index: 1;
+  }
+  & .timesSolid {
+    position: absolute;
+    right: 15px;
+    width: 20px;
+    color: red;
+    height: 20px;
+    z-index: 1;
+  }
+
+  & .inputWrapper{
+    display: flex;
+
+    & .inputCol{
+      display: flex;
+      flex-direction: column;
+      padding: 10px 20px;
+      justify-content: center;
+      align-items: center;
+    }
+  }
 
   & .topSide {
     display: flex;

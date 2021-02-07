@@ -1,15 +1,6 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./apps.module.scss";
-import {
-  Groups,
-  Inbox,
-  Microsoft,
-  PieChart,
-  Comunication,
-  Vlog,
-  Medal,
-} from "../../icons/";
-import { UserContext } from "../../context/userContext";
+
 import IsAdmin, {
   GetSpecifiApps,
   GetSSO,
@@ -36,7 +27,6 @@ import VocabularyAz from "../../assets/images/vocabulary.png";
 import Zoom from "../../assets/images/zoom.png";
 
 export default function Apps() {
-  const [count, setCount] = useState(fakeAppsData.length);
   const [loading, setLoading] = useState(false);
   const [AppsData, setAppsData] = useState();
   const [userData, setUserData] = useState(false);
@@ -52,7 +42,7 @@ export default function Apps() {
             GetSpecifiApps(
               token,
               data.data.data.role === "instructor"
-                ? 2
+                ? 9
                 : data.data.data.studentInfo.class.grade
             )
               .then((item) => {
@@ -80,15 +70,16 @@ export default function Apps() {
                 AppsData.data?.data[0].Apps.length !== 0 ? (
                   AppsData.data?.data[0].Apps.filter((item) => {
                     return item.isSet === true;
-                  }).map((item) => {
+                  }).map((item, index) => {
                     return (
                       <div
+                        key={index}
                         onClick={() => {
                           GetSSO(token, item.app._id)
                             .then((data) => {
                               window.open(data.data.data);
                             })
-                            .catch((e) => window.open(item.app.url));
+                            .catch(() => window.open(item.app.url));
                         }}
                         className={styles.renderApps}
                       >
@@ -117,28 +108,9 @@ export default function Apps() {
     </>
   );
 }
-function geIconName(item) {
-  if (item && item !== null && item.name && item.name !== null) {
-    return item.name;
-  } else return "none";
-}
-function getAppName(item) {
-  if (item && item !== null && item.name && item.name !== null) {
-    if (item.name === "office365") return "Office 365";
-    else if (item.name === "udemy") return "Udemy";
-    else if (item.name === "khanAcademy") return "Khan Academy";
-    else if (item.name === "razkids") return "Raz Kids";
-    else if (item.name === "okuvaryumstudent") return "Okuvaryum Öğrenci";
-    else if (item.name === "okuvaryumteacher") return "Okuvaryum Öğretmen";
-    else if (item.name === "brainpop") return "Brain Pop";
-    else if (item.name === "morpa") return "Morpa Kampüs";
-    else if (item.name === "activelylearn") return "Actively Learn";
-  } else return "none";
-}
 
 export function RenderIcon(props) {
   let { iconName } = props;
-  console.log(iconName);
   if (iconName === "office365") {
     return <img src={Office} {...props} className={styles.office} />;
   } else if (iconName === "khanAcademy") {
@@ -175,12 +147,3 @@ export function RenderIcon(props) {
     return <img src={Zoom} {...props} className={styles.actively} />;
   } else return "none";
 }
-const fakeAppsData = [
-  { appName: "Office 365", icon: "microsoft" },
-  { appName: "Teams", icon: "teams" },
-  { appName: "Inbox", icon: "inbox" },
-  { appName: "Statistics", icon: "pieChart" },
-  { appName: "Messenger", icon: "Messenger" },
-  { appName: "Quizs", icon: "Quiz" },
-  { appName: "Awards", icon: "Medal" },
-];

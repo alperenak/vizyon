@@ -155,7 +155,6 @@ export default {
     onCancelTokenAdded = () => {}
   ) {
     let token = "Bearer " + getCookie(tokenCookieName);
-    console.log(additionHeaders);
     const headers = {
       "Content-Type": "application/json",
       Authorization: token,
@@ -194,7 +193,7 @@ export default {
     });
   },
 
-  getErrorResponse(error, errorMessageBuilder, retryFunction, tokenCookieName) {
+  getErrorResponse(error, errorMessageBuilder) {
     let response = { errorData: { message: error.message } };
 
     if (error.response) {
@@ -210,6 +209,7 @@ export default {
         !error.response.data.code &&
         !error.config.url.includes("taxoffices")
       ) {
+        // eslint-disable-next-line no-unused-vars
         let event = new CustomEvent("HTTP_ERROR", { detail: { code: "500" } }); // (2)
         // window.dispatchEvent(event);
       }
@@ -217,6 +217,7 @@ export default {
       response = error.request;
       response.errorData = {};
       if (!error.config.url.includes("taxoffices")) {
+        // eslint-disable-next-line no-unused-vars
         let event = new CustomEvent("HTTP_ERROR", { detail: { code: "500" } }); // (2)
         // window.dispatchEvent(event);
       }

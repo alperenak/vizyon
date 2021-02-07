@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "./topBar.module.scss";
 import Logo from "../../assets/images/logo.png";
 import ChromeIcon from "../../assets/icons/chrome-brands-purple.svg";
@@ -7,23 +7,18 @@ import {
   Down,
   EnvelopeSolid,
   Menu,
-  Notification,
   PowerOffSolid,
-  User,
-  UserIcon,
 } from "../../icons";
-import Avatar from "../../assets/images/avatar.png";
 import SubBar from "./subBar/subBar";
-import { UserContext } from "../../context/userContext";
 import { useCookies } from "react-cookie";
 import { useHistory } from "react-router-dom";
 import { GetToken, GetUser } from "../../actions/action";
 export default function TopBar() {
   const [userData, setUserData] = useState(false);
-  const subBar = document.getElementById("subBar");
   const [subBarActive, setSubBarctive] = useState(false);
   const [dropdownActive, setDropdownActive] = useState(false);
   const [userRole, setUserRole] = useState("");
+  // eslint-disable-next-line no-unused-vars
   const [coookies, setCookies, removeCookies] = useCookies(["token"]);
   const history = useHistory();
   window.document.body.addEventListener("click", () => {
@@ -101,17 +96,7 @@ export default function TopBar() {
                   <CogSolid className={styles.dropdownIcon} />
                   <div className={styles.dropdownItemName}>Ayarlar</div>
                 </div>
-                {/*
-                <div
-                  onClick={() => {
-                    history.push("/profile");
-                  }}
-                  className={styles.dropdownItem}
-                >
-                  <UserIcon className={styles.dropdownIcon} />
-                  <div className={styles.dropdownItemName}>Profilim</div>
-                </div>
-                */}
+
                 <div
                   onClick={() => {
                     removeCookies("token");

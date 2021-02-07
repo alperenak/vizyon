@@ -11,7 +11,7 @@ class NewMessage extends Component {
   state = { dentist: "", message: "", files: null, searchResults: null };
 
   onSubmit = async () => {
-    let { dentist, message, files } = this.state;
+    let { message, files } = this.state;
     let formData = new FormData();
     formData.append("attachements", files[0]);
 
@@ -27,7 +27,6 @@ class NewMessage extends Component {
 
   onFileChange = async (file) => {
     await this.setState({ files: { ...this.state.files, file } });
-    console.log(this.state.files);
   };
 
   onChange = async (e) => {

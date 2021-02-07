@@ -2,28 +2,10 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
-import DataContextProvider from "./context/tokenContext";
 import * as serviceWorker from "./serviceWorker";
-import UserContextProvider from "./context/userContext";
-import StorageContextProvider from "./context/storageContext";
-import SingleUserContextProvider from "./context/singleUserContext";
-import FileContextProvider from "./context/fileContext";
-import AlertboxContextProvider from "./context/alertboxContext";
 ReactDOM.render(
   <React.StrictMode>
-    <FileContextProvider>
-      <AlertboxContextProvider>
-        <SingleUserContextProvider>
-          <StorageContextProvider>
-            <UserContextProvider>
-              <DataContextProvider>
-                <App />
-              </DataContextProvider>
-            </UserContextProvider>
-          </StorageContextProvider>
-        </SingleUserContextProvider>
-      </AlertboxContextProvider>
-    </FileContextProvider>
+    <App />
   </React.StrictMode>,
   document.getElementById("root")
 );

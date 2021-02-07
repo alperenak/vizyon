@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./alert.module.scss";
 
 export default function AlertBox({ title, children, type, size }) {

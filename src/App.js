@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./App.scss";
 import Login from "./screens/Login/login";
 import Home from "./screens/Home/home";
@@ -8,9 +8,7 @@ import Apps from "./screens/Apps/apps";
 import Docs from "./screens/Docs/docs";
 import Homework from "./screens/HomeWork/homework";
 import Admin from "./screens/Admin/admin";
-import IsAdmin, { GetToken, GetUser } from "./actions/action";
 import { useCookies } from "react-cookie";
-import { UserContext } from "./context/userContext";
 import ActivityDetail from "./screens/Admin/ActivityDetail/activityDetail";
 import SideBar from "./components/Sidebar/sidebar";
 import Messages from "./screens/Messages/Messages";
@@ -18,20 +16,18 @@ import MessageDetails from "./screens/Messages/MessageDetails";
 import Settings from "./screens/Settings/settings";
 import Profile from "./screens/Profile/profile";
 function App() {
-  const token = GetToken();
-  const [auth, setAuth] = useState(false);
+  const [auth] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [cookies, setCookies, removeCookies] = useCookies();
-  const location = window.location;
   const pathname = window.location.pathname;
 
   useEffect(() => {
     window.addEventListener(
       "beforeunload",
-      (ev) => {
+      () => {
         if (!localStorage.getItem("rememberMe")) {
           removeCookies("token");
         }
-        // return (ev.returnValue = "Are you sure you want to close?");
       },
       []
     );
@@ -51,7 +47,6 @@ function App() {
         )}
 
         <Switch>
-          {/* {auth ? <TopBar /> : <></>} */}
           <Route
             exact={true}
             path="/"
