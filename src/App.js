@@ -15,6 +15,7 @@ import Messages from "./screens/Messages/Messages";
 import MessageDetails from "./screens/Messages/MessageDetails";
 import Settings from "./screens/Settings/settings";
 import Profile from "./screens/Profile/profile";
+import PrivacyPolicy from "./screens/PrivacyPolicy/privacy";
 function App() {
   const [auth] = useState(false);
   // eslint-disable-next-line no-unused-vars
@@ -37,6 +38,7 @@ function App() {
     <div className="App">
       <Router>
         {pathname === "/" ||
+        pathname === "/privacy_policy" ||
         pathname === "/login/teacher" ||
         pathname == "/login/student" ||
         pathname?.includes("/admin") ||
@@ -146,6 +148,11 @@ function App() {
             component={MessageDetails}
           />
           <Route exact={true} path="/settings" component={Settings} />
+          <Route
+            exact={true}
+            path="/privacy_policy"
+            component={PrivacyPolicy}
+          />
           <Route exact={true} path="/profile" component={Profile} />
           <Route
             exact={true}
