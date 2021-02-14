@@ -23,7 +23,6 @@ import {
 import { AlertboxContext } from "../../../../context/alertboxContext";
 export default function Schedule({ scheduleData, teachersData, classInfo }) {
   const token = GetToken();
-  const [alertboxData, setAlertboxData] = useContext(AlertboxContext);
   const d = new Date();
   const [tablePagination, setTablePagination] = useState([
     { start: 0, end: 2 },

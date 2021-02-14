@@ -52,7 +52,7 @@ export default function Apps() {
             GetSpecifiApps(
               token,
               data.data.data.role === "instructor"
-                ? 2
+                ? 9
                 : data.data.data.studentInfo.class.grade
             )
               .then((item) => {

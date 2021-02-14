@@ -15,7 +15,11 @@
     left: 30px;
     display: flex;
     flex-direction: column;
-
+    & .logo {
+      img {
+        border-radius: 12px;
+      }
+    }
     & .sidebarButtons {
       & .sidebarButton {
         display: flex;

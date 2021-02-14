@@ -3,7 +3,7 @@ import { useContext } from "react";
 import { useCookies } from "react-cookie";
 import http from "../helpers/httpHelper";
 import config from "../appConfig";
-const uri = "https://gelisim.herokuapp.com/api/v1";
+const uri = "https://vizyon.herokuapp.com/api/v1";
 const location = window.location;
 const errorMessageBuilder = (response) => {
   return (response.errorData && response.errorData.code) || "0";
@@ -158,12 +158,14 @@ export function IsRoleAdmin() {
   });
 }
 
-export async function getAllClass(token, limit = 100, page = 1) {
+export async function getAllClass(token, limit = 100, page = 1, select) {
   const config = {
     headers: { authorization: `Bearer ${token}` },
   };
   const response = await axios.get(
-    `${uri}/classes?limit=${limit}&page=${page}`,
+    `${uri}/classes?limit=${limit}&page=${page}${
+      select ? `&select=${select}` : ""
+    }`,
     config
   );
   return response;

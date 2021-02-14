@@ -19,6 +19,7 @@ import {
   ArrowLeftSolid,
   IconUser,
   IconLock,
+  PlusCircleSolid,
 } from "../../../../icons";
 import Office from "../../../../assets/images/office.png";
 import Actively from "../../../../assets/images/actively.png";
@@ -80,6 +81,7 @@ export default function UserDetail({ tabsType }) {
         let Cdata;
         if (data.data.data.userInfo) Cdata = data.data.data.userInfo;
         else Cdata = data.data.data;
+
         setAllTheClasses(data.data.data.classes);
         setRole(Cdata.role);
         setUserData(Cdata);
@@ -127,6 +129,15 @@ export default function UserDetail({ tabsType }) {
             className={styles.backButton}
           >
             <ArrowLeftSolid className={styles.backButtonIcon} />
+          </div>
+          <div
+            onClick={() => {
+              setModalType("add");
+            }}
+            className={styles.feedback}
+          >
+            <PlusCircleSolid className={styles.feedbackIcon} />
+            <div className={styles.feedbackTitle}>Yeni Sınıf Oluştur</div>
           </div>
           <div className={styles.detailSection}>
             <div className={styles.classesCard}>

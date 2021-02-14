@@ -20,9 +20,10 @@
   & .logo {
     position: absolute;
     left: calc(10vw + 10px);
-    width: 133px;
+    width: 65px;
+    border-radius: 12px;
     @include medium {
-      width: 120px;
+      width: 55px;
       left: 0px;
     }
   }

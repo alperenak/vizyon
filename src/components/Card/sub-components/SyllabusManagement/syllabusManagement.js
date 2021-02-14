@@ -56,7 +56,7 @@ export default function SyllabusManagement() {
   console.log(acceptedFiles);
   useEffect(() => {
     setLoading(true);
-    getAllClass(token).then((data) => {
+    getAllClass(token, 100, 1, "name,grade").then((data) => {
       setClassData(data.data.data);
       console.log("sinif", data);
       setLoading(false);

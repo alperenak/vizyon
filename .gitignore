@@ -8,8 +8,6 @@
 # testing
 /coverage
 
-#IDE Related Files
-.idea
 # production
 /build
 

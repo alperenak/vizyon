@@ -132,7 +132,7 @@ export default function TopBar() {
           <div
             onClick={() => {
               window.open(
-                "https://chrome.google.com/webstore/detail/gfkelnilbjflkdjhhfeojhpbjogakifh"
+                "https://chrome.google.com/webstore/detail/vizy-dijital-%C3%B6%C4%9Frenme-plat/hjgplaknfmpgbecljlfeegjccbodcmga"
               );
             }}
             className={styles.chromeExtentionsButton}

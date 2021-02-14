@@ -8,21 +8,18 @@ import UserContextProvider from "./context/userContext";
 import StorageContextProvider from "./context/storageContext";
 import SingleUserContextProvider from "./context/singleUserContext";
 import FileContextProvider from "./context/fileContext";
-import AlertboxContextProvider from "./context/alertboxContext";
 ReactDOM.render(
   <React.StrictMode>
     <FileContextProvider>
-      <AlertboxContextProvider>
-        <SingleUserContextProvider>
-          <StorageContextProvider>
-            <UserContextProvider>
-              <DataContextProvider>
-                <App />
-              </DataContextProvider>
-            </UserContextProvider>
-          </StorageContextProvider>
-        </SingleUserContextProvider>
-      </AlertboxContextProvider>
+      <SingleUserContextProvider>
+        <StorageContextProvider>
+          <UserContextProvider>
+            <DataContextProvider>
+              <App />
+            </DataContextProvider>
+          </UserContextProvider>
+        </StorageContextProvider>
+      </SingleUserContextProvider>
     </FileContextProvider>
   </React.StrictMode>,
   document.getElementById("root")

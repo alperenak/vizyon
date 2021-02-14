@@ -8,6 +8,28 @@
   flex-direction: column;
   height: 100%;
   position: relative;
+  & .feedback {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    cursor: pointer;
+    padding: 0 10px;
+    height: 30px;
+    background-color: rgba(225, 238, 253, 0.51);
+    border-radius: 8px;
+    margin-right: -10px;
+
+    & .feedbackIcon {
+      color: $darkBlue;
+    }
+
+    & .feedbackTitle {
+      font-size: 14px;
+      font-family: SofiaSemiBold;
+      color: $darkBlue;
+      margin-left: 10px;
+    }
+  }
   & .backButton {
     position: absolute;
     left: -50px;

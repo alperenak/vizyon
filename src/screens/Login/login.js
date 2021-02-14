@@ -5,6 +5,7 @@ import TeacherLoginImages from "../../assets/images/teacher.jpg";
 import AdminLoginImages from "../../assets/images/admin.jpg";
 import LoginLogoSmall from "../../assets/icons/loginLogo.svg";
 import Input from "../../components/Input/input";
+import Logo from "../../assets/images/logologin.jpg";
 import { IconLock, IconUser, LoginLogo } from "../../icons";
 import Button from "../../components/Button/button";
 import CheckBox from "../../components/CheckBox/checkbox";
@@ -47,24 +48,30 @@ export default function Login({}) {
         <Loading />
       ) : (
         <div className={styles.loginContainer}>
-          <LoginLogo id="loginWhenScreenHight" className={styles.logoCircle} />
+          <img
+            src={Logo}
+            id="loginWhenScreenHight"
+            className={styles.logoCircle}
+          />
           <div className={styles.loginImages}>
             <img
               height="250"
-              src={LoginLogoSmall}
+              src={Logo}
               id="loginWhenScreenSmall"
               className={styles.responsiveLogoCircle}
             />
-            {/* <LoginLogo className={styles.responsiveLogoCircle} /> */}
-            <img
-              className={styles.loginBacgroundImage}
-              src={pathname === "/login/teacher" ? LoginImages : LoginImages}
-            />
+            <img src={Logo} className={styles.responsiveLogoCircle} />
+            <div className={styles.loginBacgroundImageWrapper}>
+              <img
+                className={styles.loginBacgroundImage}
+                src={pathname === "/login/teacher" ? LoginImages : LoginImages}
+              />
+            </div>
           </div>
           <div className={styles.loginForm}>
             <img
               height="250"
-              src={LoginLogoSmall}
+              src={Logo}
               className={styles.responsiveLogoWhenMedium}
             />
             <RenderLoginMethod
@@ -240,7 +247,7 @@ function RenderLoginMethod({
             <div
               onClick={() => {
                 window.open(
-                  "https://chrome.google.com/webstore/detail/gfkelnilbjflkdjhhfeojhpbjogakifh"
+                  "https://chrome.google.com/webstore/detail/vizy-dijital-%C3%B6%C4%9Frenme-plat/hjgplaknfmpgbecljlfeegjccbodcmga"
                 );
               }}
               className={styles.chromeExtentionsButton}
