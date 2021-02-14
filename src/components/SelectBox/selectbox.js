@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getAllClass, GetToken } from "../../actions/action";
 import { Down, TimesSolid } from "../../icons";
+import SvgRar from "../../icons/Rar";
 import styles from "./selectbox.module.scss";
 
 export default function Selectbox({ onChange, dataToArray = [] }) {
@@ -9,6 +10,7 @@ export default function Selectbox({ onChange, dataToArray = [] }) {
   const [dropdownArray, setDropdownArray] = useState([]);
   const token = GetToken();
   const [ClassesNameData, setClassNameData] = useState([]);
+  console.log("tooo", dropdownArray);
 
   useEffect(() => {
     if (dataToArray && dataToArray.length !== 0) {
@@ -30,15 +32,12 @@ export default function Selectbox({ onChange, dataToArray = [] }) {
         <div id={"dropdownName"} className={styles.dropdownName}>
           <Down id={"dropdownIcon"} className={styles.downIcon} />
           {dropdownArray.length !== 0
-            ? dropdownArray.map((item, index) => {
+            ? dropdownArray.map((item) => {
                 ClassesNameData.filter((data) => {
                   return data._id !== item._id;
                 });
                 return (
-                  <div
-                    className={`${styles.multiselect} ${styles.active}`}
-                    key={index}
-                  >
+                  <div className={`${styles.multiselect} ${styles.active}`}>
                     <TimesSolid
                       onClick={() => {
                         let arr = dropdownArray;
@@ -71,10 +70,9 @@ export default function Selectbox({ onChange, dataToArray = [] }) {
           }`}
           onClick={() => {}}
         >
-          {ClassesNameData.map((item, index) => {
+          {ClassesNameData.map((item) => {
             return (
               <div
-                key={index}
                 onClick={() => {
                   setDropdownName(false);
                   setDropdownArray([

@@ -12,9 +12,11 @@ import {
   EditSolid,
   IconLock,
   IconUser,
+  Inbox,
   TimesCircleSolid,
 } from "../../../../icons";
 import Background from "../../../../assets/images/classroom.jpg";
+import Card from "../../card";
 import styles from "./settings.module.scss";
 import Input from "../../../Input/input";
 import Button from "../../../Button/button";
@@ -37,21 +39,22 @@ import Zoom from "../../../../assets/images/zoom.png";
 import Modal from "../../../Modal/modal";
 export default function Settings() {
   const token = GetToken();
-  const [setUserData] = useState([]);
+  const [userData, setUserData] = useState([]);
   const [name, setName] = useState("");
   const [avatar, setAvatar] = useState("");
   const [classroomName, setClassroomName] = useState("");
   const [tabsType, setTabsType] = useState("myAccount");
   const [oldPassword, setOldPassword] = useState("");
-  const [userId, setUserId] = useState("");
   const [newPassword, setNewPassword] = useState("");
+  const [userId, setUserId] = useState("");
   const [newPasswordAgain, setNewPasswordAgain] = useState("");
-  const [appData] = useState([]);
+  const [appData, setAppData] = useState([]);
   const [appPasswordData, setAppPasswordData] = useState([]);
+  const [modalType, setModalType] = useState("");
   const [isActiveModal, setIsActiveModal] = useState(false);
-  const [passwordId] = useState("");
+  const [passwordId, setPasswordId] = useState("");
   const [errorMessage, setErrorMessage] = useState(false);
-  const [payload] = useState([]);
+  const [payload, setPayload] = useState([]);
   useEffect(() => {
     GetUser(token).then((data) => {
       setUserData(data);
@@ -157,19 +160,13 @@ export default function Settings() {
               inputStyle={"change"}
               value={newPasswordAgain}
             >
-              <IconLock
-                className={styles.icon}
-                style={{ width: 20, height: 20 }}
-              />
+              <IconLock className={styles.icon} />
               {newPassword &&
               newPasswordAgain &&
               newPassword !== "" &&
               newPasswordAgain !== "" &&
               newPassword !== newPasswordAgain ? (
-                <TimesCircleSolid
-                  style={{ width: 20, height: 20 }}
-                  className={styles.timesSolid}
-                />
+                <TimesCircleSolid className={styles.timesSolid} />
               ) : newPassword &&
                 newPasswordAgain &&
                 newPassword !== "" &&
@@ -221,9 +218,9 @@ export default function Settings() {
           </div>
           <div className={styles.renderApps}>
             {appPasswordData && appPasswordData.length !== 0
-              ? appPasswordData.map((item, index) => {
+              ? appPasswordData.map((item) => {
                   return (
-                    <div className={styles.renderAppRow} key={index}>
+                    <div className={styles.renderAppRow}>
                       <div className={styles.appAvatarWrapper}>
                         <div className={styles.appAvatar}>
                           <RenderIcon
@@ -238,7 +235,25 @@ export default function Settings() {
                         {"Veri eklenmedi"}
                       </div>
                       <div className={styles.appPassword}>{"********"}</div>
-                      <EditSolid className={styles.editIcon} />
+                      <EditSolid
+                        onClick={() => {
+                          // setAppData({
+                          //   appName: item.app.title,
+                          //   username: item.credentials.email
+                          //     ? item.credentials.email
+                          //     : item.credentials.username,
+                          //   password: item.credentials.password,
+                          // });
+                          // setPayload({
+                          //   _id: item._id,
+                          //   app: item.app._id,
+                          //   user: userId,
+                          // });
+                          // setModalType("edit");
+                          // setIsActiveModal(true);
+                        }}
+                        className={styles.editIcon}
+                      />
                     </div>
                   );
                 })
@@ -258,7 +273,13 @@ export default function Settings() {
     </div>
   );
 }
-export function RenderModalContent({ appData, userId, payload }) {
+export function RenderModalContent({
+  setIsActive,
+  appData,
+  userId,
+  passwordId,
+  payload,
+}) {
   const [appUsername, setAppUsername] = useState({ status: true });
   const [appPassword, setAppPassword] = useState({ status: true });
   const token = GetToken();
@@ -316,14 +337,48 @@ export function RenderModalContent({ appData, userId, payload }) {
               })
               .catch(() => alert("Bir hata oluştu"));
           }
+          //  else if (appData.email) {
+          //   const credentials = {
+          //     email:
+          //       typeof appUsername === "string" ? appUsername : appData.email,
+          //     password:
+          //       typeof appPassword === "string"
+          //         ? appPassword
+          //         : appData.password,
+          //   };
+          //   UpdateUserAppPassword(token, userId, payload._id, {
+          //     credentials: credentials,
+          //     _id: payload._id,
+          //     app: payload.app,
+          //     user: payload.user,
+          //   })
+          //     .then(() => {
+          //       alert("Uygulama şifresi değiştirme başarılı");
+          //       window.location.reload();
+          //     })
+          //     .catch(() => alert("Bir hata oluştu"));
+          // }
         }}
       />
     </div>
   );
 }
 
+const fakeData = [
+  { appName: "zoom", username: "Veri eklenmedi", password: "*******" },
+  { appName: "eba", username: "Veri eklenmedi", password: "*******" },
+  { appName: "writingaz", username: "Veri eklenmedi", password: "*******" },
+  { appName: "razplus", username: "Veri eklenmedi", password: "*******" },
+  { appName: "k12", username: "Veri eklenmedi", password: "*******" },
+  {
+    appName: "unlocklearning",
+    username: "Veri eklenmedi",
+    password: "*******",
+  },
+];
 export function RenderIcon(props) {
   let { iconName } = props;
+  console.log(iconName);
   if (iconName === "office365") {
     return <img src={Office} {...props} className={styles.office} />;
   } else if (iconName === "khanAcademy") {

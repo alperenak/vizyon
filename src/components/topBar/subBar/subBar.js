@@ -1,11 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Dosyalar, Kampus, Odev, Uygulamalar } from "../../../icons";
 import { useLocation, useHistory } from "react-router-dom";
 import styles from "./subBar.module.scss";
 
-export default function SubBar({ isActive }) {
+export default function SubBar({ isActive, userRole }) {
   const pathname = useLocation().pathname;
   const history = useHistory();
+  console.log(pathname);
   return (
     <div
       id={"subBar"}

@@ -3,10 +3,9 @@
 .adminContainer {
   display: flex;
   justify-content: center;
-  overflow: hidden;
   width: 100%;
+  overflow: hidden;
   height: 100%;
-
 
   & .adminMain {
     display: flex;
@@ -17,11 +16,9 @@
     padding-bottom: 40px;
     flex: 4;
 
-  
-
     & .topSide {
       display: flex;
-      width: 1000px;
+      width: 770px;
       justify-content: space-between;
       align-items: center;
 

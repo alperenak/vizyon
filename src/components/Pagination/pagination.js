@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { ChevronLeftSolid, ChevronRightSolid } from "../../icons";
 import styles from "./pagination.module.scss";
+
 export default function Pagination({ totalCount, selectedPage, onClick }) {
   const arr = makeArray(totalCount);
-  const [defaultCount] = useState(totalCount);
+  const [defaultCount, setDefaultCount] = useState(totalCount);
   const [selectedCirle, setSelectedCircle] = useState(selectedPage);
   const [rightDisable, setRightDisable] = useState(false);
   const [leftDisable, setLeftDisable] = useState(true);
 
+  console.log("selectedPage:", selectedPage);
   useEffect(() => {
     setSelectedCircle(selectedPage);
   }, [selectedPage]);
@@ -30,10 +32,9 @@ export default function Pagination({ totalCount, selectedPage, onClick }) {
         >
           <ChevronLeftSolid className={styles.arrow} />
         </div>
-        {arr.slice(0, defaultCount).map((item, index) => {
+        {arr.slice(0, defaultCount).map((item) => {
           return (
             <div
-              key={index}
               className={`${styles.paginationCircle} ${
                 selectedCirle === item ? styles.selectedCircle : ""
               } ${styles.paginationNumber}`}
@@ -76,10 +77,14 @@ export default function Pagination({ totalCount, selectedPage, onClick }) {
 }
 
 function makeArray(count) {
+  console.log("count:", count);
+
   let arr = [];
   if (count !== 0) {
     for (let i = 1; i <= count; i++) arr.push(i);
   }
+
+  console.log("arr:", arr);
 
   return arr;
 }

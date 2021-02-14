@@ -5,17 +5,16 @@
   "dependencies": {
     "@microsoft/file-browser": "^1.0.0-preview.0",
     "@microsoft/microsoft-graph-client": "^1.2.0",
+    "msal": "^0.2.4",
+    "office-ui-fabric-react": "^6.71.0",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.3.2",
     "@testing-library/user-event": "^7.1.2",
     "axios": "^0.20.0",
     "jwt-decode": "^3.0.0",
-    "msal": "^0.2.4",
     "node-sass": "^4.14.1",
-    "office-ui-fabric-react": "^6.71.0",
     "react": "^16.13.1",
     "react-axios": "^2.0.3",
-    "react-beforeunload": "^2.3.0",
     "react-cookie": "^4.0.3",
     "react-dom": "^16.13.1",
     "react-dropzone": "^11.2.0",
@@ -47,11 +46,6 @@
     ]
   },
   "devDependencies": {
-    "@svgr/cli": "^5.4.0",
-    "eslint-config-airbnb": "^18.2.1",
-    "eslint-plugin-import": "^2.22.1",
-    "eslint-plugin-jsx-a11y": "^6.4.1",
-    "eslint-plugin-react": "^7.22.0",
-    "eslint-plugin-react-hooks": "^1.7.0"
+    "@svgr/cli": "^5.4.0"
   }
 }

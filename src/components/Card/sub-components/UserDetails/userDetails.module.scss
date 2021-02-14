@@ -8,42 +8,8 @@
   flex-direction: column;
   height: 100%;
   position: relative;
-  & .modalIcon {
-    position: absolute;
-    left: 15px;
-    width: 20px;
-    height: 20px;
-    z-index: 1;
-  }
-  & .errorMessage {
-    color: red;
-  }
-  & .icon {
-    position: absolute;
-    left: 15px;
-    width: 20px;
-    height: 20px;
-    z-index: 1;
-  }
-  & .checkSolid {
-    position: absolute;
-    right: 15px;
-    width: 20px;
-    height: 20px;
-    color: rgb(35, 124, 35);
-    z-index: 1;
-  }
-  & .timesSolid {
-    position: absolute;
-    right: 15px;
-    width: 20px;
-    color: red;
-    height: 20px;
-    z-index: 1;
-  }
   & .feedback {
     display: flex;
-    margin: 20px;
     justify-content: space-around;
     align-items: center;
     cursor: pointer;
@@ -104,7 +70,7 @@
       box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
       position: relative;
       background-color: white;
-      margin-bottom: 60px;
+      margin-top: 40px;
 
       & .classBackground {
         display: flex;
@@ -127,21 +93,21 @@
         top: 100px;
         justify-content: center;
         align-items: center;
-        width: 95px;
-        height: 95px;
+        width: 120px;
+        height: 120px;
         background-color: white;
         border-radius: 50%;
         box-shadow: 0 4px 10px 0 #eee5fd;
 
         & .teacherAvatar {
-          width: 85px;
-          height: 85px;
+          width: 110px;
+          height: 110px;
           position: relative;
 
           & img {
             object-fit: cover;
-            width: 85px;
-            height: 85px;
+            width: 110px;
+            height: 110px;
             border-radius: 50%;
           }
 
@@ -152,6 +118,7 @@
             cursor: pointer;
             height: 45px;
             right: -22.5px;
+            z-index: 999999999;
           }
         }
       }
@@ -160,7 +127,7 @@
         font-family: SofiaBold;
         color: $darkBlue;
         font-size: 16px;
-        margin-top: 85px;
+        margin-top: 120px;
       }
 
       & .classroomName {
@@ -172,9 +139,26 @@
 
       & .alertboxes {
         display: flex;
-        align-items: center;
-        justify-content: center;
+        flex-direction: column;
+        margin-top: 20px;
         width: 100%;
+
+        & .MessageCheckIcon {
+          position: absolute;
+          height: 40px;
+          top: 7px;
+          width: 40px;
+          left: 10px;
+        }
+
+        & .ExamIcon {
+          position: absolute;
+          height: 32px;
+          width: 32px;
+          left: 15px;
+        }
+
+        margin-bottom: 15px;
       }
     }
   }
@@ -295,7 +279,7 @@
     justify-content: space-around;
     font-family: SofiaBold;
     color: $darkBlue;
-    margin-top: 30px !important;
+    margin-top: 70px !important;
     margin-left: 10px;
     & .appNameTitle {
       display: flex;

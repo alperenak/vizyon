@@ -4,24 +4,32 @@ import {
   ChevronLeftSolid,
   ChevronRightSolid,
   Download,
+  Info,
   PdfDownload,
+  Xls,
   YellowTip,
 } from "../../../../icons";
 import Dropdown from "../../../Dropdown/dropdown";
 import TeacherAvatar from "../../../../assets/images/teacherAvatar.png";
 import AlertBox from "../../../Alert/alert";
+import { sumTimes } from "../../../../utils/utils";
 import {
   GetSyllabusDownloadLink,
   GetSyllabusPdfDownloadLink,
   GetToken,
 } from "../../../../actions/action";
 export default function Syllabus({ syllabusData, classInfo }) {
-  const [tablePagination] = useState([
+  console.log("syllabu", syllabusData);
+  console.log("classInfo", classInfo);
+  let date = new Date();
+  let weekDays = ["Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma"];
+  const [tablePagination, setTablePagination] = useState([
     { start: 0, end: 2 },
     { start: 2, end: 4 },
     { start: 4, end: 5 },
   ]);
   const [syllabusPageNum, setSyllabusPageNum] = useState(1);
+  let daysData = getDayData(weekDays);
   const token = GetToken();
   return (
     <div className={styles.SyllabusCard}>
@@ -64,9 +72,9 @@ export default function Syllabus({ syllabusData, classInfo }) {
       </div>
       <div className={styles.weekDaysContainer}>
         {syllabusData && syllabusData !== null ? (
-          getDayData().map((item, index) => {
+          getDayData().map((item) => {
             return (
-              <div className={styles.dayLabel} key={index}>
+              <div className={styles.dayLabel}>
                 <div className={`${styles.dayCircle} ${styles[item.color]}`}>
                   {item.day}
                 </div>
@@ -97,13 +105,13 @@ export default function Syllabus({ syllabusData, classInfo }) {
       />
       <div className={styles.Lessons}>
         {syllabusData && syllabusData !== null ? (
-          syllabusData.slice(0, 5).map((item, index) => {
+          syllabusData.slice(0, 5).map((item) => {
             return (
-              <table key={index}>
+              <table>
                 {item.periods.length !== 0
                   ? item.periods.map((item, index) => {
                       return (
-                        <tr key={index}>
+                        <tr>
                           <div className={styles.lessonLabelWrapper}>
                             <Dropdown
                               teacher={getTeacherName(item)}
@@ -134,7 +142,7 @@ export default function Syllabus({ syllabusData, classInfo }) {
                     })
                   : ["", "", "", "", "", ""].map((item, index) => {
                       return (
-                        <tr key={index}>
+                        <tr>
                           <div className={styles.lessonLabelWrapper}>
                             <Dropdown
                               teacher={"Bilgi bulunamadı"}
@@ -285,10 +293,13 @@ function findDayNumber(day) {
   const nowDayNumber = d.getDay();
   const spaceDayNonAbs = nowDayNumber - propDayNumber;
   const dayCount = d.getDate();
+  console.log(spaceDayNonAbs);
   if (spaceDayNonAbs > 0) {
+    console.log("çıkarma kısmında");
     return subtractNowDay(spaceDayNonAbs);
   } else if (spaceDayNonAbs === 0) return dayCount;
   else if (spaceDayNonAbs < 0) {
+    console.log("toplama kisminda");
     return sumNowDay(spaceDayNonAbs);
   }
 }
@@ -305,7 +316,9 @@ function sumNowDay(num) {
   const nowMonthName = months[d.getMonth()];
   const dayCount = d.getDate();
   const result = dayCount - num;
+  console.log("result", result, getMonthNumber(nowMonthName));
   if (result > getMonthNumber(nowMonthName)) {
+    console.log(result, getMonthNumber(nowMonthName));
     return result - getMonthNumber(nowMonthName);
   } else return result;
 }
@@ -356,9 +369,9 @@ function ResponsiveWeekDaysData({
             tablePagination[syllabusPageNum - 1].start,
             tablePagination[syllabusPageNum - 1].end
           )
-          .map((item, index) => {
+          .map((item) => {
             return (
-              <div className={styles.dayLabel} key={index}>
+              <div className={styles.dayLabel}>
                 <div className={`${styles.dayCircle} ${styles[item.color]}`}>
                   {item.day}
                 </div>
@@ -381,13 +394,13 @@ function ResponsiveLessons({ syllabusData, tablePagination, syllabusPageNum }) {
             tablePagination[syllabusPageNum - 1].start,
             tablePagination[syllabusPageNum - 1].end
           )
-          .map((item, index) => {
+          .map((item) => {
             return (
-              <table key={index}>
+              <table>
                 {item.periods.length !== 0
                   ? item.periods.map((item, index) => {
                       return (
-                        <tr key={index}>
+                        <tr>
                           <div className={styles.lessonLabelWrapper}>
                             <Dropdown
                               teacher={getTeacherName(item)}
@@ -418,7 +431,7 @@ function ResponsiveLessons({ syllabusData, tablePagination, syllabusPageNum }) {
                     })
                   : ["", "", "", "", "", ""].map((item, index) => {
                       return (
-                        <tr key={index}>
+                        <tr>
                           <div className={styles.lessonLabelWrapper}>
                             <Dropdown
                               teacher={"Bilgi bulunamadı"}

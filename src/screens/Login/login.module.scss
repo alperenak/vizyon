@@ -11,9 +11,11 @@
   @include small {
     height: max-content;
   }
+
   & .logoCircle {
     position: absolute;
     width: 220px;
+    border-radius: 50%;
     height: 220px;
     @include x-large {
       visibility: hidden;
@@ -25,6 +27,8 @@
       display: flex;
       position: absolute;
       width: 220px;
+      z-index: 999999999999999999999999999999999999999999999999999999;
+      border-radius: 50%;
       height: 220px;
     }
   }
@@ -34,19 +38,23 @@
     justify-content: center;
     align-items: center;
     overflow: hidden;
+    position: relative;
+    z-index: -9999999999999999999999999;
     @include medium {
       display: none;
     }
-
-    & .loginBacgroundImage {
-      object-fit: cover;
-      height: 120vh;
-
-      @include xx-large {
-        margin-left: -100px;
-      }
-      @include large {
-        margin-left: -300px;
+    & .loginBacgroundImageWrapper {
+      width: 100%;
+      height: 100vh;
+      position: relative;
+      & .loginBacgroundImage {
+        height: 100vh;
+        right: -5px;
+        top: 25px;
+        position: absolute;
+        @include xx-large {
+          margin-left: -100px;
+        }
       }
     }
   }
@@ -65,6 +73,7 @@
       display: none;
       @include medium {
         display: flex;
+        border-radius: 50%;
         width: 175px;
         height: 175px;
       }

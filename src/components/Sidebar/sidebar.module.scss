@@ -5,44 +5,32 @@
   display: flex;
   justify-content: center;
   width: 100%;
-  align-items: center;
-  height: 100%;
+  align-items: flex-start;
+  padding-top: 100px;
+  height: 160%;
   background-color: $darkPurple;
-
-  & .logo{
-    display: flex;
-    width: 100%;
-    padding: 16px 0;
-    justify-content:  center;
-    & .adminLogo{
-      width: 100px;
-      height: 100px;
-    }
-  }
- & .sidebarIcon{
-   width: 36px;
-   margin-top: 5px;
-   height: 36px;
- }
 
   & .sidebarCard {
     position: fixed;
     left: 30px;
     display: flex;
     flex-direction: column;
-
+    & .logo {
+      img {
+        border-radius: 12px;
+      }
+    }
     & .sidebarButtons {
       & .sidebarButton {
         display: flex;
         align-items: center;
-        justify-content:center;
-        border-radius: 18px;
+        border-radius: 12px;
         color: white;
         height: 30px;
         width: max-content;
         cursor: pointer;
-        padding: 8px 12px;
-        margin: 16px 0;
+        padding: 3px 10px;
+        margin: 10px 0;
         transition: 0.3s;
 
         &:hover {
@@ -53,7 +41,7 @@
         display: flex;
 
         & .buttonTitle {
-          margin-left: 12px;
+          margin-left: 20px;
           font-family: SofiaMedium;
         }
       }

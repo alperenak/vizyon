@@ -1,9 +1,10 @@
-import React, { Component } from "react";
+import React, { Component, useCookies } from "react";
 
 /*** Styles ***/
 import styles from "./Messages.module.scss";
 
 /*** Icons ***/
+import noQuestionIllustration from "../../assets/icons/illustration_1.svg";
 import addCircle from "../../assets/icons/Icons_add-circle.svg";
 import teacherAvatar from "../../assets/images/teacherAvatar.png";
 
@@ -12,8 +13,27 @@ import teacherAvatar from "../../assets/images/teacherAvatar.png";
 /*** Components ***/
 import Message from "../../components/Message/Message";
 import { getCookie } from "../../utils/cookie";
-import { GetConversations, GetToken, GetUser } from "../../actions/action";
+import backButton from "../../assets/icons/Chevron-right.svg";
+import detailsIcon from "../../assets/icons/three-dots-more-indicator.svg";
+import addFile from "../../assets/icons/add-file.svg";
+import sendButton from "../../assets/icons/send-button.svg";
+import mailIcon from "../../assets/icons/mail_blue.png";
+import DragDrop from "../../components/Card/DragDrop/dragDrop";
+import MessageSingle from "../../components/MessageSingle/MessageSingle";
+import { withCookies, Cookies } from "react-cookie";
+import { instanceOf } from "prop-types";
+import {
+  CreateNewChat,
+  GetConversations,
+  GetMessageDetails,
+  GetToken,
+  GetUser,
+  SearchChat,
+  SendMessage,
+} from "../../actions/action";
 import { convertHourMinute, GetUserId } from "../../utils/utils";
+import { TimesSolid } from "../../icons";
+import Loading from "../../components/Loading/loading";
 class Messages extends Component {
   constructor(props) {
     super(props);
@@ -43,6 +63,7 @@ class Messages extends Component {
     let gettedUserId = GetUserId(getCookie("token"));
     const userId = this.props.match.params.id;
     this.setState({ path: path[1], userId: userId });
+    console.log(this.state.userId);
     let res = await GetConversations(gettedUserId, getCookie("token"));
     this.setState({ messages: res.data.data });
     GetUser(getCookie("token")).then((data) => {
@@ -158,9 +179,10 @@ class Messages extends Component {
         ) : (
           <div className={styles.usersContainer}>
             {userData && userData.length !== 0
-              ? userData.map((item, index) => {
+              ? userData.map((item) => {
+                  console.log(item);
                   return (
-                    <div className={styles.teachersLabel} key={index}>
+                    <div className={styles.teachersLabel}>
                       <div className={styles.avatar}>
                         <img
                           src={
@@ -274,9 +296,9 @@ class Messages extends Component {
         ) : (
           <div className={styles.usersContainer}>
             {userData && userData.length !== 0
-              ? userData.map((item, index) => {
+              ? userData.map((item) => {
                   return (
-                    <div className={styles.teachersLabel} key={index}>
+                    <div className={styles.teachersLabel}>
                       <div className={styles.avatar}>
                         <img
                           src={
@@ -320,6 +342,7 @@ class Messages extends Component {
 
   render() {
     let { messages } = this.state;
+    console.log(this.state.messages);
 
     return (
       <div className={styles.Wrapper}>

@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { getAppsLog, GetToken } from "../../../actions/action";
 import { ArrowLeftSolid, Down } from "../../../icons";
 import styles from "./activityDetail.module.scss";
 import Card from "../../../components/Card/card";
@@ -8,7 +9,28 @@ export default function ActivityDetail({ match }) {
   const [dropdownActive, setDropdownActive] = useState();
   const [tabsType, setTabsType] = useState("Genel");
   const [dropdownName, setDropdownName] = useState("Bugün");
+  const d = new Date();
   const history = useHistory();
+  const months = [
+    "Ocak",
+    "Şubat",
+    "Mart",
+    "Nisan",
+    "Mayıs",
+    "Haziran",
+    "Temmuz",
+    "Ağustos",
+    "Eylül",
+    "Ekim",
+    "Kasım",
+    "Aralık",
+  ];
+  const nowMonth = d.getMonth() + 1;
+  const pastMonth = d.getMonth();
+  const nowDate = d.getDate();
+  const pastDateSevenday = d.getDate() - 7;
+  const pastDateWithYear = `${2020}-0${pastMonth}-0${pastDateSevenday}`;
+  const nowDateWithYear = `${2020}-${nowMonth}-${nowDate}`;
   return (
     <div className={styles.activityDetailContainer}>
       <div
@@ -39,10 +61,9 @@ export default function ActivityDetail({ match }) {
               { name: "Bu ay" },
               { name: "Geçen ay" },
               { name: "Tümü" },
-            ].map((item, index) => {
+            ].map((item) => {
               return (
                 <div
-                  key={index}
                   onClick={() => setDropdownName(item.name)}
                   className={styles.dropdownItems}
                 >

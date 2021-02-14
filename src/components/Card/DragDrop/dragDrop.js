@@ -1,9 +1,12 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import styles from "./dragDrop.module.scss";
 import { useDropzone } from "react-dropzone";
-import { GetToken, importSchedule } from "../../../actions/action";
+import { GetToken, importSchedule, uploadFile } from "../../../actions/action";
 import Button from "../../Button/button";
-export default function DropzoneField({ setIsActive, classId }) {
+import axios from "axios";
+import { FileContext } from "../../../context/fileContext";
+export default function DropzoneField({ isActive, setIsActive, classId }) {
+  const [fileData, setFileData] = useContext(FileContext);
   const {
     acceptedFiles,
     getRootProps,
@@ -70,9 +73,11 @@ export default function DropzoneField({ setIsActive, classId }) {
     }),
     [isDragActive, isDragReject, isDragAccept]
   );
+  console.log("filedata", fileData);
   useEffect(() => {
     let formData = new FormData();
     formData.append("file", files[0]);
+    setFileData(formData);
   }, [acceptedFiles]);
   return (
     <div style={{ display: "flex", flexDirection: "column" }}>
@@ -92,13 +97,19 @@ export default function DropzoneField({ setIsActive, classId }) {
         title={"Yükle"}
         onClick={() => {
           setIsActive(false);
+          let file = files[0];
+          console.log(file);
           let formdata = new FormData();
+          console.log(acceptedFiles[0]);
           formdata.append("file", acceptedFiles[0]);
-          importSchedule(token, formdata, classId).catch(() =>
-            alert(
-              "Gönderilen dosya formatı yanlış. Lütfen standart dosya yüklemesi yapınız."
-            )
-          );
+          console.log("dsadsa", formdata);
+          importSchedule(token, formdata, classId)
+            .then((data) => console.log(data))
+            .catch((e) =>
+              alert(
+                "Gönderilen dosya formatı yanlış. Lütfen standart dosya yüklemesi yapınız."
+              )
+            );
           setIsActive(false);
         }}
       />

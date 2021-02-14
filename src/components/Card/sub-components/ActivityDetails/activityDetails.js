@@ -1,28 +1,88 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./activityDetails.module.scss";
-import { Ders, User } from "../../../../icons";
-import { ConvertDate, convertHourMinute } from "../../../../utils/utils";
 import {
+  Ders,
+  Download,
+  Info,
+  User,
+  Date,
+  Clock,
+  GreenTip,
+  PlusCircleSolid,
+  EditSolid,
+  TrashSolid,
+  Down,
+} from "../../../../icons";
+import AlertBox from "../../../Alert/alert";
+import {
+  ConvertDate,
+  convertHourMinute,
+  ConvertTime,
+} from "../../../../utils/utils";
+import Modal from "../../../Modal/modal";
+import Input from "../../../Input/input";
+import Button from "../../../Button/button";
+import Office from "../../../../assets/images/office.png";
+import teacherAvatar from "../../../../assets/images/teacherAvatar.png";
+import {
+  getAppsLog,
   GetToken,
+  GetAllApps,
   GetGeneralLogs,
   GetDetailLogs,
   GetUserInformations,
-  GetClassLogs,
-  GetClassDetailLogs,
 } from "../../../../actions/action";
-import Office from "../../../../assets/images/office.png";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
+import Card from "../../card";
+import { SingleUserContext } from "../../../../context/singleUserContext";
+import Apps from "../../../Apps/apps";
 import Loading from "../../../Loading/loading";
-export default function ActivityDetails({ tabsType, convertedDropdownValue }) {
+export default function ActivityDetails({
+  tabsType,
+  dropdownValue,
+  convertedDropdownValue,
+}) {
   const [LogData, setLogData] = useState([]);
   const [loading, setLaoding] = useState(true);
   const [userFullName, setUserFullName] = useState("");
   const [userAvatar, setUserAvatar] = useState("");
-  const [logsDetailData, setLogsDetailData] = useState([]);
+  const [singleUser, setSingleUser] = useContext(SingleUserContext);
+  const location = useLocation();
+  const apps = [
+    "udemy",
+    "khanAcademy",
+    "razkids",
+    "okuvaryumstudent",
+    "okuvaryumteacher",
+    "brainpop",
+    "activelylearn",
+    "morpa",
+    "writingaz",
+    "scienceaz",
+    "razplus",
+    "scienceaz",
+    "office365",
+  ];
+  const [appCountData, setAppCountData] = useState([
+    { name: "udemy", count: 0 },
+    { name: "khanAcademy", count: 0 },
+    { name: "razkids", count: 0 },
+    { name: "okuvaryumstudent", count: 0 },
+    { name: "okuvaryumteacher", count: 0 },
+    { name: "brainpop", count: 0 },
+    { name: "activelylearn", count: 0 },
+    { name: "morpa", count: 0 },
+    { name: "writingaz", count: 0 },
+    { name: "scienceaz", count: 0 },
+    { name: "razplus", count: 0 },
+    { name: "scienceaz", count: 0 },
+    { name: "office365", count: 0 },
+  ]);
   const token = GetToken();
   const { id } = useParams();
-  const query = useQuery();
-  const isClass = query.get("class");
+  const [mode, setMode] = useState("");
+  console.log(convertedDropdownValue);
   useEffect(() => {
     GetUserInformations(token, id).then((data) => {
       if (tabsType === "student") {
@@ -30,27 +90,17 @@ export default function ActivityDetails({ tabsType, convertedDropdownValue }) {
         setUserAvatar(data.data.data.userInfo.profile_photo);
       }
     });
-    if (query.get("class")) {
-      GetClassLogs(token, id, convertedDropdownValue)
-        .then((data) => {
-          setLogData(data.data.data.logs);
-          setLaoding(false);
-        })
-        .then(() => {});
-      GetClassDetailLogs(token, id, convertedDropdownValue).then((data) => {
-        setLogsDetailData(data.data.data.logs);
-      });
-    } else {
-      GetGeneralLogs(token, id, convertedDropdownValue)
-        .then((data) => {
-          setLogData(data.data.data.logs);
-          setLaoding(false);
-        })
-        .then(() => {});
-      GetDetailLogs(token, id, convertedDropdownValue).then((data) => {
-        setLogsDetailData(data.data.data.logs);
-      });
-    }
+    GetGeneralLogs(token, id, convertedDropdownValue)
+      .then((data) => {
+        setLogData(data.data.data.logs);
+        if (data.data.data.logs[0]?.user) setMode("class");
+        setLaoding(false);
+      })
+      .then(() => {});
+    GetDetailLogs(token, id, convertedDropdownValue);
+    GetAllApps(token).then((item) => {
+      console.log(item);
+    });
   }, [convertedDropdownValue]);
   return (
     <>
@@ -61,7 +111,7 @@ export default function ActivityDetails({ tabsType, convertedDropdownValue }) {
           <div className={styles.topSide}>
             <div className={styles.title}>
               <div className={styles.avatar}>
-                <img alt="" src={userAvatar} />
+                <img src={userAvatar} />
               </div>
               <div className={styles.name}>{userFullName}</div>
             </div>
@@ -69,15 +119,7 @@ export default function ActivityDetails({ tabsType, convertedDropdownValue }) {
           <div className={styles.scheduleTitlesSection}>
             <table>
               <tr className={styles.scheduleTitlesRow}>
-                {tabsType === "Genel" && (
-                  <div className={styles.scheduleTitles}>
-                    <User
-                      className={`${styles.scheduleTitlesIcon} ${styles.user}`}
-                    />
-                    <td className={styles.ogretmen}>Uygulama Adı</td>
-                  </div>
-                )}
-                {tabsType === "Detaylar" && (
+                {mode === "class" && (
                   <div className={styles.scheduleTitles}>
                     <User
                       className={`${styles.scheduleTitlesIcon} ${styles.user}`}
@@ -86,21 +128,18 @@ export default function ActivityDetails({ tabsType, convertedDropdownValue }) {
                   </div>
                 )}
                 <div className={styles.scheduleTitles}>
-                  <Ders
-                    style={{ marginLeft: tabsType === "Detaylar" ? 0 : 140 }}
-                    className={`${styles.scheduleTitlesIcon}`}
+                  <User
+                    className={`${styles.scheduleTitlesIcon} ${styles.user}`}
                   />
-                  <td>Giriş Sayısı</td>
+                  <td className={styles.ogretmen}>Uygulama Adı</td>
                 </div>
-                {tabsType === "Detaylar" && (
-                  <div className={styles.scheduleTitles}>
-                    <Ders
-                      style={{ marginLeft: 140 }}
-                      className={`${styles.scheduleTitlesIcon}`}
-                    />
-                    <td>Tarih</td>
-                  </div>
-                )}
+                {mode !== "class" ||
+                  (tabsType === "Detaylar" && (
+                    <div className={styles.scheduleTitles}>
+                      <Ders className={`${styles.scheduleTitlesIcon}`} />
+                      <td>{tabsType === "Genel" ? "Giriş Sayısı" : "Tarih"}</td>
+                    </div>
+                  ))}
               </tr>
             </table>
           </div>
@@ -109,14 +148,19 @@ export default function ActivityDetails({ tabsType, convertedDropdownValue }) {
               {tabsType === "Genel" && LogData.length !== 0 ? (
                 LogData?.map((item, index) => {
                   return (
-                    <tr onClick={() => {}} key={index}>
+                    <tr onClick={() => {}}>
                       <div className={styles.scheduleTeacher}>
                         <div className={styles.avatar}>
-                          <img alt="" src={Office} />
+                          <img
+                            // src={String(
+                            //   getTeacherAvatar(teachersData, item.course.code)
+                            // ).replace(/,/gi, "")}\
+                            src={Office}
+                          />
                         </div>
-                        <td>{item.app[0].title}</td>
-                        {!isClass && <td>{item.user}</td>}
+                        <td>{item.user}</td>
                       </div>
+                      <td style={{ marginLeft: 100 }}>{item.app}</td>
                       <td>{item.count}</td>
 
                       <td className={styles.space}></td>
@@ -124,22 +168,19 @@ export default function ActivityDetails({ tabsType, convertedDropdownValue }) {
                   );
                 })
               ) : tabsType === "Detaylar" && LogData.length !== 0 ? (
-                logsDetailData.map((item, index) => {
+                LogData.map((item) => {
                   return (
-                    <tr key={index}>
+                    <tr>
                       <div className={styles.scheduleTeacher}>
                         <div className={styles.avatar}>
-                          <img alt="" src={Office} />
+                          <img src={Office} />
                         </div>
-                        <>
-                          <td>{`${item.user.first_name} ${item.user.last_name}`}</td>
-                          <td style={{ width: 300 }}>{item.app.title}</td>
-                          <td>{`${ConvertDate(item.date)} ${convertHourMinute(
-                            item.date
-                          )}`}</td>
-                        </>
+                        <td>{item.user}</td>
+                        <td style={{ width: 300 }}>{item.app}</td>
                       </div>
-
+                      <td>{`${ConvertDate(item.timestamp)} ${convertHourMinute(
+                        item.timestamp
+                      )}`}</td>
                       <td className={styles.space}></td>
                       <td className={styles.space}></td>
                     </tr>
@@ -157,7 +198,27 @@ export default function ActivityDetails({ tabsType, convertedDropdownValue }) {
     </>
   );
 }
-
-function useQuery() {
-  return new URLSearchParams(useLocation().search);
+const studentsData = [
+  { appName: "Microsoft", count: 8 },
+  { appName: "Microsoft", count: 8 },
+  { appName: "Microsoft", count: 8 },
+  { appName: "Microsoft", count: 8 },
+  { appName: "Microsoft", count: 8 },
+  { appName: "Microsoft", count: 8 },
+  { appName: "Microsoft", count: 8 },
+  { appName: "Microsoft", count: 8 },
+  { appName: "Microsoft", count: 8 },
+];
+const teachersData = [
+  { appName: "Microsoft", date: "27 Ekim 10:02" },
+  { appName: "Microsoft", date: "27 Ekim 10:02" },
+  { appName: "Microsoft", date: "27 Ekim 10:02" },
+  { appName: "Microsoft", date: "27 Ekim 10:02" },
+  { appName: "Microsoft", date: "27 Ekim 10:02" },
+  { appName: "Microsoft", date: "27 Ekim 10:02" },
+];
+function getOccurrence(array, value) {
+  var count = 0;
+  array.forEach((v) => v.app === value && count++);
+  return count;
 }

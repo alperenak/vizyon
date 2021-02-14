@@ -2,43 +2,60 @@ import React, { useEffect, useState } from "react";
 import styles from "./userManagement.module.scss";
 import {
   Ders,
+  Download,
+  Info,
   User,
+  Date,
+  Clock,
+  GreenTip,
   PlusCircleSolid,
+  EditSolid,
   TrashSolid,
-  TimesCircleSolid,
-  CheckSolidCircle,
-  IconLock,
-  IconUser,
+  Down,
 } from "../../../../icons";
+import AlertBox from "../../../Alert/alert";
+import { ConvertDate, ConvertTime } from "../../../../utils/utils";
 import Modal from "../../../Modal/modal";
 import Input from "../../../Input/input";
 import Button from "../../../Button/button";
 import {
+  addClass,
   CreateUser,
-  deleteUser,
+  deleteClass,
   getAllClass,
+  getAllUser,
+  deleteUser,
+  getSpesificRoleUsers,
   GetToken,
+  updateClass,
+  updateUser,
 } from "../../../../actions/action";
+import Pagination from "../../../Pagination/pagination";
 import { useHistory } from "react-router-dom";
-import Dropdown from "../../../Dropdown/dropdown";
 // import teacherAvatar from "../../../../assets/images/teacherAvatar.png";
 export default function UserManagement({
   tabsType,
   studentsData,
   teachersData,
 }) {
+  const [classData, setClassData] = useState([
+    { name: "5 A", teacher: "Alperen Karaguzel" },
+    { name: "5 B", teacher: "Alperen Karaguzel" },
+    { name: "5 C", teacher: "Alperen Karaguzel" },
+    { name: "5 D", teacher: "Alperen Karaguzel" },
+    { name: "5 E", teacher: "Alperen Karaguzel" },
+  ]);
   const [isActive, setIsActive] = useState(false);
   const [modalType, setModalType] = useState(false);
   const [classId, setClassId] = useState(false);
-  const [allTheClasses, setAllTheClasses] = useState([]);
+  const [pageNum, setPageNum] = useState(1);
   const history = useHistory();
+  const [generalData, setGeneralData] = useState(
+    tabsType === "student" ? studentsData : teachersData
+  );
   const token = GetToken();
+  console.log("general", studentsData);
 
-  useEffect(() => {
-    getAllClass(token, 100, 1, "name,grade").then((data) => {
-      setAllTheClasses(data.data.data);
-    });
-  }, []);
   return (
     <div className={styles.schedule}>
       <div className={styles.topSide}>
@@ -65,6 +82,10 @@ export default function UserManagement({
               <User className={`${styles.scheduleTitlesIcon} ${styles.user}`} />
               <td className={styles.ogretmen}>Ad Soyad</td>
             </div>
+            {/* <div className={styles.scheduleTitles}>
+              <Ders className={`${styles.scheduleTitlesIcon}`} />
+              <td>Sınıf</td>
+            </div> */}
             <div className={styles.scheduleTitles}>
               <Ders
                 className={`${styles.scheduleTitlesIcon} ${styles.editAndDelete}`}
@@ -77,10 +98,9 @@ export default function UserManagement({
       <div className={styles.scheduleSection}>
         <table>
           {studentsData && studentsData !== null && tabsType === "student"
-            ? studentsData.map((item, index) => {
+            ? studentsData.map((item) => {
                 return (
                   <tr
-                    key={index}
                     onClick={() => {
                       setClassId(item._id);
                       history.push(
@@ -92,21 +112,32 @@ export default function UserManagement({
                   >
                     <div className={styles.scheduleTeacher}>
                       <div className={styles.avatar}>
-                        <img src={item.profile_photo} />
+                        <img
+                          // src={String(
+                          //   getTeacherAvatar(teachersData, item.course.code)
+                          // ).replace(/,/gi, "")}\
+                          src={item.profile_photo}
+                        />
                       </div>
                       <td>{`${item.first_name} ${item.last_name}`}</td>
                     </div>
                     <td>
-                      {ReturnClass(
-                        allTheClasses,
-                        item.studentInfo.class &&
-                          typeof item.studentInfo.class !== "string"
-                          ? item.studentInfo.class._id
-                          : item.studentInfo.class
-                      )}
+                      {item.studentInfo
+                        ? item.studentInfo.class?.name
+                        : "sınıf bilgisi yok"}
                     </td>
-                    <td className={styles.space}></td>
                     <td className={styles.space}>
+                      {/* <PlusCircleSolid className={styles.addExamIcon} /> */}
+                    </td>
+                    <td className={styles.space}>
+                      {/* <EditSolid
+                        onClick={() => {
+                          setClassId(item._id);
+                          setModalType("edit");
+                          setIsActive(true);
+                        }}
+                        className={styles.editIcon}
+                      /> */}
                       <TrashSolid
                         onClick={() => {
                           deleteUser(token, item._id);
@@ -117,10 +148,9 @@ export default function UserManagement({
                   </tr>
                 );
               })
-            : teachersData.map((item, index) => {
+            : teachersData.map((item) => {
                 return (
                   <tr
-                    key={index}
                     onClick={() => {
                       setClassId(item._id);
                       history.push(
@@ -132,12 +162,26 @@ export default function UserManagement({
                   >
                     <div className={styles.scheduleTeacher}>
                       <div className={styles.avatar}>
-                        <img src={item.profile_photo} />
+                        <img
+                          // src={String(
+                          //   getTeacherAvatar(teachersData, item.course.code)
+                          // ).replace(/,/gi, "")}\
+                          src={item.profile_photo}
+                        />
                       </div>
                       <td>{`${item.first_name} ${item.last_name}`}</td>
                     </div>
+                    {/* <td>{item. ? item.teacher : "Eyüp Saruhan"}</td> */}
                     <td className={styles.space}></td>
                     <td className={styles.space}>
+                      {/* <EditSolid
+                        onClick={() => {
+                          setClassId(item._id);
+                          setModalType("edit");
+                          setIsActive(true);
+                        }}
+                        className={styles.editIcon}
+                      /> */}
                       <TrashSolid
                         onClick={() => {
                           deleteUser(token, item._id);
@@ -150,6 +194,15 @@ export default function UserManagement({
               })}
         </table>
       </div>
+      {/* <AlertBox
+        title={
+          "Yukarıdaki ders programı **2020 / 2021 Eğitim - Öğretim Yılı**’nın ilk yarısına kadar geçerlidir."
+        }
+        type={"primary"}
+      >
+        <GreenTip className={styles.greenTip} />
+      </AlertBox> */}
+
       <Modal isActive={isActive} setIsActive={setIsActive}>
         <RenderModalContent
           isActive={isActive}
@@ -157,228 +210,173 @@ export default function UserManagement({
           type={modalType}
           classId={classId}
           tabsType={tabsType}
-          allTheClasses={allTheClasses}
           teachersData={teachersData}
         />
       </Modal>
     </div>
   );
 }
-function ReturnClass(classes, id) {
-  let classesName = "";
-  classes.map((item) => {
-    if (item._id === id) {
-      classesName = item.name;
-    }
-  });
-  return classesName;
-}
 
-function RenderModalContent({ type, setIsActive, tabsType, allTheClasses }) {
+function RenderModalContent({
+  type,
+  isActive,
+  setIsActive,
+  classId,
+  teachersData,
+  tabsType,
+}) {
+  console.log(classId);
+  const [updatingClassName, setUpdatingClassName] = useState("");
   const [username, setUsername] = useState("");
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
+  const [phone, setPhone] = useState("");
   const [role, setRole] = useState("");
-  const [classId, setClassId] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [schoolNumber, setSchoolNumber] = useState("");
-  const [newPasswordAgain, setNewPasswordAgain] = useState("");
-  const [errorMessage, setErrorMessage] = useState(false);
-  const [schoolName, setSchoolName] = useState(staticSchoolNames[0].value);
+  const [gender, setGender] = useState("");
+  const [dropdownActive, setDropdownActive] = useState();
+  const [dropdownName, setDropdownName] = useState("Cinsiyeti Seçiniz");
+  const [instructorId, setInstructorId] = useState("");
+
   const token = GetToken();
 
   useEffect(() => {
     if (tabsType === "student") setRole("student");
     else setRole("instructor");
   }, [tabsType]);
-
-  if (type === "add") {
+  if (type === "edit")
     return (
       <>
-        <div className={styles.inputWrapper}>
-          <div className={styles.inputCol}>
-            <h3>Adı</h3>
-            <Input
-              placeholder="Adı giriniz"
-              onChange={(e) => setFirstname(e.target.value)}
-              inputStyle={"detail"}
-            />
-            <h3>Soyadı</h3>
-            <Input
-              placeholder="Soyadı giriniz"
-              onChange={(e) => setLastname(e.target.value)}
-              inputStyle={"detail"}
-            />
-            {role !== "instructor" && (
-              <>
-                <h3>Okul Numarası</h3>
-                <Input
-                  placeholder="Okul Numurasını giriniz"
-                  onChange={(e) => setSchoolNumber(e.target.value)}
-                  inputStyle={"detail"}
-                />
-                <h3>Sınıfı</h3>
-                <Dropdown
-                  type={"selectable"}
-                  dropdownData={allTheClasses.map((item) => {
-                    return {
-                      value: item.name,
-                      id: item.id ? item.id : item._id,
-                    };
-                  })}
-                  value={"Sınıf Seçiniz"}
-                  onClick={(e) => setClassId(e.id)}
-                  zIndex
-                />
-                <h3>Okulu</h3>
-                <Dropdown
-                  type={"selectable"}
-                  dropdownData={staticSchoolNames}
-                  onClick={(e) => setSchoolName(e.value)}
-                />
-              </>
-            )}
-            {/* <h3>Telefon Numarası</h3>
-            <Input
-              placeholder="Telefon Numarası giriniz"
-              onChange={(e) => setPhone(e.target.value)}
-              inputStyle={"detail"}
-            />*/}
-          </div>
-          <div className={styles.inputCol}>
-            <h3>E-postası</h3>
-            <Input
-              onChange={(e) => setUsername(e.target.value)}
-              method={"changePassword"}
-              type={"text"}
-              placeholder={"E-postasını giriniz"}
-              inputStyle={"change"}
-            >
-              <IconUser className={styles.modalIcon} />
-            </Input>
-            <h3>Şifre Oluştur</h3>
-            <Input
-              onChange={(e) => setNewPassword(e.target.value)}
-              method={"changePassword"}
-              type={"password"}
-              placeholder={"Yeni Şifre"}
-              inputStyle={"change"}
-              value={newPassword}
-            >
-              <IconLock className={styles.icon} />
-              {newPassword &&
-              newPasswordAgain &&
-              newPassword !== "" &&
-              newPasswordAgain !== "" &&
-              newPassword !== newPasswordAgain ? (
-                <TimesCircleSolid className={styles.timesSolid} />
-              ) : newPassword &&
-                newPasswordAgain &&
-                newPassword !== "" &&
-                newPasswordAgain !== "" &&
-                newPassword === newPasswordAgain ? (
-                <CheckSolidCircle className={styles.checkSolid} />
-              ) : (
-                ""
-              )}
-            </Input>
-            <Input
-              onChange={(e) => setNewPasswordAgain(e.target.value)}
-              method={"changePassword"}
-              type={"password"}
-              placeholder={"Yeni Şifre Tekrar"}
-              inputStyle={"change"}
-              value={newPasswordAgain}
-            >
-              <IconLock className={styles.icon} />
-              {newPassword &&
-              newPasswordAgain &&
-              newPassword !== "" &&
-              newPasswordAgain !== "" &&
-              newPassword !== newPasswordAgain ? (
-                <TimesCircleSolid className={styles.timesSolid} />
-              ) : newPassword &&
-                newPasswordAgain &&
-                newPassword !== "" &&
-                newPasswordAgain !== "" &&
-                newPassword === newPasswordAgain ? (
-                <CheckSolidCircle className={styles.checkSolid} />
-              ) : (
-                ""
-              )}
-            </Input>
-            {errorMessage ? (
-              <div className={styles.errorMessage}>{errorMessage}</div>
-            ) : (
-              ""
-            )}
-
-            {/* <h3>Cinsiyeti</h3>
-            <Dropdown
-              type={"selectable"}
-              dropdownData={staticGenderData}
-              zIndex={true}
-              onClick={(e) => setGender(e)}
-            /> */}
-          </div>
-        </div>
+        <Input
+          // value={addAnnouncementsTitle}
+          placeholder="Adını Giriniz"
+          onChange={(e) => setFirstname(e.target.value)}
+          inputStyle={"modal"}
+        />
+        <Input
+          placeholder="Soyadını giriniz"
+          onChange={(e) => setLastname(e.target.value)}
+          inputStyle={"modal"}
+        />
+        <Input
+          placeholder="Numarasını giriniz"
+          onChange={(e) => setPhone(e.target.value)}
+          inputStyle={"modal"}
+        />
+        <Input
+          placeholder="E-postasını giriniz"
+          onChange={(e) => setUsername(e.target.value)}
+          inputStyle={"modal"}
+        />
         <Button
           type={"modal"}
-          title={"Öğrenci Oluştur"}
+          title={"Ekle"}
           onClick={() => {
-            if (role === "student") {
-              if (
-                newPassword &&
-                newPasswordAgain &&
-                newPassword !== "" &&
-                newPasswordAgain !== "" &&
-                newPassword === newPasswordAgain
-              ) {
-                let payload = {
-                  first_name: firstname,
-                  last_name: lastname,
-                  role: role,
-                  username: username,
-                  password: newPassword,
-                  studentsInfo: {
-                    class: classId,
-                    school: schoolName,
-                    schoolNumber: schoolNumber,
-                  },
-                };
-                CreateUser(token, payload).then(() => window.location.reload());
-                setIsActive(false);
-              } else setErrorMessage("Şifreler uyuşmuyor");
-            } else if (role === "intructor") {
-              alert("instructor");
-              if (
-                newPassword &&
-                newPasswordAgain &&
-                newPassword !== "" &&
-                newPasswordAgain !== "" &&
-                newPassword === newPasswordAgain
-              ) {
-                let payload = {
-                  first_name: firstname,
-                  last_name: lastname,
-                  role: role,
-                  username: username,
-                  password: newPassword,
-                };
-                CreateUser(token, payload).then(() => window.location.reload());
-                setIsActive(false);
-              } else setErrorMessage("Şifreler uyuşmuyor");
-            }
+            setIsActive(false);
+            updateUser(
+              token,
+              firstname,
+              lastname,
+              username,
+              phone,
+              classId
+            ).then(() =>
+              // GetAnnouncements(token)
+              window.location.reload()
+            );
+            setIsActive(false);
+          }}
+        />
+      </>
+    );
+  else if (type === "add") {
+    return (
+      <>
+        <Input
+          // value={addAnnouncementsTitle}
+          placeholder="Adı giriniz"
+          onChange={(e) => setFirstname(e.target.value)}
+          inputStyle={"modal"}
+        />
+        <Input
+          // value={addAnnouncementsTitle}
+          placeholder="Soyadı giriniz"
+          onChange={(e) => setLastname(e.target.value)}
+          inputStyle={"modal"}
+        />
+        <Input
+          // value={addAnnouncementsTitle}
+          placeholder="E-posta giriniz"
+          onChange={(e) => setUsername(e.target.value)}
+          inputStyle={"modal"}
+        />
+        <Input
+          // value={addAnnouncementsTitle}
+          placeholder="Telefon Numarası giriniz"
+          onChange={(e) => setPhone(e.target.value)}
+          inputStyle={"modal"}
+        />
+        {/* <Input
+          // value={addAnnouncementsTitle}
+          placeholder="Cinsiyeti giriniz"
+          onChange={(e) => setGender(e.target.value)}
+          inputStyle={"modal"}
+        /> */}
+        <div
+          id={"classDropdown"}
+          onClick={() => setDropdownActive(!dropdownActive)}
+          className={styles.dropdown}
+        >
+          <div id={"dropdownName"} className={styles.dropdownName}>
+            <Down id={"dropdownIcon"} className={styles.downIcon} />
+            {dropdownName}
+          </div>
+          <div
+            className={`${styles.dropdownContent}  ${
+              dropdownActive ? styles.active : ""
+            }`}
+            onClick={() => {}}
+          >
+            {[{ name: "Erkek" }, { name: "Kız" }].map((item) => {
+              return (
+                <div
+                  onClick={() => {
+                    setDropdownName(item.name);
+                    if (item.name === "Erkek") setGender("male");
+                    else if (item.name === "Kız") setGender("female");
+                  }}
+                  className={styles.dropdownItems}
+                >
+                  {item.name}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        {/* <Input
+          // value={addAnnouncementsTitle}
+          placeholder="Rolünü giriniz (admin, öğrenci, öğretmen)"
+          onChange={(e) => setRole(e.target.value)}
+          inputStyle={"modal"}
+        /> */}
+        <Button
+          type={"modal"}
+          title={"Ekle"}
+          onClick={() => {
+            setIsActive(false);
+            CreateUser(
+              token,
+              firstname,
+              lastname,
+              username,
+              phone,
+              role,
+              gender
+            ).then(() => {
+              window.location.reload();
+            });
           }}
         />
       </>
     );
   } else return <></>;
 }
-
-const staticSchoolNames = [
-  { value: "ANA OKULU", id: "1" },
-  { value: "İLK OKUL", id: "2" },
-  { value: "ORTA OKUL", id: "3" },
-  { value: "FEN LİSESİ", id: "4" },
-];

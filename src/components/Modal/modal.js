@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./modal.module.scss";
 
 export default function Modal({ children, isActive, setIsActive }) {

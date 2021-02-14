@@ -11,7 +11,9 @@ import {
 import {
   AddAnnouncements,
   DeleteAnnouncements,
+  GetAnnouncements,
   GetToken,
+  IsRoleAdmin,
   UpdateAnnouncements,
 } from "../../../../actions/action";
 import Modal from "../../../Modal/modal";
@@ -19,7 +21,11 @@ import Button from "../../../Button/button";
 import Input from "../../../Input/input";
 import { useLocation } from "react-router-dom";
 import Selectbox from "../../../SelectBox/selectbox";
-export default function Announcements({ announcementsData, isAdmin }) {
+export default function Announcements({
+  title = "Duyurular",
+  announcementsData,
+  isAdmin,
+}) {
   const [active, setActive] = useState(false);
   const [modalType, setModalType] = useState("updateAnnouncements");
   const [id, setId] = useState(false);
@@ -30,7 +36,10 @@ export default function Announcements({ announcementsData, isAdmin }) {
   const [details, setDetail] = useState("");
   const [isPublic, setIsPublic] = useState(false);
   const [deletedId, setDeletedId] = useState("");
+  const token = GetToken();
+  const isRoledAdmin = IsRoleAdmin();
   const { pathname } = useLocation();
+  console.log("gelenAnon", announcementsData);
   return (
     <>
       <RenderModal
@@ -47,6 +56,7 @@ export default function Announcements({ announcementsData, isAdmin }) {
         isPublic={isPublic}
         setIsPublic={setIsPublic}
         classArrayPopulate={classArray}
+        isPublic={isPublic}
       />
       <div
         className={`${styles.announcementsCard}  ${
@@ -82,10 +92,9 @@ export default function Announcements({ announcementsData, isAdmin }) {
             ""
           )}
           {announcementsData && announcementsData.length !== 0 ? (
-            announcementsData.slice(0, mapCount).map((item, index) => {
+            announcementsData.slice(0, mapCount).map((item) => {
               return (
                 <div
-                  key={index}
                   className={styles.announcements}
                   onClick={() => {
                     if (!isAdmin) {
@@ -194,7 +203,10 @@ function RenderModal({
   isPublic,
   classArrayPopulate,
   deletedId,
+  setDeletedId,
+  setIsPublic,
 }) {
+  const [announcementsTitle, setAnnouncementsTitle] = useState("");
   const [addAnnouncementsTitle, setAddAnnouncementsTitle] = useState(
     editableTitle
   );
@@ -202,6 +214,7 @@ function RenderModal({
   const [dropdownActive, setDropdownActive] = useState();
   const [dropdownName, setDropdownName] = useState("Kimler görebilir");
   const [classArray, setClassArray] = useState([]);
+  const [classIdArray, setClasIdArray] = useState([]);
   const [errorTitle, setErrorTitle] = useState(false);
   const [errorDetail, setErrorDetail] = useState(false);
   const [errorTitle1, setErrorTitle1] = useState(false);
@@ -258,10 +271,9 @@ function RenderModal({
               onClick={() => {}}
             >
               {[{ name: "Herkes" }, { name: "Seçilen Sınıflar" }].map(
-                (item, index) => {
+                (item) => {
                   return (
                     <div
-                      key={index}
                       onClick={() => {
                         // if (item.name === "Seçilen Sınıflar") setIsPublic(true);
                         setDropdownName(item.name);
@@ -298,6 +310,7 @@ function RenderModal({
             <Selectbox
               dataToArray={classArrayPopulate}
               onChange={(e) => {
+                console.log(e);
                 setUpdatingSelectbox(e);
               }}
             />
@@ -319,7 +332,14 @@ function RenderModal({
                     : classArray,
                   isPublic,
                   token
-                ).catch((e) => console.error(e));
+                )
+                  .then(
+                    () => {
+                      // window.location.reload();
+                    }
+                    // GetAnnouncements(token)
+                  )
+                  .catch((e) => console.log(e));
                 setIsActive(false);
               }
               if (editableTitle.length < 8) {
@@ -343,12 +363,12 @@ function RenderModal({
               className={`${styles.dropdownContent}  ${
                 dropdownActive ? styles.active : ""
               }`}
+              onClick={() => {}}
             >
               {[{ name: "Herkes" }, { name: "Seçilen Sınıflar" }].map(
-                (item, index) => {
+                (item) => {
                   return (
                     <div
-                      key={index}
                       onClick={() => setDropdownName(item.name)}
                       className={styles.dropdownItems}
                     >
@@ -403,6 +423,9 @@ function RenderModal({
                 addAnnouncementsTitle.length >= 8 &&
                 addAnnouncementsDetail.length >= 8
               ) {
+                classArray.map((item) => {
+                  setClasIdArray([...classArray, item._id]);
+                });
                 AddAnnouncements(
                   addAnnouncementsTitle,
                   addAnnouncementsDetail,
