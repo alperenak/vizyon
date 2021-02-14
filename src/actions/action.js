@@ -158,12 +158,14 @@ export function IsRoleAdmin() {
   });
 }
 
-export async function getAllClass(token, limit = 20, page = 1) {
+export async function getAllClass(token, limit = 100, page = 1, select) {
   const config = {
     headers: { authorization: `Bearer ${token}` },
   };
   const response = await axios.get(
-    `${uri}/classes?limit=${limit}&page=${1}`,
+    `${uri}/classes?limit=${limit}&page=${page}${
+      select ? `&select=${select}` : ""
+    }`,
     config
   );
   return response;
@@ -202,6 +204,30 @@ export function getAllUser(token) {
     headers: { authorization: `Bearer ${token}` },
   };
   const response = axios.get(`${uri}/users`, config);
+  return response;
+}
+export function getAllStudents(token, page, limit) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = axios.get(
+    `${uri}/users?role=student&limit=${limit ? limit : 100}&page=${
+      page ? page : 1
+    }`,
+    config
+  );
+  return response;
+}
+export function getAllTeachers(token, page, limit) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = axios.get(
+    `${uri}/users?role=instructor&limit=${limit ? limit : 100}&page=${
+      page ? page : 1
+    }`,
+    config
+  );
   return response;
 }
 
@@ -261,7 +287,7 @@ export async function deleteUser(token, userId) {
   const response = await axios.delete(`${uri}/users/${userId}`, config);
   return response;
 }
-export async function importSchedule(token, file) {
+export async function importSchedule(token, file, classId) {
   const config = {
     headers: {
       authorization: `Bearer ${token}`,
@@ -270,7 +296,11 @@ export async function importSchedule(token, file) {
   };
   console.log("gelen", file);
 
-  const response = await axios.put(`${uri}/classes/import`, file, config);
+  const response = await axios.put(
+    `${uri}/classes/${classId}/schedule`,
+    file,
+    config
+  );
   return response;
 }
 export async function getAppsLog(
@@ -298,7 +328,17 @@ export async function GetSyllabusDownloadLink(token, classId) {
     headers: { authorization: `Bearer ${token}` },
   };
   const response = await axios.get(
-    `${uri}/classes/schedule-xls/${classId}`,
+    `${uri}/classes/${classId}/schedule-xls/`,
+    config
+  );
+  return response;
+}
+export async function GetSyllabusPdfDownloadLink(token, classId) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = await axios.get(
+    `${uri}/classes/${classId}/schedule-pdf/`,
     config
   );
   return response;
@@ -308,7 +348,17 @@ export async function GetSchedulesDownloadLink(token, classId) {
     headers: { authorization: `Bearer ${token}` },
   };
   const response = await axios.get(
-    `${uri}/classes/exams-xls/${classId}`,
+    `${uri}/classes/${classId}/exams-xls/`,
+    config
+  );
+  return response;
+}
+export async function GetSchedulesPdfDownloadLink(token, classId) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = await axios.get(
+    `${uri}/classes/${classId}/exams-pdf/`,
     config
   );
   return response;
@@ -518,5 +568,114 @@ export async function GetUsersbyClassesName(assignedClass, token) {
     `${uri}/users?assignedClass=${assignedClass}`,
     config
   );
+  return response;
+}
+export async function UpdateUserPassword(
+  token,
+  payload = { userId: "", oldPassword: "", newPassword: "" }
+) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = axios.post(`${uri}/auth/update-password`, payload, config);
+  return response;
+}
+export async function UpdateUserAppPassword(
+  token,
+  userId,
+  passwordId,
+  payload = {
+    credentials: {
+      username: "",
+      password: "",
+    },
+    _id: "",
+    app: "",
+    user: "",
+  }
+) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = axios.put(
+    `${uri}/users/${userId}/password/${passwordId}`,
+    payload,
+    config
+  );
+  return response;
+}
+export async function GetUserAppPasswordsByPasswordId(
+  token,
+  userId,
+  passwordId
+) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  return await axios.get(
+    `${uri}/users/${userId}/password/${passwordId}`,
+    config
+  );
+}
+export async function GetUserAppPassword(token, userId) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  return await axios.get(`${uri}/users/${userId}/password`, config);
+}
+export async function GetUserInformations(token, userId) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  return await axios.get(`${uri}/users/${userId}`, config);
+}
+export async function GetGeneralLogs(token, userId, date) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  return await axios.get(
+    `${uri}/logs/app-logs?userId=${userId}&date=${date}`,
+    config
+  );
+}
+export async function GetDetailLogs(token, userId, date) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  return await axios.get(
+    `${uri}/logs/app-logs?userId=${userId}&date=${date}&detail=true`,
+    config
+  );
+}
+export async function UpdateUserInfo(
+  token,
+  userId,
+  payload = {
+    studentInfo: {
+      class: {
+        _id: "5fc59677a2b39930f4bf5f19",
+        name: "5 E",
+      },
+      studentNumber: 182,
+      school: "ORTOKUL",
+    },
+    role: "student",
+    _id: "5fc59529c3d54336149b2fd7",
+    fullName: "ECE ALPARSLAN",
+    first_name: "ECE",
+    last_name: "ALPARSLAN",
+    username: "ece.alparslan@gelisimkoleji.k12.tr",
+    createdAt: "2020-12-01T00:58:17.705Z",
+    __v: 0,
+    assignedClass: "5fc59677a2b39930f4bf5f19",
+    profile_photo:
+      "https://cdn4.iconfinder.com/data/icons/small-n-flat/24/user-alt-512.png",
+    id: "5fc59529c3d54336149b2fd7",
+  }
+) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = axios.put(`${uri}/users/${userId}`, payload, config);
   return response;
 }

@@ -67,7 +67,6 @@ class MessageDetails extends Component {
     let pathname = window.location.pathname;
 
     if (pathname.includes("new")) {
-      alert("hasyen");
       let payload = {
         receiver: conversationID,
         body: messageToSend,

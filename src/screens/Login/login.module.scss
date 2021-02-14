@@ -1,103 +1,179 @@
-@import '../../helpers/variableBreakpoints.scss';
-@import '../../helpers/responsiveBreakpointsMixins.scss';
+@import "../../helpers/variableBreakpoints.scss";
+@import "../../helpers/responsiveBreakpointsMixins.scss";
 
 .loginContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  @include small {
+    height: max-content;
+  }
+
+  & .logoCircle {
+    position: absolute;
+    width: 220px;
+    border-radius: 50%;
+    height: 220px;
+    @include x-large {
+      visibility: hidden;
+    }
+  }
+  & .responsiveLogoCircle {
+    display: none;
+    @include x-large {
+      display: flex;
+      position: absolute;
+      width: 220px;
+      z-index: 999999999999999999999999999999999999999999999999999999;
+      border-radius: 50%;
+      height: 220px;
+    }
+  }
+  & .loginImages {
+    flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100vw;
-    height: 100vh;
     overflow: hidden;
-
-
-    & .logoCircle {
+    position: relative;
+    z-index: -9999999999999999999999999;
+    @include medium {
+      display: none;
+    }
+    & .loginBacgroundImageWrapper {
+      width: 100%;
+      height: 100vh;
+      position: relative;
+      & .loginBacgroundImage {
+        height: 100vh;
+        right: -5px;
+        top: 25px;
         position: absolute;
-        width: 220px;
-        height: 220px;
-        border-radius: 50%;
-
-    }
-
-    & .loginImages {
-        flex: 1;
-        overflow: hidden;
-
-        & img {
-            object-fit: cover;
-            height: 100vh;
-
-            @include xx-large {
-            }
-
+        @include xx-large {
+          margin-left: -100px;
         }
-
+      }
     }
+  }
 
-    & .loginForm {
+  & .loginForm {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    flex: 1;
+    width: 100%;
+    height: 100%;
+    background-color: #f9f6ff;
+
+    & .responsiveLogoWhenMedium {
+      display: none;
+      @include medium {
         display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        flex: 1;
-        width: 100%;
-        height: 100%;
-        background-color: #f9f6ff;
-
-        & .formTitle {
-            display: flex;
-            font-family: SofiaBold;
-            color: $darkBlue;
-            font-size: 30px;
-            width: 400px;
-            justify-content: flex-start;
-            margin-bottom: 48px;
-        }
-
-        & .icon {
-            position: absolute;
-            left: 15px;
-            width: 20px;
-            height: 20px;
-            z-index: 1
-        }
-
-        & .subFormSection {
-            display: flex;
-            justify-content: space-between;
-            width: 400px;
-
-            & .forgotPass {
-                margin-top: 20px;
-                color: $lightPurple;
-                text-decoration: none;
-
-                &:hover {
-                    text-decoration: underline;
-
-                }
-
-            }
-        }
+        border-radius: 50%;
+        width: 175px;
+        height: 175px;
+      }
     }
+    & .formTitle {
+      display: flex;
+      font-family: SofiaBold;
+      color: $darkBlue;
+      font-size: 30px;
+      width: 400px;
+      justify-content: flex-start;
+      margin-bottom: 48px;
+      @include medium {
+        justify-content: center;
+      }
+    }
+
+    & .icon {
+      position: absolute;
+      left: 15px;
+      width: 20px;
+      height: 20px;
+      z-index: 1;
+    }
+
+    & .subFormSection {
+      display: flex;
+      justify-content: space-between;
+      width: 400px;
+      @include medium {
+        width: 300px;
+      }
+
+      & .forgotPass {
+        margin-top: 20px;
+        color: $lightPurple;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
 }
 
 .errorMessage {
-    color: red;
-    font-size: 14px;
+  color: red;
+  font-size: 14px;
 }
 
 .loginMethods {
+  display: flex;
+  flex-direction: column;
+  height: 200px;
+  justify-content: space-between;
+
+  & div {
     display: flex;
-    flex-direction: column;
-    height: 200px;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
+    width: 300px;
+  }
+}
+.chromeExtentionsButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background-color: $darkPurple;
+  color: white;
+  width: 300px;
+  position: relative;
+  min-height: 44px;
+  margin: 24px 0;
+  box-shadow: 0 2px 4px 0 rgba(53, 10, 139, 0.49);
+  cursor: pointer;
+  transition: 0.3s;
 
-    & div {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        width: 300px;
-
-    }
-
+  &:hover {
+    opacity: 0.9;
+  }
+  & .extention {
+    color: white;
+  }
+  & img {
+    width: 25px;
+    position: absolute;
+    left: 15px;
+    color: white;
+  }
+}
+.extentionTitle {
+  color: $darkBlue;
+  font-size: 18px;
+  width: 400px;
+  font-family: SofiaMedium;
+  text-align: center;
+  @include medium {
+    width: 90%;
+    font-size: 14px;
+  }
 }

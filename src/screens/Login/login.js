@@ -1,9 +1,11 @@
 import React, { useContext, useEffect, useState } from "react";
 import styles from "./login.module.scss";
 import LoginImages from "../../assets/images/loginBackground.jpg";
-import Logo from "../../assets/images/logologin.jpg";
+import TeacherLoginImages from "../../assets/images/teacher.jpg";
 import AdminLoginImages from "../../assets/images/admin.jpg";
+import LoginLogoSmall from "../../assets/icons/loginLogo.svg";
 import Input from "../../components/Input/input";
+import Logo from "../../assets/images/logologin.jpg";
 import { IconLock, IconUser, LoginLogo } from "../../icons";
 import Button from "../../components/Button/button";
 import CheckBox from "../../components/CheckBox/checkbox";
@@ -15,7 +17,7 @@ import { UserContext } from "../../context/userContext";
 import Loading from "../../components/Loading/loading";
 import { useLocation, useHistory } from "react-router-dom";
 import jwt_decode from "jwt-decode";
-
+import ChromeIcon from "../../assets/icons/chrome-brands.svg";
 export default function Login({}) {
   const [rememberUser, setRememberUser] = useState(false);
   const [username, setUsername] = useState("");
@@ -25,8 +27,13 @@ export default function Login({}) {
   const [cookies, setCookies] = useCookies(["token"]);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState(false);
+
+  // Chrome 1 - 71
+
+  // Blink engine detection
   const { pathname } = useLocation();
   useEffect(() => {
+    localStorage.setItem("rememberMe", rememberUser);
     if (cookies.token || (token !== "" && token)) {
       if (cookies.admin) {
         window.location.replace("/admin/announcements");
@@ -41,13 +48,32 @@ export default function Login({}) {
         <Loading />
       ) : (
         <div className={styles.loginContainer}>
-          <img src={Logo} className={styles.logoCircle} />
+          <img
+            src={Logo}
+            id="loginWhenScreenHight"
+            className={styles.logoCircle}
+          />
           <div className={styles.loginImages}>
             <img
-              src={pathname === "/login/teacher" ? LoginImages : LoginImages}
+              height="250"
+              src={Logo}
+              id="loginWhenScreenSmall"
+              className={styles.responsiveLogoCircle}
             />
+            <img src={Logo} className={styles.responsiveLogoCircle} />
+            <div className={styles.loginBacgroundImageWrapper}>
+              <img
+                className={styles.loginBacgroundImage}
+                src={pathname === "/login/teacher" ? LoginImages : LoginImages}
+              />
+            </div>
           </div>
           <div className={styles.loginForm}>
+            <img
+              height="250"
+              src={Logo}
+              className={styles.responsiveLogoWhenMedium}
+            />
             <RenderLoginMethod
               username={username}
               setUsername={setUsername}
@@ -90,6 +116,8 @@ function RenderLoginMethod({
 }) {
   const { pathname } = useLocation();
   const history = useHistory();
+  const isChrome =
+    !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
   if (
     pathname === "/login/student" ||
     pathname === "/login/teacher" ||
@@ -126,7 +154,9 @@ function RenderLoginMethod({
         <div className={styles.subFormSection}>
           <CheckBox
             title={"Beni Hatırla"}
-            onClick={() => setRememberUser(!rememberUser)}
+            onClick={() => {
+              setRememberUser(!rememberUser);
+            }}
             isActive={rememberUser}
           />
           <Link className={styles.forgotPass}>Şifreni mi Unuttun?</Link>
@@ -177,22 +207,59 @@ function RenderLoginMethod({
               });
           }}
         />
+        {isChrome ? (
+          <>
+            <div className={styles.extentionTitle}>
+              Uygulamayı düzgün bir şekilde kullanabilmen için eklentiyi
+              indirmen gerekiyor:
+            </div>
+            <div className={styles.chromeExtentionsButton}>
+              <img src={ChromeIcon} />
+              <div className={styles.extention}>Eklentiyi indir</div>
+            </div>
+          </>
+        ) : (
+          ""
+        )}
       </>
     );
   } else {
     return (
-      <div className={styles.loginMethods}>
-        <Button
-          title={"Öğretmen Girişi"}
-          type={"primary"}
-          onClick={() => history.push("/login/teacher")}
-        />
-        <Button
-          title={"Öğrenci Girişi"}
-          type={"primary"}
-          onClick={() => history.push("/login/student")}
-        />
-      </div>
+      <>
+        <div className={styles.loginMethods}>
+          <Button
+            title={"Öğretmen Girişi"}
+            type={"primary"}
+            onClick={() => history.push("/login/teacher")}
+          />
+          <Button
+            title={"Öğrenci Girişi"}
+            type={"primary"}
+            onClick={() => history.push("/login/student")}
+          />
+        </div>
+        {isChrome ? (
+          <>
+            <div className={styles.extentionTitle}>
+              Uygulamayı düzgün bir şekilde kullanabilmen için eklentiyi
+              indirmen gerekiyor:
+            </div>
+            <div
+              onClick={() => {
+                window.open(
+                  "https://chrome.google.com/webstore/detail/vizy-dijital-%C3%B6%C4%9Frenme-plat/hjgplaknfmpgbecljlfeegjccbodcmga"
+                );
+              }}
+              className={styles.chromeExtentionsButton}
+            >
+              <img src={ChromeIcon} />
+              <div className={styles.extention}>Eklentiyi indir</div>
+            </div>
+          </>
+        ) : (
+          ""
+        )}
+      </>
     );
   }
 }

@@ -7,7 +7,7 @@
   width: 100%;
   align-items: flex-start;
   padding-top: 100px;
-  height: 300%;
+  height: 160%;
   background-color: $darkPurple;
 
   & .sidebarCard {
@@ -15,7 +15,11 @@
     left: 30px;
     display: flex;
     flex-direction: column;
-
+    & .logo {
+      img {
+        border-radius: 12px;
+      }
+    }
     & .sidebarButtons {
       & .sidebarButton {
         display: flex;

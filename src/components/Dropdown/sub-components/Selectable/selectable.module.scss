@@ -1,0 +1,68 @@
+@import "../../../../helpers/variableBreakpoints";
+.dropdown {
+  position: relative;
+  display: inline-block;
+  z-index: 1;
+  margin: 10px;
+
+  & .dropdownName {
+    display: flex;
+    align-items: center;
+    color: $darkBlue;
+    width: 200px;
+    height: 30px;
+    cursor: pointer;
+    font-family: SofiaBold;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+    padding: 10px 20px;
+    padding-right: 40px;
+    position: relative;
+
+    & .downIcon {
+      position: absolute;
+      right: 10px;
+      color: black;
+    }
+  }
+
+  & .course {
+    width: 200px;
+  }
+
+  & .dropdownContent {
+    display: none;
+    position: absolute;
+    flex-direction: column;
+    align-items: center;
+    background-color: white;
+    width: calc(100% - 18px);
+    left: 13px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+    overflow-y: scroll;
+    max-height: 200px;
+    font-size: 14px;
+    color: $darkBlue;
+    font-family: SofiaBold;
+
+    & .dropdownItems {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      min-height: 50px;
+      background-color: white;
+      box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
+      cursor: pointer;
+
+      &:hover {
+        background-color: rgb(243, 243, 243);
+      }
+    }
+  }
+
+  & .active {
+    display: flex;
+  }
+}

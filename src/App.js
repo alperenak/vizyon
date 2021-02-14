@@ -15,12 +15,28 @@ import ActivityDetail from "./screens/Admin/ActivityDetail/activityDetail";
 import SideBar from "./components/Sidebar/sidebar";
 import Messages from "./screens/Messages/Messages";
 import MessageDetails from "./screens/Messages/MessageDetails";
+import Settings from "./screens/Settings/settings";
+import Profile from "./screens/Profile/profile";
 function App() {
   const token = GetToken();
   const [auth, setAuth] = useState(false);
+  const [cookies, setCookies, removeCookies] = useCookies();
   const location = window.location;
   const pathname = window.location.pathname;
-  //
+
+  useEffect(() => {
+    window.addEventListener(
+      "beforeunload",
+      (ev) => {
+        if (!localStorage.getItem("rememberMe")) {
+          removeCookies("token");
+        }
+        // return (ev.returnValue = "Are you sure you want to close?");
+      },
+      []
+    );
+  }, []);
+
   return (
     <div className="App">
       <Router>
@@ -111,6 +127,16 @@ function App() {
           <Route exact={true} path="/admin/user" component={Admin} />
           <Route exact={true} path="/admin/syllabus" component={Admin} />
           <Route exact={true} path="/admin/activity" component={Admin} />
+          <Route
+            exact={true}
+            path="/admin/user/student/:id"
+            component={Admin}
+          />
+          <Route
+            exact={true}
+            path="/admin/user/teacher/:id"
+            component={Admin}
+          />
           <Route exact={true} path="/admin/apps" component={Admin} />
           <Route exact={true} path="/admin/exams" component={Admin} />
           <Route exact={true} path="/messages" component={Messages} />
@@ -124,6 +150,8 @@ function App() {
             path="/messages/new/:id"
             component={MessageDetails}
           />
+          <Route exact={true} path="/settings" component={Settings} />
+          <Route exact={true} path="/profile" component={Profile} />
           <Route
             exact={true}
             path="/admin/activity/:id"

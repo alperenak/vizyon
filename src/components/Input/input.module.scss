@@ -1,61 +1,103 @@
-@import '../../helpers/variableBreakpoints.scss';
-
+@import "../../helpers/variableBreakpoints.scss";
+@import "../../helpers/responsiveBreakpointsMixins.scss";
 .inputContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  // width: 400px;
+  position: relative;
+  margin: 7.5px 0px;
+
+  & .primary {
+    border: none;
     height: 50px;
-    // width: 400px;
-    position: relative;
-    margin: 7.5px 0px;
-
-    & .primary {
-        border: none;
-        height: 50px;
-        width: calc(400px - 8px - 50px);
-        font-family: SofiaMedium;
-        color: $darkBlue;
-        outline: none;
-        border-radius: 8px;
-        position: absolute;
-        padding-right: 8px;
-        padding-left: 50px;
-        box-shadow: 0 2px 5px 0 rgba(110, 42, 245, 0.09);
-        caret-color: $darkPurple
+    width: calc(400px - 8px - 50px);
+    font-family: SofiaMedium;
+    color: $darkBlue;
+    outline: none;
+    border-radius: 8px;
+    position: absolute;
+    padding-right: 8px;
+    padding-left: 50px;
+    box-shadow: 0 2px 5px 0 rgba(110, 42, 245, 0.09);
+    caret-color: $darkPurple;
+    @include medium {
+      width: calc(300px - 4px - 50px);
+      padding-right: 4px;
+      padding-left: 50px;
     }
+  }
 
-    & .modal {
-        border: none;
-        height: 50px;
-        width: 400px;
-        font-family: SofiaMedium;
-        color: $darkBlue;
-        outline: none;
-        border-radius: 8px;
-        padding: 0 8px;
-        box-shadow: 0 2px 5px 0 rgba(110, 42, 245, 0.09);
-        caret-color: $darkPurple
-    }
+  & .modal {
+    border: none;
+    height: 50px;
+    width: 400px;
+    font-family: SofiaMedium;
+    color: $darkBlue;
+    outline: none;
+    border-radius: 8px;
+    padding: 0 8px;
+    box-shadow: 0 2px 5px 0 rgba(110, 42, 245, 0.09);
+    caret-color: $darkPurple;
+  }
 
-    & .search {
-        border: none;
-        height: 50px;
-        width: 200px;
-        font-family: SofiaMedium;
-        color: $darkBlue;
-        outline: none;
-        border-radius: 8px;
-        padding: 0 8px;
-        padding-right: 20px;
-        box-shadow: 0 2px 5px 0 rgba(110, 42, 245, 0.09);
-        caret-color: $darkPurple
-    }
-
-    ::placeholder {
-        color: #ccd2df;
-    }
+  & .search {
+    border: none;
+    height: 50px;
+    width: 200px;
+    font-family: SofiaMedium;
+    color: $darkBlue;
+    outline: none;
+    border-radius: 8px;
+    padding: 0 8px;
+    padding-right: 20px;
+    box-shadow: 0 2px 5px 0 rgba(110, 42, 245, 0.09);
+    caret-color: $darkPurple;
+  }
+  & .change {
+    border: none;
+    height: 50px;
+    width: calc(300px - 8px - 50px);
+    font-family: SofiaMedium;
+    color: $darkBlue;
+    outline: none;
+    border-radius: 8px;
+    position: absolute;
+    padding-right: 8px;
+    padding-left: 50px;
+    box-shadow: 0 2px 5px 0 rgba(110, 42, 245, 0.09);
+    caret-color: $darkPurple;
+  }
+  & .detail {
+    border: none;
+    height: 50px;
+    width: calc(300px - 8px - 50px);
+    font-family: SofiaMedium;
+    color: $darkBlue;
+    outline: none;
+    border-radius: 8px;
+    padding-right: 12px;
+    padding-left: 12px;
+    box-shadow: 0 2px 5px 0 rgba(110, 42, 245, 0.09);
+    caret-color: $darkPurple;
+  }
+  ::placeholder {
+    color: #ccd2df;
+  }
 }
 
 .login {
-    width: 400px;
+  width: 400px;
+  @include medium {
+    width: 300px;
+  }
+}
+.changePassword {
+  width: 300px;
+  margin: 18px 0;
+}
+h3 {
+  color: $darkBlue;
+  font-family: SofiaBold;
 }

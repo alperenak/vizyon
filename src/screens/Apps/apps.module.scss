@@ -1,4 +1,6 @@
 @import '../../helpers/variableBreakpoints.scss';
+@import "../../helpers/responsiveBreakpointsMixins.scss";
+
 
 .apps {
     display: flex;
@@ -29,6 +31,9 @@
             margin-top: 20px;
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(190px, 200px));
+            @include medium{
+                margin: auto;
+            }
 
             & .renderApps {
                 display: flex;

@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import styles from "./activity.module.scss";
+import TeacherAvatar from "../../../../assets/images/teacherAvatar.png";
 import {
   Ders,
   Download,
@@ -38,14 +39,8 @@ export default function ActivityManagement({
   tabsType,
   teachersData,
   studentsData,
+  classData,
 }) {
-  const [classData, setClassData] = useState([
-    { name: "5 A", teacher: "Alperen Karaguzel" },
-    { name: "5 B", teacher: "Alperen Karaguzel" },
-    { name: "5 C", teacher: "Alperen Karaguzel" },
-    { name: "5 D", teacher: "Alperen Karaguzel" },
-    { name: "5 E", teacher: "Alperen Karaguzel" },
-  ]);
   const [isActive, setIsActive] = useState(false);
   const [modalType, setModalType] = useState(false);
   const [singleUser, setSingleUser] = useContext(SingleUserContext);
@@ -56,7 +51,7 @@ export default function ActivityManagement({
     tabsType === "student" ? studentsData : teachersData
   );
   const token = GetToken();
-  console.log("general", teachersData);
+  console.log("classssssssssssss", classData);
 
   return (
     <>
@@ -122,7 +117,8 @@ export default function ActivityManagement({
                     </tr>
                   );
                 })
-              : teachersData.map((item) => {
+              : tabsType === "teacher"
+              ? teachersData.map((item) => {
                   return (
                     <tr
                       onClick={() => {
@@ -139,6 +135,36 @@ export default function ActivityManagement({
                           <img src={item.profile_photo} />
                         </div>
                         <td>{`${item.first_name} ${item.last_name}`}</td>
+                      </div>
+                      {/* <td>
+                      {item.teacher
+                        ? item.teacher
+                        : fakeClasses[
+                            Math.floor(Math.random() * (fakeClasses.length - 1))
+                          ]}
+                    </td> */}
+                      <td className={styles.space}></td>
+                      <td className={styles.space}></td>
+                    </tr>
+                  );
+                })
+              : classData.map((item) => {
+                  return (
+                    <tr
+                      onClick={() => {
+                        setClassId(item._id ? item._id : item.id);
+                        setSingleUser({
+                          name: item.name,
+                          profile: TeacherAvatar,
+                        });
+                        history.push(`/admin/activity/${item._id}`);
+                      }}
+                    >
+                      <div className={styles.scheduleTeacher}>
+                        <div className={styles.avatar}>
+                          <img src={TeacherAvatar} />
+                        </div>
+                        <td>{item.name}</td>
                       </div>
                       {/* <td>
                       {item.teacher

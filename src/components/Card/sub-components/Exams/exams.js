@@ -61,7 +61,7 @@ export default function Schedule({
           className={styles.feedback}
         >
           <PlusCircleSolid className={styles.feedbackIcon} />
-          <div className={styles.feedbackTitle}>Yeni Sınıf Oluştur</div>
+          <div className={styles.feedbackTitle}>Sınav Oluştur</div>
         </div>
       </div>
       <div className={styles.scheduleTitlesSection}>
@@ -216,8 +216,14 @@ function RenderModalContent({
             id={"classDropdown"}
             onClick={() => {
               setDropdownActive2(!dropdownActive2);
+              setDropdownActive1(false);
+              setDropdownActive3(false);
+              setMinDropdownActive(false);
+              setCourseDropdownActive(false);
+              setClassesDropdonActive(false);
+              setHourDropdownActive(false);
             }}
-            className={styles.dropdown}
+            className={`${styles.dropdown} ${styles.dayzz}`}
           >
             <div id={"dropdownName"} className={styles.dropdownName}>
               <Down id={"dropdownIcon"} className={styles.downIcon} />
@@ -248,7 +254,15 @@ function RenderModalContent({
           </div>
           <div
             id={"classDropdown"}
-            onClick={() => setDropdownActive1(!dropdownActive1)}
+            onClick={() => {
+              setDropdownActive2(false);
+              setDropdownActive3(false);
+              setMinDropdownActive(false);
+              setHourDropdownActive(false);
+              setCourseDropdownActive(false);
+              setClassesDropdonActive(false);
+              setDropdownActive1(!dropdownActive1);
+            }}
             className={`${styles.dropdown} ${styles.dayzz}`}
           >
             <div id={"dropdownName"} className={styles.dropdownName}>
@@ -280,8 +294,16 @@ function RenderModalContent({
           </div>
           <div
             id={"classDropdown"}
-            onClick={() => setDropdownActive3(!dropdownActive3)}
-            className={`${styles.dropdown} ${styles.hour}`}
+            onClick={() => {
+              setDropdownActive2(false);
+              setDropdownActive1(false);
+              setCourseDropdownActive(false);
+              setClassesDropdonActive(false);
+              setMinDropdownActive(false);
+              setHourDropdownActive(false);
+              setDropdownActive3(!dropdownActive3);
+            }}
+            className={`${styles.dropdown} ${styles.dayzz}`}
           >
             <div id={"dropdownName"} className={styles.dropdownName}>
               <Down id={"dropdownIcon"} className={styles.downIcon} />
@@ -323,7 +345,15 @@ function RenderModalContent({
         <div>
           <div
             id={"classDropdown"}
-            onClick={() => setHourDropdownActive(!hourDropdownActive)}
+            onClick={() => {
+              setDropdownActive2(false);
+              setCourseDropdownActive(false);
+              setClassesDropdonActive(false);
+              setDropdownActive1(false);
+              setMinDropdownActive(false);
+              setDropdownActive3(false);
+              setHourDropdownActive(!hourDropdownActive);
+            }}
             className={`${styles.dropdown} ${styles.hour}`}
           >
             <div id={"dropdownName"} className={styles.dropdownName}>
@@ -355,7 +385,15 @@ function RenderModalContent({
           :
           <div
             id={"classDropdown"}
-            onClick={() => setMinDropdownActive(!minDropdownActive)}
+            onClick={() => {
+              setDropdownActive2(false);
+              setDropdownActive1(false);
+              setHourDropdownActive(false);
+              setCourseDropdownActive(false);
+              setClassesDropdonActive(false);
+              setDropdownActive3(false);
+              setMinDropdownActive(!minDropdownActive);
+            }}
             className={`${styles.dropdown} ${styles.hour}`}
           >
             <div id={"dropdownName"} className={styles.dropdownName}>
@@ -392,7 +430,15 @@ function RenderModalContent({
         /> */}
         <div
           id={"classDropdown"}
-          onClick={() => setCourseDropdownActive(!courseDropdownActive)}
+          onClick={() => {
+            setDropdownActive2(false);
+            setDropdownActive1(false);
+            setHourDropdownActive(false);
+            setMinDropdownActive(false);
+            setClassesDropdonActive(false);
+            setDropdownActive3(false);
+            setCourseDropdownActive(!courseDropdownActive);
+          }}
           className={`${styles.dropdown} ${styles.classes}`}
         >
           <div
@@ -427,7 +473,15 @@ function RenderModalContent({
         {type == "add" ? (
           <div
             id={"classDropdown"}
-            onClick={() => setClassesDropdonActive(!classesDropdownIsActive)}
+            onClick={() => {
+              setDropdownActive2(false);
+              setDropdownActive1(false);
+              setHourDropdownActive(false);
+              setMinDropdownActive(false);
+              setCourseDropdownActive(false);
+              setDropdownActive3(false);
+              setClassesDropdonActive(!classesDropdownIsActive);
+            }}
             className={styles.dropdown}
           >
             <div

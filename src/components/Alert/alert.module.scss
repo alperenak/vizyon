@@ -1,41 +1,50 @@
-@import '../../helpers/variableBreakpoints.scss';
+@import "../../helpers/variableBreakpoints.scss";
+@import "../../helpers/responsiveBreakpointsMixins.scss";
 
 .alertBox {
-    display: flex;
-    justify-content: flex-start;
-    align-items: center;
-    margin: 20px;
-    height: 48px;
-    border-radius: 8px;
-    position: relative;
-    padding-left: 55px;
-    font-size: 14px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin: 20px;
+  border-radius: 8px;
+  position: relative;
+  padding-left: 55px;
+  padding: 0px 5px 0px 55px;
+  font-size: 14px;
 
-    & span {
-        font-family: SofiaBold;
-    }
+  @include medium {
+    font-size: 12px;
+  }
+  @include small {
+    padding: 10px 10px 10px 55px;
+  }
 
-    & .titles {}
+  & span {
+    font-family: SofiaBold;
+  }
+
+  & .titles {
+  }
 }
 
 .primary {
-    background-color: #e9fff8;
-    color: #63c19e;
-    min-height: 48px;
+  background-color: #e9fff8;
+  color: #63c19e;
+  min-height: 48px;
 }
 
 .secondary {
-    background-color: #fffae5;
-    color: #ffd215;
-    min-height: 48px;
+  background-color: #fffae5;
+  color: #ffd215;
+  min-height: 48px;
 }
 
 .tertiary {
-    background-color: #e9fbff;
-    color: #33a9cc;
-    min-height: 48px;
+  background-color: #e9fbff;
+  color: #33a9cc;
+  min-height: 48px;
 }
 
 .small {
-    margin: 10px 20px;
+  margin: 10px 20px;
 }

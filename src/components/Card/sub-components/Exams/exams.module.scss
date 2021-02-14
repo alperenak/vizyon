@@ -235,7 +235,7 @@
             font-size: 14px;
             color: $darkBlue;
             font-family: SofiaBold;
-            z-index: 1;
+
 
             & .dropdownItems {
                 display: flex;
@@ -246,6 +246,7 @@
                 background-color: white;
                 box-shadow: 0 2px 6px 0 rgba(110, 42, 245, 0.09);
                 cursor: pointer;
+
 
                 &:hover {
                     background-color: rgb(243, 243, 243);
@@ -265,14 +266,14 @@
     }
 
     & .classes {
-        z-index: 9999999999999999999;
+        z-index: 99;
     }
 
     & .hour {
-        z-index: 9999999999999;
+        z-index: 999999999;
     }
 
     & .dayzz {
-        z-index: 9999999999999999999;
+        z-index: 999999999999999999999999999;
     }
 }

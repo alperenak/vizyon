@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { getAppsLog, GetToken } from "../../../actions/action";
-import { Down } from "../../../icons";
+import { ArrowLeftSolid, Down } from "../../../icons";
 import styles from "./activityDetail.module.scss";
 import Card from "../../../components/Card/card";
+import { useHistory } from "react-router-dom";
 
 export default function ActivityDetail({ match }) {
   const [dropdownActive, setDropdownActive] = useState();
   const [tabsType, setTabsType] = useState("Genel");
-  const [dropdownName, setDropdownName] = useState("Tarih seçiniz");
+  const [dropdownName, setDropdownName] = useState("Bugün");
   const d = new Date();
+  const history = useHistory();
   const months = [
     "Ocak",
     "Şubat",
@@ -31,6 +33,12 @@ export default function ActivityDetail({ match }) {
   const nowDateWithYear = `${2020}-${nowMonth}-${nowDate}`;
   return (
     <div className={styles.activityDetailContainer}>
+      <div
+        onClick={() => history.push("/admin/activity")}
+        className={styles.backButton}
+      >
+        <ArrowLeftSolid className={styles.backButtonIcon} />
+      </div>
       <div className={styles.topSide}>
         <div
           id={"classDropdown"}
@@ -48,9 +56,11 @@ export default function ActivityDetail({ match }) {
             onClick={() => {}}
           >
             {[
+              { name: "Bugün" },
               { name: "Son 7 gün" },
               { name: "Bu ay" },
               { name: "Geçen ay" },
+              { name: "Tümü" },
             ].map((item) => {
               return (
                 <div
@@ -87,14 +97,16 @@ export default function ActivityDetail({ match }) {
         tabsType={tabsType}
         match={match}
         dropdownValue={dropdownName}
+        convertedDropdownValue={convertDropdownValue(dropdownName)}
       />
     </div>
   );
 }
 function convertDropdownValue(value) {
-  if (value === "Son 7 gün") {
-    return "thisWeek";
-  } else if (value === "Bu ay") return "thisMonth";
+  if (value === "Son 7 gün") return "thisWeek";
+  else if (value === "Bu ay") return "thisMonth";
   else if (value === "Geçen ay") return "lastMonth";
+  else if (value === "Bugün") return "today";
+  else if (value === "Tümü") return "all";
   else return false;
 }

@@ -1,30 +1,54 @@
-import React from "react";
+import React, { useState } from "react";
 import styles from "./syllabus.module.scss";
-import { Download, Info, PdfDownload, Xls, YellowTip } from "../../../../icons";
+import {
+  ChevronLeftSolid,
+  ChevronRightSolid,
+  Download,
+  Info,
+  PdfDownload,
+  Xls,
+  YellowTip,
+} from "../../../../icons";
 import Dropdown from "../../../Dropdown/dropdown";
 import TeacherAvatar from "../../../../assets/images/teacherAvatar.png";
 import AlertBox from "../../../Alert/alert";
 import { sumTimes } from "../../../../utils/utils";
-import { GetSyllabusDownloadLink, GetToken } from "../../../../actions/action";
+import {
+  GetSyllabusDownloadLink,
+  GetSyllabusPdfDownloadLink,
+  GetToken,
+} from "../../../../actions/action";
 export default function Syllabus({ syllabusData, classInfo }) {
   console.log("syllabu", syllabusData);
   console.log("classInfo", classInfo);
   let date = new Date();
   let weekDays = ["Pazartesi", "Salı", "Çarşamba", "Perşembe", "Cuma"];
+  const [tablePagination, setTablePagination] = useState([
+    { start: 0, end: 2 },
+    { start: 2, end: 4 },
+    { start: 4, end: 5 },
+  ]);
+  const [syllabusPageNum, setSyllabusPageNum] = useState(1);
   let daysData = getDayData(weekDays);
   const token = GetToken();
   return (
     <div className={styles.SyllabusCard}>
       <div className={styles.topSide}>
         <div className={styles.title}>Ders Programı</div>
-        <div className={styles.downloadSyllabusPdf}>
+        <div
+          className={styles.downloadSyllabusPdf}
+          onClick={() => {
+            GetSyllabusPdfDownloadLink(token, classInfo._id).then((item) =>
+              window.open(item.data.data[0])
+            );
+          }}
+        >
           <div className={styles.formatXLS}>
             <PdfDownload className={styles.formatIcon} />
             <div className={styles.formatName}>PDF</div>
           </div>
           <div className={styles.downloadTitle}>Ders Programını İndir</div>
         </div>
-        <div className={styles.title}>Ders Programı</div>
         <div
           className={styles.downloadSyllabus}
           onClick={() => {
@@ -39,18 +63,20 @@ export default function Syllabus({ syllabusData, classInfo }) {
           </div>
           <div className={styles.downloadTitle}>Ders Programını İndir</div>
         </div>
+        {/*
         <div className={styles.feedback}>
           <Info className={styles.feedbackIcon} />
           <div className={styles.feedbackTitle}>Sorun Bildir</div>
         </div>
+        */}
       </div>
       <div className={styles.weekDaysContainer}>
         {syllabusData && syllabusData !== null ? (
-          getDayData(weekDays).map((item) => {
+          getDayData().map((item) => {
             return (
               <div className={styles.dayLabel}>
                 <div className={`${styles.dayCircle} ${styles[item.color]}`}>
-                  {fakeGetDay(item.dayName)}
+                  {item.day}
                 </div>
                 <div className={styles.dayName}> {item.dayName}</div>
               </div>
@@ -60,37 +86,91 @@ export default function Syllabus({ syllabusData, classInfo }) {
           <div>data yok</div>
         )}
       </div>
+      <ResponsiveWeekDaysData
+        syllabusData={syllabusData}
+        syllabusPageNum={syllabusPageNum}
+        tablePagination={tablePagination}
+      />
+      <RenderArrow
+        type={"left"}
+        onClick={() => {
+          if (syllabusPageNum > 1) setSyllabusPageNum(syllabusPageNum - 1);
+        }}
+      />
+      <RenderArrow
+        type={"right"}
+        onClick={() => {
+          if (syllabusPageNum < 3) setSyllabusPageNum(syllabusPageNum + 1);
+        }}
+      />
       <div className={styles.Lessons}>
         {syllabusData && syllabusData !== null ? (
           syllabusData.slice(0, 5).map((item) => {
             return (
               <table>
-                {item.periods.slice(0, 5).map((item, index) => {
-                  return (
-                    <tr>
-                      <div className={styles.lessonLabelWrapper}>
-                        <Dropdown
-                          teacher={getTeacherName(item)}
-                          lessonName={getLessonName(item.course)}
-                          startingTime={getLessonTime(item).startingTime}
-                          avatar={getTeacherAvatar(item.instructor)}
-                          endTime={getLessonTime(item).endingTime}
-                        >
-                          <div
-                            className={`${styles.lessonLabel} ${
-                              styles[`lbl${getColor(item.course)}`]
-                            }`}
-                          >
-                            <td className={styles[getColor(item.course)]}>
-                              {getLessonName(item.course)}
-                            </td>
-                            <span>{getTeacherName(item)}</span>
+                {item.periods.length !== 0
+                  ? item.periods.map((item, index) => {
+                      return (
+                        <tr>
+                          <div className={styles.lessonLabelWrapper}>
+                            <Dropdown
+                              teacher={getTeacherName(item)}
+                              lessonName={getLessonName(item.course)}
+                              startingTime={getLessonTime(item).startingTime}
+                              avatar={getTeacherAvatar(item.instructor)}
+                              endTime={getLessonTime(item).endingTime}
+                            >
+                              <div
+                                className={`${styles.lessonLabel} ${
+                                  styles[`lbl${getColor(item.course)}`]
+                                }`}
+                              >
+                                <td className={styles[getColor(item.course)]}>
+                                  {getLessonName(item.course).length > 12
+                                    ? `${getLessonName(item.course).slice(
+                                        0,
+                                        12
+                                      )}...`
+                                    : getLessonName(item.course)}
+                                </td>
+                                <span>{getTeacherName(item)}</span>
+                              </div>
+                            </Dropdown>
                           </div>
-                        </Dropdown>
-                      </div>
-                    </tr>
-                  );
-                })}
+                        </tr>
+                      );
+                    })
+                  : ["", "", "", "", "", ""].map((item, index) => {
+                      return (
+                        <tr>
+                          <div className={styles.lessonLabelWrapper}>
+                            <Dropdown
+                              teacher={"Bilgi bulunamadı"}
+                              lessonName={""}
+                              startingTime={""}
+                              avatar={getTeacherAvatar(item.instructor)}
+                              endTime={""}
+                            >
+                              <div
+                                className={`${styles.lessonLabel} ${
+                                  styles[`lbl${getColor(item.course)}`]
+                                }`}
+                              >
+                                <td className={styles[getColor(item.course)]}>
+                                  {getLessonName(item.course).length > 12
+                                    ? `${getLessonName(item.course).slice(
+                                        0,
+                                        12
+                                      )}...`
+                                    : getLessonName(item.course)}
+                                </td>
+                                <span>{getTeacherName(item)}</span>
+                              </div>
+                            </Dropdown>
+                          </div>
+                        </tr>
+                      );
+                    })}
               </table>
             );
           })
@@ -98,10 +178,15 @@ export default function Syllabus({ syllabusData, classInfo }) {
           <div>data yok</div>
         )}
       </div>
+      <ResponsiveLessons
+        syllabusData={syllabusData}
+        syllabusPageNum={syllabusPageNum}
+        tablePagination={tablePagination}
+      />
       <AlertBox
-        title={
-          "Yukarıdaki ders programı **2020 / 2021 Eğitim - Öğretim Yılı**’nın ilk yarısına kadar geçerlidir."
-        }
+        title={`Yukarıdaki ders programı **${d.getFullYear()} / ${
+          d.getFullYear() + 1
+        } Eğitim - Öğretim Yılı**’nın ilk yarısına kadar geçerlidir.`}
         type={"secondary"}
       >
         <YellowTip className={styles.yellowTip} />
@@ -113,7 +198,7 @@ export default function Syllabus({ syllabusData, classInfo }) {
 function getLessonName(course) {
   if (course !== null && course && course.name) {
     return course.name;
-  } else return "ingilizce";
+  } else return "Ders Boş";
 }
 function getTeacherName(item) {
   if (
@@ -157,222 +242,41 @@ function getColor(course) {
       course.name.includes("Fen Bilgisi")
     ) {
       return color[0];
-    } else if (course.name.includes("Beden Eğitimi")) {
+    } else if (course.name.includes("MATEMATİK")) {
       return color[1];
-    } else if (course.name.includes("İngilizce")) {
+    } else if (course.name.includes("İNGİLİZCE")) {
       return color[3];
-    } else if (course.name.includes("Görsel Sanatlar")) {
-      return color[2];
-    } else if (course.name.includes("Tarihi")) {
-      return color[3];
-    } else if (course.name.includes("Türkçe")) {
-      return color[1];
-    } else if (course.name.includes("Bilgiler")) {
+    } else if (course.name.includes("COĞRAFYA")) {
       return color[4];
+    } else if (course.name.includes("BİYOLOJİ")) {
+      return color[0];
+    } else if (course.name.includes("FİZİK")) {
+      return color[2];
+    } else if (course.name.includes("TÜRKÇE")) {
+      return color[1];
+    } else if (course.name.includes("DİLİ")) {
+      return color[4];
+    } else if (course.name.includes("KİMYA")) {
+      return color[2];
     } else return color[Math.floor(Math.random() * 4)];
-  } else return "none";
+  } else return "Ders Bilgisi Bulunamadı";
 }
 const color = ["green", "red", "blue", "yellow", "purple"];
 
-const fakeData = [
-  {
-    day: "Pazartesi",
-    lessons: [
-      {
-        teacher: "Mustafa Ulusoy",
-        color: color[4],
-        lessonName: "Matematik",
-        startingTime: "8.00",
-        avatar: TeacherAvatar,
-        endTime: "10.00",
-      },
-      {
-        teacher: "Fatih Kalender",
-        color: color[0],
-        lessonName: "Fen Bilimleri",
-        startingTime: "10.00",
-        avatar: TeacherAvatar,
-        endTime: "12.00",
-      },
-      {
-        teacher: "Alperen Karagüzel",
-        color: color[1],
-        lessonName: "Beden Eğitimi",
-        startingTime: "12.00",
-        avatar: TeacherAvatar,
-        endTime: "14.00",
-      },
-      {
-        teacher: "Alperen Karagüzel",
-        color: color[0],
-        lessonName: "Fizik",
-        startingTime: "14.00",
-        avatar: TeacherAvatar,
-        endTime: "16.00",
-      },
-    ],
-  },
-  {
-    day: "Salı",
-    lessons: [
-      {
-        teacher: "Alperen Karagüzel",
-        color: color[1],
-        lessonName: "Beden Eğitimi",
-        startingTime: "8.00",
-        avatar: TeacherAvatar,
-        endTime: "10.00",
-      },
-      {
-        teacher: "Alperen Karagüzel",
-        color: color[1],
-        lessonName: "Beden Eğitimi",
-        startingTime: "10.00",
-        avatar: TeacherAvatar,
-        endTime: "12.00",
-      },
-      {
-        teacher: "Fatih Kalender",
-        color: color[0],
-        lessonName: "Fen Bilimleri",
-        startingTime: "12.00",
-        avatar: TeacherAvatar,
-        endTime: "14.00",
-      },
-      {
-        teacher: "Fatih Kalender",
-        color: color[0],
-        lessonName: "Fen Bilimleri",
-        startingTime: "14.00",
-        avatar: TeacherAvatar,
-        endTime: "16.00",
-      },
-    ],
-  },
-  {
-    day: "Çarşamba",
-    lessons: [
-      {
-        teacher: "Fatih Kalender",
-        color: color[0],
-        lessonName: "Fen Bilimleri",
-        startingTime: "8.00",
-        avatar: TeacherAvatar,
-        endTime: "10.00",
-      },
-      {
-        teacher: "Fatih Kalender",
-        color: color[0],
-        lessonName: "Fen Bilimleri",
-        startingTime: "10.00",
-        avatar: TeacherAvatar,
-        endTime: "12.00",
-      },
-      {
-        teacher: "Mustafa Ulusoy",
-        color: color[4],
-        lessonName: "Matematik",
-        startingTime: "12.00",
-        avatar: TeacherAvatar,
-        endTime: "14.00",
-      },
-      {
-        teacher: "Mustafa Ulusoy",
-        color: color[4],
-        lessonName: "Matematik",
-        startingTime: "14.00",
-        avatar: TeacherAvatar,
-        endTime: "16.00",
-      },
-    ],
-  },
-  {
-    day: "Perşembe",
-    lessons: [
-      {
-        teacher: "Alperen Karagüzel",
-        color: color[0],
-        lessonName: "Fizik",
-        startingTime: "8.00",
-        avatar: TeacherAvatar,
-        endTime: "10.00",
-      },
-      {
-        teacher: "Alperen Karagüzel",
-        color: color[0],
-        lessonName: "Fizik",
-        startingTime: "10.00",
-        avatar: TeacherAvatar,
-        endTime: "12.00",
-      },
-      {
-        teacher: "Mustafa Ulusoy",
-        color: color[4],
-        lessonName: "Matematik",
-        startingTime: "12.00",
-        avatar: TeacherAvatar,
-        endTime: "14.00",
-      },
-      {
-        teacher: "Mustafa Ulusoy",
-        color: color[4],
-        lessonName: "Matematik",
-        startingTime: "14.00",
-        avatar: TeacherAvatar,
-        endTime: "16.00",
-      },
-    ],
-  },
-  {
-    day: "Cuma",
-    lessons: [
-      {
-        teacher: "Alperen Karagüzel",
-        color: color[2],
-        lessonName: "Kimya",
-        startingTime: "8.00",
-        avatar: TeacherAvatar,
-        endTime: "10.00",
-      },
-      {
-        teacher: "Alperen Karagüzel",
-        color: color[2],
-        lessonName: "Kimya",
-        startingTime: "10.00",
-        avatar: TeacherAvatar,
-        endTime: "12.00",
-      },
-      {
-        teacher: "Alperen Karagüzel",
-        color: color[0],
-        lessonName: "Görsel Sanatlar",
-        startingTime: "12.00",
-        avatar: TeacherAvatar,
-        endTime: "14.00",
-      },
-      {
-        teacher: "Alperen Karagüzel",
-        color: color[0],
-        lessonName: "Müzik",
-        startingTime: "14.00",
-        avatar: TeacherAvatar,
-        endTime: "16.00",
-      },
-    ],
-  },
-];
-
-function getDayData(dayss) {
+function getDayData() {
   let arr = [];
-  dayss.map((item, index) => {
+  days.slice(1, 6).map((item, index) => {
     arr.push({
       dayName: item,
-      day: getDay(item, months[date.getMonth()]),
+      day: findDayNumber(item),
       color: color[index],
     });
   });
   return arr;
 }
+
+const date = new Date();
+
 const days = [
   "Pazar",
   "Pazartesi",
@@ -382,6 +286,42 @@ const days = [
   "Cuma",
   "Cumartesi",
 ];
+const d = new Date();
+
+function findDayNumber(day) {
+  const propDayNumber = days.indexOf(day);
+  const nowDayNumber = d.getDay();
+  const spaceDayNonAbs = nowDayNumber - propDayNumber;
+  const dayCount = d.getDate();
+  console.log(spaceDayNonAbs);
+  if (spaceDayNonAbs > 0) {
+    console.log("çıkarma kısmında");
+    return subtractNowDay(spaceDayNonAbs);
+  } else if (spaceDayNonAbs === 0) return dayCount;
+  else if (spaceDayNonAbs < 0) {
+    console.log("toplama kisminda");
+    return sumNowDay(spaceDayNonAbs);
+  }
+}
+
+function subtractNowDay(num) {
+  const lastMonthName = months[d.getMonth() - 1 >= 0 ? d.getMonth() - 1 : 11];
+  const dayCount = d.getDate();
+  const result = dayCount - num;
+  if (result < 0) {
+    return getMonthNumber(lastMonthName) + result;
+  } else return result;
+}
+function sumNowDay(num) {
+  const nowMonthName = months[d.getMonth()];
+  const dayCount = d.getDate();
+  const result = dayCount - num;
+  console.log("result", result, getMonthNumber(nowMonthName));
+  if (result > getMonthNumber(nowMonthName)) {
+    console.log(result, getMonthNumber(nowMonthName));
+    return result - getMonthNumber(nowMonthName);
+  } else return result;
+}
 const months = [
   "Ocak",
   "Şubat",
@@ -396,21 +336,8 @@ const months = [
   "Kasım",
   "Aralık",
 ];
-const date = new Date();
 
-function getDay(day, month) {
-  let arr = [];
-  const d = new Date();
-  const todayDayName = days[d.getDay()];
-  const todayDay = d.getDay();
-  const todayDayCount = d.getDate();
-  const todayMonth = d.getMonth() + 1;
-  const pastMonth = d.getMonth() !== 0 ? d.getMonth() : 12;
-  const futureMonth = d.getMonth() + 2 !== 13 ? d.getMonth() : 1;
-  const getDayCount = days.indexOf(day) - todayDay + todayDayCount;
-}
-
-function getMonthNumber(month = "Nisan") {
+export function getMonthNumber(month = "Nisan") {
   const thirdyOne = [
     "Ocak",
     "Mart",
@@ -420,18 +347,140 @@ function getMonthNumber(month = "Nisan") {
     "Ekim",
     "Aralık",
   ];
-  if (thirdyOne.includes(months)) {
+  if (thirdyOne.includes(month)) {
     return 31;
-  } else if (months === "Şubat") {
+  } else if (month === "Şubat") {
     if (date.getFullYear() % 4 === 0) {
       return 29;
     } else return 28;
   } else return 30;
 }
-function fakeGetDay(day) {
-  if (day === "Pazartesi") return 5;
-  else if (day === "Salı") return 6;
-  else if (day === "Çarşamba") return 7;
-  else if (day === "Perşembe") return 8;
-  else if (day === "Cuma") return 9;
+
+function ResponsiveWeekDaysData({
+  syllabusData,
+  tablePagination,
+  syllabusPageNum,
+}) {
+  return (
+    <div className={styles.responsiveWeekDaysContainer}>
+      {syllabusData && syllabusData !== null ? (
+        getDayData()
+          .slice(
+            tablePagination[syllabusPageNum - 1].start,
+            tablePagination[syllabusPageNum - 1].end
+          )
+          .map((item) => {
+            return (
+              <div className={styles.dayLabel}>
+                <div className={`${styles.dayCircle} ${styles[item.color]}`}>
+                  {item.day}
+                </div>
+                <div className={styles.dayName}> {item.dayName}</div>
+              </div>
+            );
+          })
+      ) : (
+        <div>data yok</div>
+      )}
+    </div>
+  );
+}
+function ResponsiveLessons({ syllabusData, tablePagination, syllabusPageNum }) {
+  return (
+    <div className={styles.responsiveLessons}>
+      {syllabusData && syllabusData !== null ? (
+        syllabusData
+          .slice(
+            tablePagination[syllabusPageNum - 1].start,
+            tablePagination[syllabusPageNum - 1].end
+          )
+          .map((item) => {
+            return (
+              <table>
+                {item.periods.length !== 0
+                  ? item.periods.map((item, index) => {
+                      return (
+                        <tr>
+                          <div className={styles.lessonLabelWrapper}>
+                            <Dropdown
+                              teacher={getTeacherName(item)}
+                              lessonName={getLessonName(item.course)}
+                              startingTime={getLessonTime(item).startingTime}
+                              avatar={getTeacherAvatar(item.instructor)}
+                              endTime={getLessonTime(item).endingTime}
+                            >
+                              <div
+                                className={`${styles.lessonLabel} ${
+                                  styles[`lbl${getColor(item.course)}`]
+                                }`}
+                              >
+                                <td className={styles[getColor(item.course)]}>
+                                  {getLessonName(item.course).length > 12
+                                    ? `${getLessonName(item.course).slice(
+                                        0,
+                                        12
+                                      )}...`
+                                    : getLessonName(item.course)}
+                                </td>
+                                <span>{getTeacherName(item)}</span>
+                              </div>
+                            </Dropdown>
+                          </div>
+                        </tr>
+                      );
+                    })
+                  : ["", "", "", "", "", ""].map((item, index) => {
+                      return (
+                        <tr>
+                          <div className={styles.lessonLabelWrapper}>
+                            <Dropdown
+                              teacher={"Bilgi bulunamadı"}
+                              lessonName={""}
+                              startingTime={""}
+                              avatar={getTeacherAvatar(item.instructor)}
+                              endTime={""}
+                            >
+                              <div
+                                className={`${styles.lessonLabel} ${
+                                  styles[`lbl${getColor(item.course)}`]
+                                }`}
+                              >
+                                <td className={styles[getColor(item.course)]}>
+                                  {getLessonName(item.course).length > 12
+                                    ? `${getLessonName(item.course).slice(
+                                        0,
+                                        12
+                                      )}...`
+                                    : getLessonName(item.course)}
+                                </td>
+                                <span>{getTeacherName(item)}</span>
+                              </div>
+                            </Dropdown>
+                          </div>
+                        </tr>
+                      );
+                    })}
+              </table>
+            );
+          })
+      ) : (
+        <div>data yok</div>
+      )}
+    </div>
+  );
+}
+export function RenderArrow({ type, onClick }) {
+  return (
+    <div className={`${styles.responsiveArrowWrapper} ${styles[type]}`}>
+      <div onClick={onClick} className={styles.responsiveArrow}>
+        {type === "left" ? (
+          <ChevronLeftSolid className={styles.arrowIcon} />
+        ) : type === "right" ? (
+          <ChevronRightSolid className={styles.arrowIcon} />
+        ) : (
+          ""
+        )}
+      </div>
+    </div>
+  );
 }

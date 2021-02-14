@@ -5,8 +5,19 @@ import Actively from "../../assets/images/actively.png";
 import BrainPop from "../../assets/images/brainpop.png";
 import KhanAcademy from "../../assets/images/khan.png";
 import Morpa from "../../assets/images/morpa.png";
-import Okuvaryum from "../../assets/images/okvaryum.png";
 import RazPlus from "../../assets/images/razPlus.svg";
+import Okuvaryum from "../../assets/images/okvaryum.png";
+import BrainModify from "../../assets/images/brainModify.png";
+import HiglightsLibrary from "../../assets/images/higlightsLibrary.png";
+import Compass from "../../assets/images/compass.png";
+import Raunt from "../../assets/images/raunt.png";
+import sebitVCloud from "../../assets/images/sebitVCloud.png";
+import MyOn from "../../assets/images/myOn.jpg";
+import MyEduClass from "../../assets/images/myEduClass.png";
+import LinguAttack from "../../assets/images/linguaAttack.svg";
+import MicrosoftTeams from "../../assets/images/microsoftTeams.png";
+import Pearson from "../../assets/images/pearson.svg";
+import Rockalingua from "../../assets/images/rockalingualogo.png";
 import ScienceAz from "../../assets/images/ScienceAz.svg";
 import WritingAz from "../../assets/images/writingAz.svg";
 import VocabularyAz from "../../assets/images/vocabulary.png";
@@ -16,18 +27,7 @@ import Meb from "../../assets/images/meb.jpg";
 import RazKids from "../../assets/images/razkids.png";
 import { CheckSolid } from "../../icons";
 import Udemy from "../../assets/images/udemy.png";
-import BrainModify from "../../assets/images/brainModify.png";
-import Compass from "../../assets/images/compass.png";
-import HiglightsLibrary from "../../assets/images/higlightsLibrary.png";
-import LinguAttack from "../../assets/images/linguaAttack.svg";
-import MicrosoftTeams from "../../assets/images/microsoftTeams.png";
-import MyEduClass from "../../assets/images/myEduClass.png";
-import MyOn from "../../assets/images/myOn.jpg";
-import Pearson from "../../assets/images/pearson.svg";
-import sebitVCloud from "../../assets/images/sebitVCloud.png";
-import Rockalingua from "../../assets/images/rockalingualogo.png";
-import Raunt from "../../assets/images/raunt.png";
-
+import Zoom from "../../assets/images/zoom.png";
 export default function Apps({
   iconName,
   appName,
@@ -121,5 +121,7 @@ export function RenderIcon(props) {
     return (
       <img src={HiglightsLibrary} {...props} className={styles.actively} />
     );
+  } else if (iconName === "zoom") {
+    return <img src={Zoom} {...props} className={styles.actively} />;
   } else return "none";
 }
