@@ -27,9 +27,9 @@
       display: flex;
       position: absolute;
       width: 220px;
-      z-index: 999999999999999999999999999999999999999999999999999999;
       border-radius: 50%;
       height: 220px;
+      z-index: 99;
     }
   }
   & .loginImages {
@@ -39,7 +39,7 @@
     align-items: center;
     overflow: hidden;
     position: relative;
-    z-index: -9999999999999999999999999;
+    z-index: -9999999999999;
     @include medium {
       display: none;
     }
