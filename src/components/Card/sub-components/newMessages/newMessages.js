@@ -12,9 +12,10 @@ export default function NewMessages({ newMessagesData }) {
         </div>
         {newMessagesData.data?.data.total ? (
           <div className={styles.teachersSection}>
-            {newMessagesData.data?.data.conversations.map((item) => {
+            {newMessagesData.data?.data.conversations.map((item, index) => {
               return (
                 <div
+                  key={index}
                   className={`${"messageContainer"} ${
                     styles.messagesContainer
                   }`}

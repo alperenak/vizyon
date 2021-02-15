@@ -4,6 +4,10 @@
   width: 12px;
   height: 12px;
 }
+h3 {
+  width: 100%;
+  text-align: left;
+}
 
 ::-webkit-scrollbar-button {
   width: 0px;
@@ -41,7 +45,26 @@
 ::-webkit-scrollbar-corner {
   background: transparent;
 }
-
+.userManagementTableWrapper {
+  overflow-y: scroll;
+}
+.scheduleRowWrapper {
+  flex: 7;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.trashCircle {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  cursor: context-menu;
+  z-index: 999999999999;
+}
 .schedule {
   width: 1000px;
   display: flex;
@@ -51,8 +74,52 @@
   background-color: white;
   margin-top: 40px;
   position: relative;
-  overflow-y: scroll;
   max-height: 500px;
+  & .modalIcon {
+    position: absolute;
+    left: 15px;
+    width: 20px;
+    height: 20px;
+    z-index: 1;
+  }
+  & .errorMessage {
+    color: red;
+  }
+  & .icon {
+    position: absolute;
+    left: 15px;
+    width: 20px;
+    height: 20px;
+    z-index: 1;
+  }
+  & .checkSolid {
+    position: absolute;
+    right: 15px;
+    width: 20px;
+    height: 20px;
+    color: rgb(35, 124, 35);
+    z-index: 1;
+  }
+  & .timesSolid {
+    position: absolute;
+    right: 15px;
+    width: 20px;
+    color: red;
+    height: 20px;
+    z-index: 1;
+  }
+
+  & .inputWrapper {
+    display: flex;
+
+    & .inputCol {
+      display: flex;
+      flex-direction: column;
+      padding: 10px 20px;
+      justify-content: center;
+      align-items: center;
+    }
+  }
 
   & .topSide {
     display: flex;
@@ -161,7 +228,7 @@
           }
 
           & .editAndDelete {
-            margin-left: 400px;
+            margin-left: 500px;
           }
         }
 

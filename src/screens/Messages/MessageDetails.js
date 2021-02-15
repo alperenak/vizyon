@@ -3,7 +3,6 @@ import React, { Component } from "react";
 import styles from "./Messages.module.scss";
 
 import backButton from "../../assets/icons/Chevron-right.svg";
-import detailsIcon from "../../assets/icons/three-dots-more-indicator.svg";
 import addFile from "../../assets/icons/add-file.svg";
 import sendButton from "../../assets/icons/send-button.svg";
 
@@ -102,9 +101,7 @@ class MessageDetails extends Component {
   };
 
   render() {
-    let { sender, singleMessages } = this.state;
-    const self = this;
-    console.log(singleMessages);
+    let { sender } = this.state;
     return (
       <div className={styles.MessagesDetailWrapper}>
         <div className={styles.messageDetailsContainer}>

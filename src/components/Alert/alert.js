@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import styles from "./alert.module.scss";
 
-export default function AlertBox({ title, children, type, size }) {
+export default function AlertComponent({ title, children, type, size }) {
   return (
     <div className={`${styles.alertBox} ${styles[type]} ${styles[size]}`}>
       {children}

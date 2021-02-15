@@ -1,16 +1,21 @@
 import React, { useEffect, useState } from "react";
 import { ChevronLeftSolid, ChevronRightSolid } from "../../icons";
 import styles from "./pagination.module.scss";
-
 export default function Pagination({ totalCount, selectedPage, onClick }) {
   const arr = makeArray(totalCount);
-  const [defaultCount, setDefaultCount] = useState(totalCount);
   const [selectedCirle, setSelectedCircle] = useState(selectedPage);
   const [rightDisable, setRightDisable] = useState(false);
   const [leftDisable, setLeftDisable] = useState(true);
 
-  console.log("selectedPage:", selectedPage);
+  function DisableLeftIcon() {
+    if (selectedCirle === 1) setLeftDisable(true);
+    else setLeftDisable(false);
+    if (selectedCirle === totalCount) setRightDisable(true);
+    else setRightDisable(false);
+  }
+
   useEffect(() => {
+    DisableLeftIcon();
     setSelectedCircle(selectedPage);
   }, [selectedPage]);
   return (
@@ -22,19 +27,16 @@ export default function Pagination({ totalCount, selectedPage, onClick }) {
           } ${leftDisable ? styles.disableArrow : ""}`}
           onClick={() => {
             if (selectedCirle > 1) {
-              if (selectedCirle === 2) setLeftDisable(true);
-              else setLeftDisable(false);
-              if (selectedCirle === totalCount) setRightDisable(false);
               onClick(selectedCirle - 1);
-              setSelectedCircle(selectedCirle - 1);
             }
           }}
         >
           <ChevronLeftSolid className={styles.arrow} />
         </div>
-        {arr.slice(0, defaultCount).map((item) => {
+        {arr.slice(0, totalCount).map((item, index) => {
           return (
             <div
+              key={index}
               className={`${styles.paginationCircle} ${
                 selectedCirle === item ? styles.selectedCircle : ""
               } ${styles.paginationNumber}`}
@@ -60,13 +62,7 @@ export default function Pagination({ totalCount, selectedPage, onClick }) {
             !rightDisable ? styles.hoverArrows : ""
           } ${rightDisable ? styles.disableArrow : ""}`}
           onClick={() => {
-            if (selectedCirle < totalCount) {
-              if (selectedCirle === 1) setLeftDisable(false);
-              if (selectedCirle === totalCount - 1) setRightDisable(true);
-              else setRightDisable(false);
-              onClick(selectedCirle + 1);
-              setSelectedCircle(selectedCirle + 1);
-            }
+            if (selectedCirle !== totalCount) onClick(selectedCirle + 1);
           }}
         >
           <ChevronRightSolid className={styles.arrow} />
@@ -77,14 +73,10 @@ export default function Pagination({ totalCount, selectedPage, onClick }) {
 }
 
 function makeArray(count) {
-  console.log("count:", count);
-
   let arr = [];
   if (count !== 0) {
     for (let i = 1; i <= count; i++) arr.push(i);
   }
-
-  console.log("arr:", arr);
 
   return arr;
 }

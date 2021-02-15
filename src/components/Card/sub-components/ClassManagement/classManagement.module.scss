@@ -51,9 +51,10 @@
   background-color: white;
   margin-top: 40px;
   position: relative;
-  overflow-y: scroll;
   max-height: 500px;
-
+  & h3 {
+    margin: 10px;
+  }
   & .topSide {
     display: flex;
     margin: 0 30px;
@@ -162,8 +163,6 @@
           }
         }
 
-        & .ogretmen {}
-
         & .tarih {
           margin-right: 80px;
         }
@@ -190,6 +189,7 @@
 
   & .scheduleSection {
     display: flex;
+    overflow-y: scroll;
     width: 100%;
     margin-top: 10px;
 
@@ -232,14 +232,15 @@
         & .space {
           width: 100px;
           display: flex;
-          justify-content: flex-end;
+          justify-content: center;
         }
 
         & .scheduleTeacher {
           display: flex;
-          justify-content: center;
+          justify-content: flex-start;
           align-items: center;
           height: 60px;
+          width: 150px;
 
           & td {
             margin-left: 15px;

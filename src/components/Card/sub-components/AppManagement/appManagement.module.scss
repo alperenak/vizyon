@@ -29,7 +29,6 @@
     & .appsGrid {
       margin-top: 20px;
       display: grid;
-      margin-bottom: 10px;
       grid-template-columns: repeat(auto-fill, minmax(190px, 200px));
 
       & .renderApps {
@@ -38,7 +37,6 @@
         justify-content: center;
         align-items: center;
         flex-direction: column;
-        margin-bottom: 10px;
         border-radius: 25px;
         margin: 20px;
         cursor: pointer;

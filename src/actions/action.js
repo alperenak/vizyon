@@ -8,16 +8,8 @@ const location = window.location;
 const errorMessageBuilder = (response) => {
   return (response.errorData && response.errorData.code) || "0";
 };
+
 export async function GetAuthentication(username, password) {
-  // axios
-  //   .post("https://gelisim-okullari.herokuapp.com/api/v1/auth/login", {
-  //     username: username,
-  //     password: password,
-  //   })
-  //   .then((response) => response.json())
-  //   .then((data) => {
-  //     return data;
-  //   });
   const response = await fetch(`${uri}/auth/login`, {
     method: "POST", // *GET, POST, PUT, DELETE, etc.
     mode: "cors", // no-cors, *cors, same-origin
@@ -41,7 +33,6 @@ export async function UpdateAnnouncements(
   isPublic,
   token
 ) {
-  console.log("id", to);
   const config = {
     headers: { authorization: `Bearer ${token}` },
   };
@@ -94,7 +85,7 @@ export async function GetUser(token) {
   return response;
 }
 export function GetToken() {
-  const [cookies, setCookies] = useCookies(["token"]);
+  const [cookies] = useCookies(["token"]);
   return cookies.token;
 }
 
@@ -199,11 +190,28 @@ export async function addClass(token, instructorId, classesName) {
   );
   return response;
 }
-export function getAllUser(token) {
+export function getAllUser(token, keyword, role) {
   const config = {
     headers: { authorization: `Bearer ${token}` },
   };
-  const response = axios.get(`${uri}/users`, config);
+  const response = axios.get(
+    `${uri}/users${
+      keyword
+        ? `?role=${role}&select=fullName,first_name,last_name,profile_photo,studentInfo&keyword=${keyword}`
+        : ""
+    }`,
+    config
+  );
+  return response;
+}
+export function getAllUserByClass(token, classId) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = axios.get(
+    `${uri}/users?role=student&classId=${classId}`,
+    config
+  );
   return response;
 }
 export function getAllStudents(token, page, limit) {
@@ -213,7 +221,7 @@ export function getAllStudents(token, page, limit) {
   const response = axios.get(
     `${uri}/users?role=student&limit=${limit ? limit : 100}&page=${
       page ? page : 1
-    }`,
+    }&select=first_name,last_name,profile_photo,studentInfo`,
     config
   );
   return response;
@@ -225,36 +233,28 @@ export function getAllTeachers(token, page, limit) {
   const response = axios.get(
     `${uri}/users?role=instructor&limit=${limit ? limit : 100}&page=${
       page ? page : 1
-    }`,
+    }&select=first_name,last_name,profile_photo`,
     config
   );
   return response;
 }
-
-export async function CreateUser(
-  token,
-  firstname,
-  lastname,
-  username,
-  phone,
-  role,
-  gender
-) {
+export function getAllTeachersV2(token, page, limit) {
   const config = {
     headers: { authorization: `Bearer ${token}` },
   };
-  const response = await axios.post(
-    `${uri}/users`,
-    {
-      first_name: firstname,
-      last_name: lastname,
-      username: username,
-      phone: phone,
-      gender: gender,
-      role: role,
-    },
+  const response = axios.get(
+    `${uri}/users?role=instructor&limit=${limit ? limit : 100}&page=${
+      page ? page : 1
+    }&select=first_name,last_name`,
     config
   );
+  return response;
+}
+export async function CreateUser(token, payload) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = await axios.post(`${uri}/users`, payload, config);
   return response;
 }
 export async function updateUser(
@@ -294,7 +294,6 @@ export async function importSchedule(token, file, classId) {
       "content-type": "multipart/form-data",
     },
   };
-  console.log("gelen", file);
 
   const response = await axios.put(
     `${uri}/classes/${classId}/schedule`,
@@ -449,16 +448,6 @@ export async function SaveSpecificApps(token, data) {
   return response;
 }
 export async function GetConversations(userId, token) {
-  // let baseUrl = config.baseUrl;
-  // let tokenCookieName = "token";
-  // let path = `/chat/conversation`;
-
-  // return await http.makeGetRequest(
-  //   path,
-  //   baseUrl,
-  //   tokenCookieName,
-  //   errorMessageBuilder
-  // );
   const config = {
     headers: { authorization: `Bearer ${token}` },
   };
@@ -472,67 +461,24 @@ export async function GetNewMessages(token) {
 }
 
 export async function GetMessageDetails(conversationID, token) {
-  // let baseUrl = config.baseUrl;
-  // let tokenCookieName = "token";
-  // let path = `/chat/conversation/${conversationID}`;
-
-  // return await http.makeGetRequest(
-  //   path,
-  //   baseUrl,
-  //   tokenCookieName,
-  //   errorMessageBuilder
-  // );
   const config = {
     headers: { authorization: `Bearer ${token}` },
   };
   return await axios.get(`${uri}/chat/conversation/${conversationID}`, config);
 }
 export async function SendMessage({ payload, token }) {
-  // let baseUrl = config.baseUrl;
-  // let tokenCookieName = "token";
-  // let path = `/chat/conversation/${conversationID}`;
-  // let payload = { receiver, body, attachements };
-
-  // return await http.makePostRequest(
-  //   path,
-  //   baseUrl,
-  //   tokenCookieName,
-  //   payload,
-  //   errorMessageBuilder
-  // );
   const config = {
     headers: { authorization: `Bearer ${token}` },
   };
   return await axios.post(`${uri}/chat/conversation/`, payload, config);
 }
 export async function CreateNewChat(payload, token) {
-  // let baseUrl = config.baseUrl;
-  // let tokenCookieName = "token";
-  // let path = `/chat/conversation`;
-
-  // return await http.makePostRequest(
-  //   path,
-  //   baseUrl,
-  //   tokenCookieName,
-  //   payload,
-  //   errorMessageBuilder
-  // );
   const config = {
     headers: { authorization: `Bearer ${token}` },
   };
   return await axios.post(`${uri}/chat/conversation/`, payload, config);
 }
 export async function SearchChat({ keyword, token }) {
-  // let baseUrl = config.baseUrl;
-  // let tokenCookieName = "token";
-  // let path = `/chat/search?keyword=${keyword}`;
-
-  // return await http.makeGetRequest(
-  //   path,
-  //   baseUrl,
-  //   tokenCookieName,
-  //   errorMessageBuilder
-  // );
   const config = {
     headers: { authorization: `Bearer ${token}` },
   };
@@ -578,6 +524,20 @@ export async function UpdateUserPassword(
     headers: { authorization: `Bearer ${token}` },
   };
   const response = axios.post(`${uri}/auth/update-password`, payload, config);
+  return response;
+}
+export async function UpdateUserPasswordWithAdmin(
+  token,
+  payload = { userId: "", newPassword: "" }
+) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = axios.post(
+    `${uri}/auth/update-password-admin`,
+    payload,
+    config
+  );
   return response;
 }
 export async function UpdateUserAppPassword(
@@ -638,12 +598,30 @@ export async function GetGeneralLogs(token, userId, date) {
     config
   );
 }
+export async function GetClassLogs(token, classId, date) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  return await axios.get(
+    `${uri}/logs/app-logs?classId=${classId}&date=${date}`,
+    config
+  );
+}
 export async function GetDetailLogs(token, userId, date) {
   const config = {
     headers: { authorization: `Bearer ${token}` },
   };
   return await axios.get(
     `${uri}/logs/app-logs?userId=${userId}&date=${date}&detail=true`,
+    config
+  );
+}
+export async function GetClassDetailLogs(token, classId, date) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  return await axios.get(
+    `${uri}/logs/app-logs?classId=${classId}&date=${date}&detail=true`,
     config
   );
 }
@@ -677,5 +655,26 @@ export async function UpdateUserInfo(
     headers: { authorization: `Bearer ${token}` },
   };
   const response = axios.put(`${uri}/users/${userId}`, payload, config);
+  return response;
+}
+export async function AddNewApp(
+  token,
+  payload = {
+    user: "5fc06ca6d08c505e12fec7ff",
+    credentials: {
+      username: "ecrtosuner85589",
+      password: "dunya123",
+    },
+  },
+  appId
+) {
+  const config = {
+    headers: { authorization: `Bearer ${token}` },
+  };
+  const response = axios.post(
+    `${uri}/gelisim-sso/app/${appId}`,
+    payload,
+    config
+  );
   return response;
 }

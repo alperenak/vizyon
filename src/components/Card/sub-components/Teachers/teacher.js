@@ -1,7 +1,7 @@
 import React from "react";
 import styles from "./teacher.module.scss";
 import teacherAvatar from "../../../../assets/images/teacherAvatar.png";
-import { EnvelopeSolid, Inbox, More } from "../../../../icons";
+import { EnvelopeSolid, More } from "../../../../icons";
 import { useHistory } from "react-router-dom";
 export default function Teachers({ teachersData, classesData, userRole }) {
   const history = useHistory();
@@ -20,9 +20,9 @@ export default function Teachers({ teachersData, classesData, userRole }) {
               teachersData.length !== 0 &&
               teachersData &&
               teachersData !== null ? (
-                teachersData.map((item) => {
+                teachersData.map((item, index) => {
                   return (
-                    <div className={styles.teachersLabel}>
+                    <div key={index} className={styles.teachersLabel}>
                       <div className={styles.profileSection}>
                         <div className={styles.avatar}>
                           <img
@@ -62,9 +62,9 @@ export default function Teachers({ teachersData, classesData, userRole }) {
                   );
                 })
               ) : classesData ? (
-                classesData.map((item) => {
+                classesData.map((item, index) => {
                   return (
-                    <div className={styles.teachersLabel}>
+                    <div key={index} className={styles.teachersLabel}>
                       <div className={styles.profileSection}>
                         <div className={styles.avatar}>
                           <img

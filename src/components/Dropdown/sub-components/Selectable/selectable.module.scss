@@ -1,10 +1,13 @@
 @import "../../../../helpers/variableBreakpoints";
+.zIndex{
+  z-index: 10;
+}
 .dropdown {
   position: relative;
   display: inline-block;
-  z-index: 1;
   margin: 10px;
 
+ 
   & .dropdownName {
     display: flex;
     align-items: center;
@@ -35,7 +38,6 @@
     position: absolute;
     flex-direction: column;
     align-items: center;
-    background-color: white;
     width: calc(100% - 18px);
     left: 13px;
     border-radius: 8px;

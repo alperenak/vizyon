@@ -41,7 +41,9 @@
 ::-webkit-scrollbar-corner {
   background: transparent;
 }
-
+.appIcon {
+  width: 100%;
+}
 .schedule {
   width: 770px;
   display: flex;
@@ -269,11 +271,12 @@
           }
 
           & .avatar {
-            width: 24px;
-            height: 24px;
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             margin-left: 30px;
             overflow: hidden;
+            padding: 10px;
 
             & img {
               width: 100%;

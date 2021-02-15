@@ -2,19 +2,12 @@ import React, { useEffect, useState } from "react";
 import styles from "./classManagement.module.scss";
 import {
   Ders,
-  Download,
-  Info,
   User,
-  Date,
-  Clock,
-  GreenTip,
   PlusCircleSolid,
   EditSolid,
   TrashSolid,
   Down,
 } from "../../../../icons";
-import AlertBox from "../../../Alert/alert";
-import { ConvertDate, ConvertTime } from "../../../../utils/utils";
 import Modal from "../../../Modal/modal";
 import Input from "../../../Input/input";
 import Button from "../../../Button/button";
@@ -22,39 +15,44 @@ import {
   addClass,
   deleteClass,
   getAllClass,
-  getAllUser,
-  getSpesificRoleUsers,
+  getAllTeachersV2,
   GetToken,
   updateClass,
 } from "../../../../actions/action";
 import teacherAvatar from "../../../../assets/images/teacherAvatar.png";
-export default function ClassManagement({ filterClass, classData }) {
+export default function ClassManagement({
+  filterClass,
+  classData,
+  setClassData,
+  setLoading,
+  setAlertData,
+  setAlertboxActive,
+  setDisplayClass,
+}) {
   const [isActive, setIsActive] = useState(false);
   const [modalType, setModalType] = useState(false);
   const [classId, setClassId] = useState(false);
   const [teachersData, setTeachersData] = useState([]);
   const token = GetToken();
-  console.log(filterClass);
+
+  function updateClassFunction() {
+    setLoading(true);
+    setDisplayClass("");
+    getAllClass(token, 100, 1, "name,grade")
+      .then((data) => {
+        setClassData(data.data.data);
+      })
+      .then(() => setLoading(false))
+      .catch(() => {
+        setLoading(false);
+        setAlertboxActive(true);
+        setAlertData({ type: "error", title: "Sınıflar getirilemedi" });
+      });
+  }
+
   useEffect(() => {
-    // if (filterClass !== "" && classData) {
-    //   let arr = [];
-    //   arr = classData.filter((item) => {
-    //     return item.name.includes(filterClass);
-    //   });
-    //   setClassData(arr);
-    // }
-    // getAllClass(token).then((data) => {
-    //   setClassData(data.data.data);
-    //   console.log(data);
-    // });
-    getAllUser(token).then((data) => {
-      setTeachersData(
-        data.data.data.filter((item) => item.role === "instructor")
-      );
-      console.log(
-        "user",
-        data.data.data.filter((item) => item.role === "instructor")
-      );
+    getAllTeachersV2(token).then((data) => {
+      setTeachersData(data.data.data);
     });
   }, [filterClass]);
   return (
@@ -91,30 +89,25 @@ export default function ClassManagement({ filterClass, classData }) {
           </tr>
         </table>
       </div>
+
       <div className={styles.scheduleSection}>
         <table>
           {classData && classData !== null ? (
-            classData.map((item) => {
+            classData.map((item, index) => {
               return (
                 <tr
+                  key={index}
                   onClick={() => {
                     setClassId(item._id);
                   }}
                 >
                   <div className={styles.scheduleTeacher}>
                     <div className={styles.avatar}>
-                      <img
-                        // src={String(
-                        //   getTeacherAvatar(teachersData, item.course.code)
-                        // ).replace(/,/gi, "")}\
-                        src={teacherAvatar}
-                      />
+                      <img src={teacherAvatar} />
                     </div>
                     <td>{item.name}</td>
                   </div>
-                  {/* <td>
-                    <PlusCircleSolid className={styles.addExamIcon} />
-                  </td> */}
+
                   <td className={styles.space}>
                     <EditSolid
                       onClick={() => {
@@ -128,11 +121,28 @@ export default function ClassManagement({ filterClass, classData }) {
                   <td className={styles.space}>
                     <TrashSolid
                       onClick={() => {
-                        deleteClass(token, item._id).then((item) => {
-                          window.location.reload();
-                        });
+                        setLoading(true);
+                        deleteClass(token, item._id)
+                          .then(() => {
+                            setLoading(false);
+                            updateClassFunction();
+                            setAlertboxActive(true);
+                            setAlertData({
+                              type: "success",
+                              title: "Sınıf başarıyla silindi",
+                            });
+                          })
+                          .catch(() => {
+                            setLoading(false);
+                            setAlertboxActive(true);
+                            setAlertData({
+                              type: "error",
+                              title: "Sınıf silinemedi",
+                            });
+                          });
                       }}
                       className={styles.deleteIcon}
+                      style={{ marginLeft: 50 }}
                     />
                   </td>
                 </tr>
@@ -143,21 +153,18 @@ export default function ClassManagement({ filterClass, classData }) {
           )}
         </table>
       </div>
-      {/* <AlertBox
-        title={
-          "Yukarıdaki ders programı **2020 / 2021 Eğitim - Öğretim Yılı**’nın ilk yarısına kadar geçerlidir."
-        }
-        type={"primary"}
-      >
-        <GreenTip className={styles.greenTip} />
-      </AlertBox> */}
+
       <Modal isActive={isActive} setIsActive={setIsActive}>
         <RenderModalContent
           isActive={isActive}
           setIsActive={setIsActive}
           type={modalType}
           classId={classId}
+          setLoading={setLoading}
           teachersData={teachersData}
+          setAlertboxActive={setAlertboxActive}
+          setAlertData={setAlertData}
+          updateClassFunction={updateClassFunction}
         />
       </Modal>
     </div>
@@ -166,12 +173,14 @@ export default function ClassManagement({ filterClass, classData }) {
 
 function RenderModalContent({
   type,
-  isActive,
   setIsActive,
   classId,
   teachersData,
+  updateClassFunction,
+  setAlertboxActive,
+  setAlertData,
+  setLoading,
 }) {
-  console.log(classId);
   const [updatingClassName, setUpdatingClassName] = useState("");
   const [dropdownActive, setDropdownActive] = useState("");
   const [dropdownName, setDropdownName] = useState("Öğretmen Seçiniz");
@@ -179,36 +188,56 @@ function RenderModalContent({
   const token = GetToken();
   if (type === "edit")
     return (
-      <>
+      <div
+        style={{
+          padding: 25,
+          display: "flex",
+          alignItems: "center",
+          flexDirection: "column",
+        }}
+      >
+        <h3>Sınıf Adı</h3>
         <Input
-          // value={addAnnouncementsTitle}
           placeholder="Sınıfın adını giriniz"
           onChange={(e) => setUpdatingClassName(e.target.value)}
-          inputStyle={"modal"}
+          inputStyle={"detail"}
         />
-        {/* <Input
-          // value={addAnnouncementsDetail}
-          placeholder="Duyurunun detaylarını giriniz"
-          // onChange={(e) => setAddAnnouncementsDetails(e.target.value)}
-          inputStyle={"modal"}
-        /> */}
+
         <Button
           type={"modal"}
-          title={"Ekle"}
+          title={"Güncelle"}
           onClick={() => {
             setIsActive(false);
-            updateClass(token, classId, updatingClassName).then(() =>
-              // GetAnnouncements(token)
-              window.location.reload()
-            );
-            setIsActive(false);
+            setLoading(true);
+            updateClass(token, classId, updatingClassName)
+              .then(() => {
+                updateClassFunction();
+                setAlertboxActive(true);
+                setAlertData({
+                  type: "success",
+                  title: "Sınıf başarıyla güncellendi",
+                });
+              })
+              .catch(() => {
+                setLoading(false);
+                setAlertboxActive(true);
+                setAlertData({ type: "error", title: "Sınıf güncellenemedi" });
+              });
           }}
         />
-      </>
+      </div>
     );
   else if (type === "add") {
     return (
-      <>
+      <div
+        style={{
+          padding: 25,
+          display: "flex",
+          alignItems: "center",
+          flexDirection: "column",
+        }}
+      >
+        <h3>Sınıf Öğretmeni</h3>
         <div
           id={"teacherDropdown"}
           onClick={() => setDropdownActive(!dropdownActive)}
@@ -224,9 +253,10 @@ function RenderModalContent({
             }`}
             onClick={() => {}}
           >
-            {teachersData.map((item) => {
+            {teachersData.map((item, index) => {
               return (
                 <div
+                  key={index}
                   onClick={() => {
                     setDropdownName(`${item.first_name} ${item.last_name}`);
                     setInstructorId(item.id);
@@ -239,25 +269,35 @@ function RenderModalContent({
             })}
           </div>
         </div>
+        <h3>Sınıf adı</h3>
         <Input
-          // value={addAnnouncementsTitle}
           placeholder="Sınıfın adını giriniz"
           onChange={(e) => setUpdatingClassName(e.target.value)}
-          inputStyle={"modal"}
+          inputStyle={"detail"}
         />
         <Button
           type={"modal"}
-          title={"Ekle"}
+          title={"Oluştur"}
           onClick={() => {
+            setLoading(true);
             setIsActive(false);
-            addClass(token, instructorId, updatingClassName).then(() =>
-              // GetAnnouncements(token)
-              window.location.reload()
-            );
-            setIsActive(false);
+            addClass(token, instructorId, updatingClassName)
+              .then(() => {
+                updateClassFunction();
+                setAlertboxActive(true);
+                setAlertData({
+                  type: "success",
+                  title: "Sınıf başarıyla eklendi",
+                });
+              })
+              .catch(() => {
+                setLoading(false);
+                setAlertboxActive(true);
+                setAlertData({ type: "error", title: "Sınıf eklenemedi" });
+              });
           }}
         />
-      </>
+      </div>
     );
   } else return <></>;
 }

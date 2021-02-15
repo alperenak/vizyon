@@ -13,7 +13,6 @@ import {
   DeleteAnnouncements,
   GetAnnouncements,
   GetToken,
-  IsRoleAdmin,
   UpdateAnnouncements,
 } from "../../../../actions/action";
 import Modal from "../../../Modal/modal";
@@ -21,10 +20,14 @@ import Button from "../../../Button/button";
 import Input from "../../../Input/input";
 import { useLocation } from "react-router-dom";
 import Selectbox from "../../../SelectBox/selectbox";
+import TextArea from "../../../TextArea/textArea";
 export default function Announcements({
-  title = "Duyurular",
   announcementsData,
+  setAnnouncementsData,
   isAdmin,
+  setLoading,
+  setAlertData,
+  setAlertboxActive,
 }) {
   const [active, setActive] = useState(false);
   const [modalType, setModalType] = useState("updateAnnouncements");
@@ -36,10 +39,26 @@ export default function Announcements({
   const [details, setDetail] = useState("");
   const [isPublic, setIsPublic] = useState(false);
   const [deletedId, setDeletedId] = useState("");
-  const token = GetToken();
-  const isRoledAdmin = IsRoleAdmin();
   const { pathname } = useLocation();
-  console.log("gelenAnon", announcementsData);
+  const token = GetToken();
+
+  function updateAnnouncementsFunction() {
+    setLoading(true);
+    GetAnnouncements(100, 1, token)
+      .then((data) => {
+        setAnnouncementsData(data.data.data);
+        setLoading(false);
+      })
+      .catch(() => {
+        setLoading(false);
+        setAlertboxActive(true);
+        setAlertData({
+          type: "success",
+          title: "Duyurular getirilemedi",
+        });
+      });
+  }
+
   return (
     <>
       <RenderModal
@@ -49,14 +68,17 @@ export default function Announcements({
         deletedId={deletedId}
         setDeletedId={setDeletedId}
         type={modalType}
+        setAlertData={setAlertData}
+        setLoading={setLoading}
+        setAlertboxActive={setAlertboxActive}
         editableTitle={editableTitle}
         setEditableTitle={setEditableTitle}
         detail={details}
+        updateAnnouncementsFunction={updateAnnouncementsFunction}
         setDetail={setDetail}
         isPublic={isPublic}
         setIsPublic={setIsPublic}
         classArrayPopulate={classArray}
-        isPublic={isPublic}
       />
       <div
         className={`${styles.announcementsCard}  ${
@@ -86,15 +108,17 @@ export default function Announcements({
               <div className={styles.homeworkTitleHomework}>Duyuru Başlığı</div>
               <div className={styles.homeworkTitle}>Görünürlük</div>
               <div className={styles.homeworkTitle}>Gösterilecek Sınıflar</div>
-              <div className={styles.homeworkTitle}>Teslim tarihi aralığı</div>
+              <div className={styles.homeworkTitle}>Düzenle ve Sil</div>
+              <div className={styles.homeworkTitle}>Tarih</div>
             </div>
           ) : (
             ""
           )}
           {announcementsData && announcementsData.length !== 0 ? (
-            announcementsData.slice(0, mapCount).map((item) => {
+            announcementsData.slice(0, mapCount).map((item, index) => {
               return (
                 <div
+                  key={index}
                   className={styles.announcements}
                   onClick={() => {
                     if (!isAdmin) {
@@ -198,15 +222,16 @@ function RenderModal({
   type,
   editableTitle,
   setEditableTitle,
+  setAlertboxActive,
+  setAlertData,
+  setLoading,
+  updateAnnouncementsFunction,
   detail,
   setDetail,
   isPublic,
   classArrayPopulate,
   deletedId,
-  setDeletedId,
-  setIsPublic,
 }) {
-  const [announcementsTitle, setAnnouncementsTitle] = useState("");
   const [addAnnouncementsTitle, setAddAnnouncementsTitle] = useState(
     editableTitle
   );
@@ -214,7 +239,6 @@ function RenderModal({
   const [dropdownActive, setDropdownActive] = useState();
   const [dropdownName, setDropdownName] = useState("Kimler görebilir");
   const [classArray, setClassArray] = useState([]);
-  const [classIdArray, setClasIdArray] = useState([]);
   const [errorTitle, setErrorTitle] = useState(false);
   const [errorDetail, setErrorDetail] = useState(false);
   const [errorTitle1, setErrorTitle1] = useState(false);
@@ -236,9 +260,23 @@ function RenderModal({
             <Button
               type={"delete"}
               onClick={() => {
-                DeleteAnnouncements(deletedId, token).then(() => {
-                  window.location.reload();
-                });
+                setLoading(true);
+                DeleteAnnouncements(deletedId, token)
+                  .then(() => {
+                    updateAnnouncementsFunction();
+                    setAlertboxActive(true);
+                    setAlertData({
+                      type: "success",
+                      title: "Duyuru başarıyla silindi",
+                    });
+                  })
+                  .catch(() => {
+                    setAlertboxActive(true);
+                    setAlertData({
+                      type: "error",
+                      title: "Duyuru silinemedi",
+                    });
+                  });
               }}
               title={"evet"}
             />
@@ -250,7 +288,8 @@ function RenderModal({
           </div>
         </div>
       ) : type === "updateAnnouncements" ? (
-        <>
+        <div style={{ padding: 25 }}>
+          <h3>Görünürlük</h3>
           <div
             id={"classDropdown"}
             onClick={() => setDropdownActive(!dropdownActive)}
@@ -271,9 +310,10 @@ function RenderModal({
               onClick={() => {}}
             >
               {[{ name: "Herkes" }, { name: "Seçilen Sınıflar" }].map(
-                (item) => {
+                (item, index) => {
                   return (
                     <div
+                      key={index}
                       onClick={() => {
                         // if (item.name === "Seçilen Sınıflar") setIsPublic(true);
                         setDropdownName(item.name);
@@ -287,17 +327,20 @@ function RenderModal({
               )}
             </div>
           </div>
+          <h3>Duyuru Başlığı</h3>
           <Input
             value={editableTitle}
             placeholder="Duyurunun Başlığını giriniz"
             onChange={(e) => setEditableTitle(e.target.value)}
             inputStyle={"modal"}
           />
-          <Input
+          <h3>Duyuru Detayları</h3>
+          <TextArea
             value={detail}
             placeholder="Duyurunun detaylarını giriniz"
             onChange={(e) => setDetail(e.target.value)}
-            inputStyle={"modal"}
+            rows={10}
+            type={"modal"}
           />
           {errorTitle1 ? (
             <div className={styles.errorMessage}>
@@ -307,13 +350,15 @@ function RenderModal({
             ""
           )}
           {!isPublic || dropdownName === "Seçilen Sınıflar" ? (
-            <Selectbox
-              dataToArray={classArrayPopulate}
-              onChange={(e) => {
-                console.log(e);
-                setUpdatingSelectbox(e);
-              }}
-            />
+            <>
+              <h3>Sınıflar</h3>
+              <Selectbox
+                dataToArray={classArrayPopulate}
+                onChange={(e) => {
+                  setUpdatingSelectbox(e);
+                }}
+              />
+            </>
           ) : (
             ""
           )}
@@ -323,6 +368,7 @@ function RenderModal({
             title={"Güncelle"}
             onClick={() => {
               if (editableTitle.length >= 8) {
+                setLoading(true);
                 UpdateAnnouncements(
                   id,
                   editableTitle,
@@ -333,13 +379,22 @@ function RenderModal({
                   isPublic,
                   token
                 )
-                  .then(
-                    () => {
-                      // window.location.reload();
-                    }
-                    // GetAnnouncements(token)
-                  )
-                  .catch((e) => console.log(e));
+                  .then(() => {
+                    updateAnnouncementsFunction();
+                    setAlertboxActive(true);
+                    setAlertData({
+                      type: "success",
+                      title: "Duyuru başarıyla güncellendi",
+                    });
+                  })
+                  .catch(() => {
+                    setLoading(false);
+                    setAlertboxActive(true);
+                    setAlertData({
+                      type: "error",
+                      title: "Duyuru güncellenemedi",
+                    });
+                  });
                 setIsActive(false);
               }
               if (editableTitle.length < 8) {
@@ -347,9 +402,10 @@ function RenderModal({
               }
             }}
           />
-        </>
+        </div>
       ) : (
-        <>
+        <div style={{ padding: 25 }}>
+          <h3>Görünürlük</h3>
           <div
             id={"classDropdown"}
             onClick={() => setDropdownActive(!dropdownActive)}
@@ -363,12 +419,12 @@ function RenderModal({
               className={`${styles.dropdownContent}  ${
                 dropdownActive ? styles.active : ""
               }`}
-              onClick={() => {}}
             >
               {[{ name: "Herkes" }, { name: "Seçilen Sınıflar" }].map(
-                (item) => {
+                (item, index) => {
                   return (
                     <div
+                      key={index}
                       onClick={() => setDropdownName(item.name)}
                       className={styles.dropdownItems}
                     >
@@ -379,6 +435,7 @@ function RenderModal({
               )}
             </div>
           </div>
+          <h3>Duyuru Başlığı</h3>
           <Input
             value={addAnnouncementsTitle}
             placeholder="Duyurunun Başlığını giriniz"
@@ -392,11 +449,13 @@ function RenderModal({
           ) : (
             ""
           )}
-          <Input
+          <h3>Duyuru Detayları</h3>
+          <TextArea
             value={addAnnouncementsDetail}
             placeholder="Duyurunun detaylarını giriniz"
             onChange={(e) => setAddAnnouncementsDetails(e.target.value)}
-            inputStyle={"modal"}
+            rows={10}
+            type={"modal"}
           />
           {errorDetail ? (
             <div className={styles.errorMessage}>
@@ -407,25 +466,26 @@ function RenderModal({
           )}
 
           {dropdownName === "Seçilen Sınıflar" ? (
-            <Selectbox
-              onChange={(e) => {
-                setClassArray(e);
-              }}
-            />
+            <>
+              <h3>Sınıflar</h3>
+              <Selectbox
+                onChange={(e) => {
+                  setClassArray(e);
+                }}
+              />
+            </>
           ) : (
             ""
           )}
           <Button
             type={"modal"}
-            title={"Ekle"}
+            title={"Duyuru oluştur"}
             onClick={() => {
               if (
                 addAnnouncementsTitle.length >= 8 &&
                 addAnnouncementsDetail.length >= 8
               ) {
-                classArray.map((item) => {
-                  setClasIdArray([...classArray, item._id]);
-                });
+                setLoading(true);
                 AddAnnouncements(
                   addAnnouncementsTitle,
                   addAnnouncementsDetail,
@@ -434,10 +494,25 @@ function RenderModal({
                     return item._id;
                   }),
                   token
-                ).then(() =>
-                  // GetAnnouncements(token)
-                  window.location.reload()
-                );
+                )
+                  .then(() => {
+                    updateAnnouncementsFunction();
+                    setAlertboxActive(true);
+                    setAlertData({
+                      type: "success",
+                      title: "Duyuru başarıyla eklendi",
+                    });
+                  })
+                  .catch(() => {
+                    setLoading(false);
+                    updateAnnouncementsFunction();
+                    setAlertboxActive(true);
+                    setAlertData({
+                      type: "success",
+                      title: "Duyuru eklenemedi",
+                    });
+                  });
+
                 setIsActive(false);
               }
               if (
@@ -454,7 +529,7 @@ function RenderModal({
               }
             }}
           />
-        </>
+        </div>
       )}
     </Modal>
   );

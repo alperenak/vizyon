@@ -1,23 +1,23 @@
 .loadingContainer {
-    position: fixed;
-    background-color: rgba($color: #000000, $alpha: 0.2);
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: fixed;
+  background-color: rgba($color: #000000, $alpha: 0.2);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 
+  & .loading {
+    width: 50px;
+    height: 50px;
+    z-index: 999999;
+  }
+}
 
-    & .loading {
-        width: 50px;
-        height: 50px;
-    }
+.noBackground {
+  background: transparent;
 }
-    
-.noBackground{
-    background: transparent;
-}
-.fullscreen{
- left:0;
- top:0
+.fullscreen {
+  left: 0;
+  top: 0;
 }

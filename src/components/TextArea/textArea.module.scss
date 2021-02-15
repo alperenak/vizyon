@@ -1,0 +1,18 @@
+@import "../../helpers/variableBreakpoints.scss";
+
+.textArea {
+  box-shadow: 0 2px 5px 0 rgba(110, 42, 245, 0.09);
+  caret-color: $darkPurple;
+  outline: none;
+  font-family: SofiaMedium;
+  color: $darkBlue;
+  border-radius: 8px;
+  border: none;
+  padding: 8px;
+  &::placeholder {
+    color: #ccd2df;
+  }
+}
+.modal {
+  width: 400px;
+}

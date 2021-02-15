@@ -4,12 +4,13 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  flex: 3;
+  flex: 4;
   width: 100%;
+  overflow-y: scroll;
   position: relative;
   & .backButton {
     position: absolute;
-    left: 25px;
+    left: 70px;
     top: 110px;
     & .backButtonIcon {
       color: $darkBlue;

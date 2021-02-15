@@ -1,5 +1,8 @@
 @import "../../../../helpers/variableBreakpoints.scss";
 @import "../../../../helpers/responsiveBreakpointsMixins.scss";
+h3 {
+  padding: 10px;
+}
 .announcementsCard {
   display: flex;
   flex-direction: column;
@@ -63,6 +66,7 @@
       justify-content: space-around;
       align-items: center;
       padding: 10px 0;
+      margin-left: 60px;
 
       & .homeworkTitleHomework {
         display: flex;
@@ -219,7 +223,7 @@
     display: flex;
     align-items: center;
     color: $darkBlue;
-    width: 200px;
+    width: 356px;
     height: 30px;
     cursor: pointer;
     font-family: SofiaBold;

@@ -1,9 +1,8 @@
-import React, { useState, useContext, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import SideBar from "../../components/Sidebar/sidebar";
 import styles from "./admin.module.scss";
 import Card from "../../components/Card/card";
-import { UserContext } from "../../context/userContext";
-import IsAdmin, {
+import {
   GetToken,
   IsAuth,
   GetUser,
@@ -12,38 +11,37 @@ import IsAdmin, {
   getAllStudents,
   getAllTeachers,
   getAllClass,
-  IsRoleAdmin,
   GetAllExams,
   GetSpecifiApps,
+  getAllUserByClass,
 } from "../../actions/action";
-import Modal from "../../components/Modal/modal";
 import Input from "../../components/Input/input";
-import Button from "../../components/Button/button";
 import { useHistory, useLocation, useParams } from "react-router-dom";
 import { Down, SearchSolid } from "../../icons";
 import { useCookies } from "react-cookie";
 import Login from "../../screens/Login/login";
 import Loading from "../../components/Loading/loading";
 import Pagination from "../../components/Pagination/pagination";
+import Dropdown from "../../components/Dropdown/dropdown";
+import AlertBox from "../../components/Alertbox/alertbox";
 export default function Admin() {
   const [announcementsData, setAnnouncementsData] = useState(false);
   const [newAnnouncementsData, setNewAnnouncementsData] = useState([]);
-  const [userData, setUserData] = useContext(UserContext);
-  const [loading, setLoading] = useState(false);
-  const [cookies, setCookies] = useCookies(false);
-  const [active, setActive] = useState(false);
+  const [userData, setUserData] = useState([]);
+  const [alertboxActive, setAlertboxActive] = useState(false);
+  const [alerData, setAlertData] = useState({});
+  const [cookies] = useCookies(false);
   const token = GetToken();
   const { pathname } = useLocation();
+
   useEffect(() => {
     if (token || cookies.admin) {
       if (IsAuth(token)) {
         if (!userData) {
-          setLoading(true);
           GetUser(token)
             .then((data) => {
               setUserData(data);
             })
-            .then(() => setLoading(false))
             .catch((e) => console.error(e));
         }
         if (!announcementsData) {
@@ -58,19 +56,19 @@ export default function Admin() {
   }, [token]);
   return (
     <div className={styles.adminContainer}>
+      <AlertBox
+        alertData={alerData}
+        isActive={alertboxActive}
+        setIsActive={setAlertboxActive}
+      />
       <SideBar />
       <div className={styles.adminMain}>
-        {/* <Card
-          type={"announcements"}
-          announcementsData={
-            announcementsData ? announcementsData.data.data : []
-          }
-          isAdmin={true}
-        /> */}
         <RenderCard
           pathname={pathname}
           userData={userData}
           setUserData={setUserData}
+          setAlertData={setAlertData}
+          setAlertboxActive={setAlertboxActive}
           announcementsData={announcementsData}
           setAnnouncementsData={setAnnouncementsData}
           newAnnouncementsData={newAnnouncementsData}
@@ -85,10 +83,8 @@ function RenderCard({
   pathname,
   announcementsData,
   setAnnouncementsData,
-  userData,
-  setUserData,
-  newAnnouncementsData,
-  setNewAnnouncementsData,
+  setAlertData,
+  setAlertboxActive,
 }) {
   const [tabsType, setTabsType] = useState("student");
   const { id } = useParams();
@@ -97,16 +93,16 @@ function RenderCard({
     id && id !== "" ? `${id}.Sınıflar` : "Sınıf Seçiniz"
   );
   const [loading, setLoading] = useState(false);
-  const [searchText, setSearchText] = useState("");
   const [display, setDisplay] = useState("");
   const [displayTeacher, setDisplayTeacher] = useState("");
   const [displayStudent, setDisplayStudent] = useState("");
   const [displayClass, setDisplayClass] = useState("");
-  const [selectedClass, setSelectedClass] = useState("");
+  const [selectedClass] = useState("");
   const dropdownNames = document.getElementById("dropdownName");
   const dropdownIcon = document.getElementById("dropdownIcon");
   const [studentsData, setStudentsData] = useState([]);
   const [totalTeacher, setTotalTeacher] = useState(0);
+  const [targetValue, setTargetValue] = useState("");
   const [totalStudent, setTotalStudent] = useState(0);
   const token = GetToken();
   const [userPageNum, setUserPageNum] = useState(1);
@@ -116,12 +112,27 @@ function RenderCard({
   const [filteredClass, setFilteredClass] = useState(false);
   const [appData, setAppData] = useState([]);
   const history = useHistory();
-  console.log(pathname.includes("/admin/user/teacher"));
+
   window.onclick = function (e) {
     if (e.target !== dropdownNames && e.target !== dropdownIcon) {
       setDropdownActive(false);
     }
   };
+
+  function updateStudentData() {
+    getAllStudents(token)
+      .then((data) => {
+        setStudentsData(data.data.data);
+        setTotalStudent(data.data.total);
+      })
+      .then(() => setLoading(false))
+      .catch(() => {
+        setLoading(false);
+        setAlertboxActive(true);
+        setAlertData({ type: "error", title: "Öğrenciler getirilemedi" });
+      });
+  }
+
   function onChangeText(e) {
     const res = announcementsData.filter((state) =>
       e.target.value
@@ -132,34 +143,75 @@ function RenderCard({
     else setDisplay(res);
   }
   function onChangeUserManagementSearch(e) {
-    if (tabsType === "teacher") {
-      const res = teachersData.filter((state) => {
-        const name = `${state.first_name} ${state.last_name}`;
-        return e.target.value
-          ? name.toLowerCase().includes(e.target.value.toLowerCase())
-          : "";
-      });
-      if (e.target.value === "") setDisplayTeacher("");
-      else setDisplayTeacher(res);
-    } else if (tabsType === "student") {
-      const res = studentsData.filter((state) => {
-        const name = `${state.first_name} ${state.last_name}`;
-        return e.target.value
-          ? name.toLowerCase().includes(e.target.value.toLowerCase())
-          : "";
-      });
-      if (e.target.value === "") setDisplayStudent("");
-      else setDisplayStudent(res);
+    let targetValue = e.target.value;
+    setTargetValue(e.target.value);
+    if (tabsType === "student") {
+      if (targetValue.length < 2) {
+        setDisplayStudent("");
+      } else if (targetValue.length >= 2) {
+        getAllUser(token, targetValue, "student").then((data) => {
+          if (targetValue.length >= 2) setDisplayStudent(data.data.data);
+          else setDisplayStudent("");
+        });
+      }
+    } else if (tabsType === "teacher") {
+      if (targetValue.length < 2) {
+        setDisplayTeacher("");
+      } else if (targetValue.length >= 2) {
+        getAllUser(token, targetValue, "instructor").then((data) => {
+          if (targetValue.length >= 2) setDisplayTeacher(data.data.data);
+          else setDisplayTeacher("");
+        });
+      }
     } else if (tabsType === "class") {
       const res = classData.filter((state) => {
         const name = state.name;
-        return e.target.value
-          ? name.toLowerCase().includes(e.target.value.toLowerCase())
+        return targetValue
+          ? name.toLowerCase().includes(targetValue.toLowerCase())
           : "";
       });
-      if (e.target.value === "") setDisplayClass("");
+      if (targetValue === "") setDisplayClass("");
       else setDisplayClass(res);
     }
+    // const targetVal = e.target.value;
+    // if (!targetVal) {
+    //   setDisplayStudent(studentsData);
+    //   setDisplayTeacher(teachersData);
+    // }
+    // if (
+    //   e.target.value.length >= 2 &&
+    //   (tabsType === "student" || tabsType === "teacher")
+    // ) {
+    //   getAllUser(token, targetVal, tabsType).then((data) => {
+    //     if (targetVal) {
+    //       if (tabsType === "student") setDisplayStudent(data.data.data);
+    //       else if (tabsType === "teacher") setDisplayTeacher(data.data.data);
+    //     } else if (tabsType === "teacher") setDisplayTeacher(teachersData);
+    //     else if (tabsType === "student") setDisplayStudent(studentsData);
+    //   });
+    // } else if (
+    //   (targetVal.length <= 2 || !targetVal || targetVal === "") &&
+    //   (tabsType === "student" || tabsType === "teacher")
+    // ) {
+    //   if (tabsType === "student") setDisplayStudent(studentsData);
+    //   else if (tabsType === "teacher") setDisplayTeacher(teachersData);
+    //   else {
+    //     setDisplayStudent(studentsData);
+    //     setDisplayTeacher(teachersData);
+    //   }
+    // } else if (tabsType === "class") {
+    //   const res = classData.filter((state) => {
+    //     const name = state.name;
+    //     return e.target.value
+    //       ? name.toLowerCase().includes(e.target.value.toLowerCase())
+    //       : "";
+    //   });
+    //   if (e.target.value === "") setDisplayClass("");
+    //   else setDisplayClass(res);
+    // } else {
+    //   setDisplayTeacher(teachersData);
+    //   setDisplayStudent(studentsData);
+    // }
   }
 
   function onChangeClassSearch(e) {
@@ -171,53 +223,71 @@ function RenderCard({
     if (e.target.value === "") setDisplayClass("");
     else setDisplayClass(res);
   }
+  useEffect(() => {
+    if (filteredClass === classData) {
+      setDropdownName("Tüm Sınıflar");
+    }
+  });
+  useEffect(() => {
+    if (targetValue.length < 2) {
+      if (tabsType === "student") setDisplayStudent("");
+      else if (tabsType === "teacher") setDisplayTeacher("");
+    }
+  }, [targetValue, displayStudent, displayTeacher]);
 
   useEffect(() => {
     setLoading(true);
     getAllStudents(token)
       .then((data) => {
         setStudentsData(data.data.data);
-        console.log("studentTotal:", data.data.total);
         setTotalStudent(data.data.total);
       })
       .then(() => setLoading(false))
-      .catch((e) => {
+      .catch(() => {
         setLoading(false);
-        alert("Kullanıcılar Getirilemedi");
+        setAlertboxActive(true);
+        setAlertData({ type: "error", title: "Öğrenciler getirilemedi" });
       });
     getAllTeachers(token)
       .then((data) => {
         setTeachersData(data.data.data);
-        console.log("teacherTotal:", data.data.total);
         setTotalTeacher(data.data.total);
       })
       .then(() => setLoading(false))
-      .catch((e) => {
+      .catch(() => {
         setLoading(false);
-        alert("Kullanıcılar Getirilemedi");
+        setAlertboxActive(true);
+        setAlertData({ type: "error", title: "Öğretmenler getirilemedi" });
       });
 
-    getAllClass(token)
+    getAllClass(token, 100, 1, "name,grade")
       .then((data) => {
         setClassData(data.data.data);
       })
       .then(() => setLoading(false))
-      .catch((e) => {
+      .catch(() => {
         setLoading(false);
-        alert("Sınıflar Getirilemedi");
+        setAlertboxActive(true);
+        setAlertData({ type: "error", title: "Sınıflar getirilemedi" });
       });
     GetAllExams(token)
       .then((data) => {
         setAllExams(data);
       })
       .then(() => setLoading(false))
-      .catch(() => alert("Sınavlar getirilemedi"));
+      .catch(() => {
+        setAlertboxActive(true);
+        setAlertData({ type: "error", title: "Sınavlar getirilemedi" });
+      });
     GetSpecifiApps(token, id ? id : 9)
       .then((item) => {
         setAppData(item);
       })
       .then(() => setLoading(false))
-      .catch(() => alert("Uygulamalar getirilemedi"));
+      .catch(() => {
+        setAlertboxActive(true);
+        setAlertData({ type: "error", title: "Uygulamalar getirilemedi" });
+      });
   }, []);
   if (!loading) {
     if (pathname === "/admin/announcements")
@@ -240,6 +310,10 @@ function RenderCard({
                   : []
                 : display
             }
+            setAnnouncementsData={setAnnouncementsData}
+            setLoading={setLoading}
+            setAlertData={setAlertData}
+            setAlertboxActive={setAlertboxActive}
             isAdmin={true}
           />
         </>
@@ -271,19 +345,25 @@ function RenderCard({
                 }`}
                 onClick={() => {}}
               >
-                {ClassesNameData.map((item) => {
+                {ClassesNameData.map((item, index) => {
                   return (
                     <div
+                      key={index}
                       onClick={() => {
-                        const res = classData.filter((item1) => {
-                          return item1.name
-                            .slice(0, 2)
-                            .includes(
-                              item.name.slice(0, item.name.indexOf("."))
-                            );
-                        });
-                        setFilteredClass(res);
-                        setDropdownName(item.name);
+                        if (item.name.includes("Tüm")) {
+                          setFilteredClass("");
+                          setDropdownName(item.name);
+                        } else {
+                          const res = classData.filter((item1) => {
+                            return item1.name
+                              .slice(0, 2)
+                              .includes(
+                                item.name.slice(0, item.name.indexOf("."))
+                              );
+                          });
+                          setFilteredClass(res);
+                          setDropdownName(item.name);
+                        }
                       }}
                       className={styles.dropdownItems}
                     >
@@ -303,13 +383,18 @@ function RenderCard({
                 : displayClass
             }
             filterClass={selectedClass[0]}
+            setClassData={setClassData}
+            setDisplayClass={setDisplayClass}
             type={"classManagement"}
+            setLoading={setLoading}
+            setAlertData={setAlertData}
+            setAlertboxActive={setAlertboxActive}
           />
         </>
       );
     } else if (pathname === "/admin/user") {
       return (
-        <>
+        <div>
           <h1>Kullanıcı Yönetimi</h1>
           <div className={styles.topSide}>
             <Input
@@ -319,12 +404,39 @@ function RenderCard({
             >
               <SearchSolid className={styles.searchIcon} />
             </Input>
+            <Dropdown
+              zIndex
+              type={"selectable"}
+              dropdownData={[
+                { value: "Tüm Sınıflar", id: "asdasd" },
+                ...classData.map((item) => {
+                  return {
+                    value: item.name,
+                    id: item.id ? item.id : item._id,
+                  };
+                }),
+              ]}
+              value={"Tüm Sınıflar"}
+              onClick={(event) => {
+                if (event.value !== "Tüm Sınıflar")
+                  getAllUserByClass(token, event.id).then((data) =>
+                    setStudentsData(data.data.data)
+                  );
+                else
+                  getAllStudents(token, 1, 100).then((data) =>
+                    setStudentsData(data.data.data)
+                  );
+              }}
+            />
             <div className={styles.tabs}>
               <div
                 className={`${styles.tabsButton} ${
                   tabsType === "student" ? styles.tabsButtonActive : ""
                 }`}
-                onClick={() => setTabsType("student")}
+                onClick={() => {
+                  setTabsType("student");
+                  updateStudentData();
+                }}
               >
                 Öğrenci
               </div>
@@ -332,68 +444,98 @@ function RenderCard({
                 className={`${styles.tabsButton} ${
                   tabsType === "teacher" ? styles.tabsButtonActive : ""
                 }`}
-                onClick={() => setTabsType("teacher")}
+                onClick={() => {
+                  setTabsType("teacher");
+                  setUserPageNum(1);
+                }}
               >
                 Öğretmen
               </div>
             </div>
           </div>
+
           <Card
             teachersData={displayTeacher === "" ? teachersData : displayTeacher}
             studentsData={displayStudent === "" ? studentsData : displayStudent}
+            setTeachersData={setTeachersData}
+            loading={loading}
+            setUserPageNum={setUserPageNum}
+            userPageNum={userPageNum}
+            setLoading={setLoading}
+            setAlertData={setAlertData}
+            setAlertboxActive={setAlertboxActive}
+            setStudentsData={setStudentsData}
             type={"userManagement"}
+            setDisplayStudent={setDisplayStudent}
+            setDisplayTeacher={setDisplayTeacher}
             tabsType={tabsType}
           />
-          {totalStudent !== 0 || totalTeacher !== 0 ? (
-            <Pagination
-              totalCount={
-                tabsType === "student"
-                  ? Number((totalStudent / 100).toFixed())
-                  : tabsType === "teacher"
-                  ? Number((totalTeacher / 100).toFixed())
-                  : ""
-              }
-              selectedPage={userPageNum}
-              onClick={(pageNum) => {
-                if (tabsType === "student") {
-                  setLoading(true);
-                  getAllStudents(token, pageNum)
-                    .then((data) => {
-                      setStudentsData(data.data.data);
-                      setUserPageNum(
-                        data.data.pagination.next.page !== null
-                          ? data.data.pagination.next.page - 1
-                          : data.data.pagination.next.previous + 1
-                      );
-                    })
-                    .then(() => setLoading(false))
-                    .catch((e) => {
-                      setLoading(false);
-                      alert("Kullanıcılar Getirilemedi");
-                    });
-                } else if (tabsType === "teacher") {
-                  setLoading(true);
-                  getAllTeachers(token, pageNum)
-                    .then((data) => {
-                      setTeachersData(data.data.data);
-                      setUserPageNum(
-                        data.data.pagination.next.page !== null
-                          ? data.data.pagination.next.page - 1
-                          : data.data.pagination.next.previous + 1
-                      );
-                    })
-                    .then(() => setLoading(false))
-                    .catch((e) => {
-                      setLoading(false);
-                      alert("Kullanıcılar Getirilemedi");
-                    });
+          {!(
+            pathname.includes("user/student") ||
+            pathname.includes("user/teacher")
+          ) &&
+            (totalStudent !== 0 || totalTeacher !== 0 ? (
+              <Pagination
+                totalCount={
+                  tabsType === "student"
+                    ? Number((totalStudent / 100).toFixed())
+                    : tabsType === "teacher"
+                    ? Number((totalTeacher / 100).toFixed())
+                    : ""
                 }
-              }}
-            />
-          ) : (
-            "data"
-          )}
-        </>
+                selectedPage={userPageNum}
+                onClick={(pageNum) => {
+                  if (tabsType === "student") {
+                    setLoading(true);
+                    getAllStudents(token, pageNum)
+                      .then((data) => {
+                        setStudentsData(data.data.data);
+                        setUserPageNum(
+                          data.data.pagination.next !== null
+                            ? data.data.pagination.next.page - 1
+                            : data.data.pagination.previous.page + 1
+                        );
+                      })
+                      .then(() => setLoading(false))
+                      .catch((e) => {
+                        setLoading(false);
+                        if (!String(e).includes("previous")) {
+                          setAlertboxActive(true);
+                          setAlertData({
+                            type: "error",
+                            title: "Öğrenciler getirilemedi",
+                          });
+                        }
+                      });
+                  } else if (tabsType === "teacher") {
+                    setLoading(true);
+                    getAllTeachers(token, pageNum)
+                      .then((data) => {
+                        setLoading(false);
+                        setTeachersData(data.data.data);
+                        setUserPageNum(
+                          data.data.pagination.next !== null
+                            ? data.data.pagination.next.page - 1
+                            : data.data.pagination.previous.page + 1
+                        );
+                      })
+                      .then(() => setLoading(false))
+                      .catch((e) => {
+                        if (!String(e).includes("page")) {
+                          setAlertboxActive(true);
+                          setAlertData({
+                            type: "error",
+                            title: "Öğretmenler getirilemedi",
+                          });
+                        }
+                      });
+                  }
+                }}
+              />
+            ) : (
+              "data"
+            ))}
+        </div>
       );
     } else if (pathname === "/admin/syllabus") {
       return (
@@ -429,7 +571,14 @@ function RenderCard({
               </div>
             </div>
           </div>
-          <Card type={"userDetails"} tabsType={tabsType} />
+          <Card
+            type={"userDetails"}
+            tabsType={tabsType}
+            loading={loading}
+            setLoading={setLoading}
+            setAlertboxActive={setAlertboxActive}
+            setAlertData={setAlertData}
+          />
         </>
       );
     } else if (pathname === "/admin/activity") {
@@ -465,7 +614,10 @@ function RenderCard({
                 className={`${styles.tabsButton} ${
                   tabsType === "class" ? styles.tabsButtonActive : ""
                 }`}
-                onClick={() => setTabsType("class")}
+                onClick={() => {
+                  setUserPageNum(1);
+                  setTabsType("class");
+                }}
               >
                 Sınıf
               </div>
@@ -477,6 +629,53 @@ function RenderCard({
             classData={displayClass === "" ? classData : displayClass}
             type={"activity"}
             tabsType={tabsType}
+          />
+          <Pagination
+            totalCount={
+              tabsType === "student"
+                ? Number((totalStudent / 100).toFixed())
+                : tabsType === "teacher"
+                ? Number((totalTeacher / 100).toFixed())
+                : tabsType === "class"
+                ? 1
+                : ""
+            }
+            selectedPage={userPageNum}
+            onClick={(pageNum) => {
+              if (tabsType === "student") {
+                setLoading(true);
+                getAllStudents(token, pageNum)
+                  .then((data) => {
+                    setStudentsData(data.data.data);
+                    setUserPageNum(
+                      data.data.pagination.next !== null
+                        ? data.data.pagination.next.page - 1
+                        : data.data.pagination.previous.page + 1
+                    );
+                  })
+                  .then(() => setLoading(false))
+                  .catch(() => {
+                    setLoading(false);
+                    alert("Kullanıcılar Getirilemedi");
+                  });
+              } else if (tabsType === "teacher") {
+                setLoading(true);
+                getAllTeachers(token, pageNum)
+                  .then((data) => {
+                    setTeachersData(data.data.data);
+                    setUserPageNum(
+                      data.data.pagination.next !== null
+                        ? data.data.pagination.next.page - 1
+                        : data.data.pagination.previous.page + 1
+                    );
+                  })
+                  .then(() => setLoading(false))
+                  .catch(() => {
+                    setLoading(false);
+                    alert("Kullanıcılar Getirilemedi");
+                  });
+              }
+            }}
           />
         </>
       );
@@ -499,9 +698,10 @@ function RenderCard({
               }`}
               onClick={() => {}}
             >
-              {ClassesNameData.map((item) => {
+              {ClassesNameData.map((item, index) => {
                 return (
                   <div
+                    key={index}
                     onClick={() => {
                       history.push(
                         `/admin/apps/${item.name.slice(
@@ -527,6 +727,9 @@ function RenderCard({
             type={"appManagement"}
             tabsType={tabsType}
             appData={appData}
+            setLoading={setLoading}
+            setAlertData={setAlertData}
+            setAlertboxActive={setAlertboxActive}
             setAppData={setAppData}
           />
         </>
@@ -541,7 +744,14 @@ function RenderCard({
       return (
         <>
           <h1>Sınav Yönetimi</h1>
-          <Card type={"exams"} allExams={allExams} />
+          <Card
+            type={"exams"}
+            allExams={allExams}
+            setAllExams={setAllExams}
+            setLoading={setLoading}
+            setAlertData={setAlertData}
+            setAlertboxActive={setAlertboxActive}
+          />
         </>
       );
     } else return <></>;
@@ -551,6 +761,9 @@ function RenderCard({
 }
 
 const ClassesNameData = [
+  {
+    name: "Tüm Sınıflar",
+  },
   {
     name: "1. Sınıflar",
   },
@@ -588,19 +801,3 @@ const ClassesNameData = [
     name: "12. Sınıflar",
   },
 ];
-// function onSearchTextChange(value) {
-//   this.setState((state) => {
-//     if (value) {
-//       state.filteredStaticData = staticData.filter((el) =>
-//         `${el.name} ${el.title}`.includes(value)
-//       );
-//     } else {
-//       if (state.searchText) {
-//         state.filteredStaticData = staticData;
-//       }
-//     }
-
-//     state.searchText = value;
-//     return state;
-//   });
-// }
